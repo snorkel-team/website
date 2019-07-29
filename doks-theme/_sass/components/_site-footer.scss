@@ -4,34 +4,71 @@
 
 /* ----- General ----- */
 .site-footer {
-	background-color: $color-footer-bg;
-	padding: 3.75rem 0 (3.75rem - 1.25rem) 0;
+  background-color: $color-footer-bg;
+  color: #d8d8d8;
+  padding: 3.75rem 0 (3.75rem - 1.25rem) 0;
 
-	hr {
-		width: 5.625rem;
-	}
+  hr {
+    width: 5.625rem;
+  }
 }
 
 /* ----- Logo ----- */
 .site-footer__logo {
-	@include link-reset;
-	display: inline-block;
-	color: $color-footer-copyright;
-	font-family: $font-family-secondary;
-	font-size: $font-size-h3;
-	font-weight: 700;
-	vertical-align: top;
-	margin: 0 0 1.25rem 0;
+  @include link-reset;
+  display: inline-block;
+  color: $color-footer-copyright;
+  font-family: $font-family-secondary;
+  font-size: $font-size-h3;
+  font-weight: 700;
+  vertical-align: top;
+  margin: 0 0 1.25rem 0;
 
-	img {
-		display: block;
-		width: 15.625rem;
-	}
+  img {
+    display: block;
+  }
 }
 
 /* ----- Copyright ----- */
 .site-footer__copyright {
-	color: $color-footer-copyright;
-	font-size: .875em;
-	line-height: $line-height-base;
+  color: $color-footer-copyright;
+  font-size: 0.875em;
+  line-height: $line-height-base;
+}
+
+// Nav
+.site-footer__nav {
+  @include list-horizontal;
+  @include clearfix;
+  float: right;
+  margin-bottom: 0;
+
+  li {
+    + li {
+      margin-left: 2.5rem;
+    }
+  }
+
+  a {
+    @include link-reset;
+    display: block;
+    font-size: 0.875em;
+    font-weight: 500;
+    font-family: $font-family-secondary;
+    line-height: calc(5.625rem - 1px);
+    text-transform: uppercase;
+    border-bottom: 1px solid;
+    border-color: transparent;
+    transition: border-color 0.2s;
+
+    &:hover,
+    &:focus,
+    &:active {
+      border-color: #d8d8d8;
+    }
+
+    @media (max-width: 992px) {
+      font-size: 0.7em;
+    }
+  }
 }

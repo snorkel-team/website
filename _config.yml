@@ -22,7 +22,7 @@ doks:
       logo:
         text:
         image: true
-      copyright: Copyright &copy; 2019. - Snorkel <br>All rights reserved.
+      copyright: "&copy; 2019 Snorkel"
     nav:
       - item_name: Get Started
         item_url: "#"

@@ -33,13 +33,6 @@
   @media (min-width: $screen-sm-min) {
     padding: 0.8125rem 2.1875rem;
   }
-
-  &:hover,
-  &:focus,
-  &:active {
-    color: $color-dark-blue;
-    background-color: $color-yellow;
-  }
 }
 
 .btn--w-icon {

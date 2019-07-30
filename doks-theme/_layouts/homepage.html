@@ -4,135 +4,296 @@
     {% include site-head.html %}
   </head>
   <body class="{{ site.doks.color_theme }}">
-      {% include site-header.html %}
+    {% include site-header.html %}
     <div
       class="hero-subheader{% if page.grid_navigation %} hero-subheader--before-out{% endif %}"
     >
       <div class="container">
-        <div class="row">
-          <div class="col-md-7">
-            <div class="align-container" data-mh>
-              <div class="align-inner">
-                {% if page.title %}
-                <h1 class="hero-subheader__title">{{ page.title }}</h1>
-                {% endif %} {% if page.description %}
-                <p class="hero-subheader__desc">{{ page.description }}</p>
-                {% endif %} {% for button in page.buttons %} {% if
-                button.external_url == true %}
-                <a
-                  href="{{ button.url }}"
-                  class="btn btn--dark btn--rounded btn--w-icon"
-                >
-                  {% if button.icon %}<i
-                    class="icon icon--{{ button.icon }}"
-                  ></i
-                  >{% endif %}
-                  {{ button.content }}
-                </a>
-                {% else %}
-                <a
-                  href="{% if jekyll.environment == 'production' %}{{
-                    site.doks.baseurl
-                  }}{% endif %}{{ button.url }}"
-                  class="btn btn--dark btn--rounded btn--w-icon"
-                >
-                  {% if button.icon %}<i
-                    class="icon icon--{{ button.icon }}"
-                  ></i
-                  >{% endif %}
-                  {{ button.content }}
-                </a>
-                {% endif %} {% endfor %}
-              </div>
-              <!-- /.align-inner -->
-            </div>
-            <!-- /.align-container -->
+        <div class="row row-spacing">
+          <div class="col-sm-6">
+            <p class="subheadline">meet snorkel</p>
+            <h1>An open source deep learning platform</h1>
+            <button class="btn btn--dark">Get Started</button>
           </div>
-          <!-- /.col -->
-          {% if page.author.title and page.author.description and
-          page.author.title_url %}
-          <div class="col-md-4 col-md-offset-1 hidden-xs hidden-sm">
-            <div class="align-container" data-mh>
-              <div class="align-inner">
-                <div class="hero-subheader__author">
-                  <p class="hero-subheader__author-title">
-                    {% if button.external_url == true %}
-                    <a
-                      href="{{ page.author.title_url }}"
-                      class="btn btn--read-more"
-                    >
-                      {{ page.author.title }}
-                      <i class="icon icon--arrow-right"></i>
-                    </a>
-                    {% else %}
-                    <a
-                      href="{% if jekyll.environment == 'production' %}{{
-                        site.doks.baseurl
-                      }}{% endif %}{{ page.author.title_url }}"
-                      class="btn btn--read-more"
-                    >
-                      {{ page.author.title }}
-                      <i class="icon icon--arrow-right"></i>
-                    </a>
-                    {% endif %}
-                  </p>
-                  <!-- /.hero-subheader__author-title -->
-                  <p>{{ page.author.description }}</p>
-                </div>
-                <!-- /.hero-subheader__author -->
-              </div>
-              <!-- /.align-inner -->
-            </div>
-            <!-- /.align-container -->
+          <div class="col-sm-6">
+            <img
+              src="/doks-theme/assets/images/layout/Pattern 1.png"
+              alt="Pattern 1"
+            />
           </div>
-          <!-- /.col -->
-          {% endif %}
         </div>
-        <!-- /.row -->
+        <!-- End Row -->
+        <div class="row row-spacing">
+          <div class="col-sm-6">
+            <img
+              src="/doks-theme/assets/images/layout/Pattern 1.png"
+              alt="Pattern 1"
+            />
+          </div>
+          <div class="col-sm-1"></div>
+          <div class="col-sm-5">
+            <p class="subheadline">subheadline</p>
+            <h1>Training Data</h1>
+            <p>
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aut
+              animi, vero in illo, alias possimus corporis itaque iure accusamus
+              est veniam tenetur fuga ipsa cumque dolorum enim! Quis, deserunt
+              tempore.
+            </p>
+            <button class="btn">Button</button>
+          </div>
+        </div>
+        <!-- End Row -->
+        <div class="row">
+          <div class="col-sm-12"><p>USED BY</p></div>
+        </div>
+        <!-- End Row -->
+        <div class="row row-spacing">
+          <div class="col-sm-1"></div>
+          <div class="col-sm-2">
+            <img
+              src="/doks-theme/assets/images/layout/Google.svg"
+              alt="Google Logo"
+            />
+          </div>
+          <div class="col-sm-2">
+            <img
+              src="/doks-theme/assets/images/layout/Microsoft.svg"
+              alt="Microsoft Logo"
+            />
+          </div>
+          <div class="col-sm-2">
+            <img
+              src="/doks-theme/assets/images/layout/Intel.svg"
+              alt="Intel Logo"
+            />
+          </div>
+          <div class="col-sm-2">
+            <img
+              src="/doks-theme/assets/images/layout/YouTube.svg"
+              alt="YouTube Logo"
+            />
+          </div>
+          <div class="col-sm-2">
+            <img
+              src="/doks-theme/assets/images/layout/Toshiba.svg"
+              alt="Toshiba Logo"
+            />
+          </div>
+          <div class="col-sm-1"></div>
+        </div>
+        <!-- End Row -->
       </div>
-      <!-- /.container -->
-    </div>
-    <!-- /.hero-subheader -->
-    {% if page.grid_navigation %}
-    <div class="section section--darker-theme-color-bg">
+      <div class="container-fluid">
+        <div class="row dark-row">
+          <div class="card">
+            <p class="subheadline">recent news</p>
+            <h4>Recent news post title</h4>
+            <p>
+              Is designed to help you do real work — to build real products, or
+              gather real insights.
+            </p>
+          </div>
+          <div class="card">
+            <p class="subheadline">recent news</p>
+            <h4>Recent news post title</h4>
+            <p>
+              Is designed to help you do real work — to build real products, or
+              gather real insights.
+            </p>
+          </div>
+          <div class="card">
+            <p class="subheadline">recent news</p>
+            <h4>Recent news post title</h4>
+            <p>
+              Is designed to help you do real work — to build real products, or
+              gather real insights.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="container-fluid">
+        <div class="row cta-dark-row row-spacing">
+          <a class="card-cta" href="#"
+            >SEE ALL NEWS <i class="icon icon--arrow-right"></i
+          ></a>
+        </div>
+      </div>
+      <!-- End Container Fluid -->
+      <!-- End Continer Fluid -->
       <div class="container">
         <div class="row">
-          <div class="col-md-12">
-            <div class="nav-grid nav-grid--out">
-              <div class="row">
-                {% for item in page.grid_navigation %}
-                <div class="col-sm-6 col-lg-4">
-                  <a
-                    href="{% if jekyll.environment == 'production' %}{{
-                      site.doks.baseurl
-                    }}{% endif %}{{ item.url }}"
-                    class="nav-grid__item"
-                  >
-                    <div class="nav-grid__content" data-mh>
-                      <h2 class="nav-grid__title">{{ item.title }}</h2>
-                      <p>{{ item.excerpt }}</p>
-                    </div>
-                    <!-- /.nav-grid__content -->
-                    <p class="nav-grid__btn">
-                      {{ item.cta }}
-                      <i class="icon icon--arrow-right"></i>
-                    </p> </a
-                  ><!-- /.nav-grid__item -->
-                </div>
-                <!-- /.col -->
-                {% endfor %}
-              </div>
-              <!-- /.row -->
-            </div>
-            <!-- /.nav-grid -->
-          </div>
-          <!-- /.col -->
+          <p class="subheadline">see what snorkel can do</p>
         </div>
-        <!-- /.row -->
+        <!-- End Row -->
+        <div class="row">
+          <h1>Features and Capabilities</h1>
+        </div>
+        <!-- End Row -->
+        <div class="row row-spacing">
+          <div class="col-sm-5">
+            <p class="subheadline">01</p>
+            <h4>Labeling</h4>
+            <p>
+              Rather than requiring users to label training data points by hand,
+              Snorkel takes as input labeling functions (LFs), functions that
+              heuristically or noisily label some subset of the training
+              examples. Snorkel then models the quality and correlations of
+              these LFs using novel, theoretically-grounded statistical modeling
+              techniques.
+            </p>
+          </div>
+          <div class="col-sm-1"></div>
+          <div class="col-sm-6">
+            <img
+              src="/doks-theme/assets/images/layout/Labeling.png"
+              alt="Pattern 1"
+              style="margin-top: 110px;"
+            />
+          </div>
+        </div>
+        <!-- End Row -->
+        <div class="row row-spacing">
+          <div class="col-sm-5">
+            <img
+              src="/doks-theme/assets/images/layout/Transforming.png"
+              alt="Pattern 1"
+              style="margin-top: 110px;"
+            />
+          </div>
+          <div class="col-sm-1"></div>
+          <div class="col-sm-6">
+            <p class="subheadline">02</p>
+            <h4>Transforming</h4>
+            <p>
+              Snorkel also lets users write transformation functions (TFs) to
+              heuristically generate new, modified training examples by
+              transforming existing ones---a strategy often referred to as data
+              augmentation. Rather than requiring users to tune these data
+              augmentation or transformation strategies by hand, Snorkel learns
+              compositions of transformations across various domain-specific
+              tasks to optimize for a representative training set.
+            </p>
+          </div>
+        </div>
+        <!-- End Row -->
+        <div class="row row-spacing">
+          <div class="col-sm-5">
+            <p class="subheadline">03</p>
+            <h4>Slicing</h4>
+            <p>
+              Finally, Snorkel also lets users write slicing functions (SFs) to
+              heuristically identify subsets of the data the model should
+              particularly care about, e.g. have extra representative capacity
+              for, due to their difficulty and/or importance. It models slices
+              in the style of multi-task learning and an attention-mechanism is
+              then learned over these heads.
+            </p>
+            <button class="btn">SEE DETAILS</button>
+          </div>
+          <div class="col-sm-1"></div>
+          <div class="col-sm-6">
+            <img
+              src="/doks-theme/assets/images/layout/Slicing.png"
+              alt="Pattern 1"
+              style="margin-top: 80px;"
+            />
+          </div>
+        </div>
+        <!-- End Row -->
+        <div class="row row-spacing">
+          <div class="col-sm-5">
+            <img
+              src="/doks-theme/assets/images/layout/Pattern 1.png"
+              alt="Pattern 1"
+            />
+          </div>
+          <div class="col-sm-1"></div>
+          <div class="col-sm-6">
+            <p class="subheadline">start in minutes</p>
+            <h1>Quickstart</h1>
+            <p>
+              Run the following to install:
+            </p>
+            <code># pip install spacy</code><br />
+            <code># python -m spacy download en_core_web_sm</code><br />
+            <code>import spacy</code><br />
+            <button class="btn">Github</button>
+          </div>
+        </div>
+        <!-- End Row -->
       </div>
-      <!-- /.container -->
+      <!-- End Container -->
+      <div class="container-fluid">
+        <div class="row light-row">
+          <div class="light-card">
+            <p class="subheadline">01</p>
+            <h4>Use Case Title</h4>
+            <p>
+              Is designed to help you do real work — to build real products, or
+              gather real insights.
+            </p>
+            <a class="card-cta" href="#">
+              LEARN MORE <i class="icon icon--arrow-right"></i>
+            </a>
+          </div>
+          <div class="light-card">
+            <p class="subheadline">02</p>
+            <h4>Use Case Title</h4>
+            <p>
+              Is designed to help you do real work — to build real products, or
+              gather real insights.
+            </p>
+            <a class="card-cta" href="#">
+              READ NEWS <i class="icon icon--arrow-right"></i>
+            </a>
+          </div>
+          <div class="light-card">
+            <p class="subheadline">03</p>
+            <h4>Use Case Title</h4>
+            <p>
+              Is designed to help you do real work — to build real products, or
+              gather real insights.
+            </p>
+            <a class="card-cta" href="#">
+              SEE USE CASES <i class="icon icon--arrow-right"></i>
+            </a>
+          </div>
+        </div>
+        <!-- End Row -->
+      </div>
+      <!-- End Container Fluid -->
+      <div class="container-fluid">
+        <div class="row cta-row row-spacing">
+          <a class="card-cta" href="#"
+            >SEE ALL USE CASES <i class="icon icon--arrow-right"></i
+          ></a>
+        </div>
+      </div>
+      <!-- End Container Fluid -->
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-4">
+            <p class="subheadline">Learn More</p>
+            <h4>Publications</h4>
+            <ul style="list-style-type: disc">
+              <li>Publication</li>
+              <li>Publication</li>
+              <li>Publication</li>
+              <li>Publication</li>
+              <li>Publication</li>
+            </ul>
+          </div>
+          <div class="col-sm-8">
+            <img
+              src="/doks-theme/assets/images/layout/Pattern 1.png"
+              alt="Pattern 1"
+            />
+          </div>
+        </div>
+      </div>
+      <!-- End Container -->
     </div>
-    <!-- /.section -->
-    {% endif %} {% include site-footer.html %}
+    {% include site-footer.html %}
   </body>
 </html>

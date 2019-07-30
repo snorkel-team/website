@@ -47,7 +47,7 @@ h6,
   font-family: $font-family-secondary;
   font-weight: 400;
   line-height: $line-height-headings;
-  margin: 2.5rem 0 0.9375rem 0;
+  margin: 1rem 0 0.9375rem 0;
 
   &[id] {
     position: relative;
@@ -157,13 +157,6 @@ ul {
     position: relative;
     // padding-left: 1.875rem;
     margin-bottom: 0.3125rem;
-
-    &:before {
-      content: "\2014";
-      color: $color-list-prefix;
-      position: absolute;
-      left: 0;
-    }
   }
 }
 
@@ -255,4 +248,69 @@ button {
   &:focus {
     outline: none;
   }
+}
+
+.subheadline {
+  color: #9d3fa7;
+  text-transform: uppercase;
+
+  &:before {
+    content: "";
+    width: 30px;
+    position: absolute;
+    border: 1px solid #9d3fa7;
+    top: 5%;
+    left: -4%;
+  }
+}
+
+.dark-row {
+  background-color: $color-dark-blue;
+  padding: 130px 130px 0 130px;
+  display: flex;
+  justify-content: space-between;
+  background-image: url("../../assets/images/layout/PatternRow.png");
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-size: 1076px 341px;
+}
+
+.light-row {
+  @extend .dark-row;
+  background-color: $color-light-blue;
+}
+
+.card {
+  width: 350px;
+  height: 305px;
+  padding: 40px;
+  color: $color-white;
+  background-color: #15233b;
+}
+
+.light-card {
+  @extend .card;
+  color: $color-black;
+  background-color: $color-white;
+}
+
+.row-spacing {
+  margin-bottom: 100px;
+}
+
+.card-cta {
+  color: #65baf6;
+  text-decoration: none;
+}
+
+.cta-row {
+  background-color: $color-light-blue;
+  padding: 65px 160px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cta-dark-row {
+  @extend .cta-row;
+  background-color: $color-dark-blue;
 }

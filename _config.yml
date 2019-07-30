@@ -8,15 +8,15 @@ doks:
       image: true
     nav:
       - item_name: Get Started
-        item_url: getstarted.html
+        item_url: /get-started/
       - item_name: Use Cases
-        item_url: "#"
+        item_url: /use-cases/
       - item_name: Ecosystem
-        item_url: "#"
+        item_url: /ecosystem/
       - item_name: Blog
-        item_url: "#"
+        item_url: /blog/
       - item_name: Docs
-        item_url: "#"
+        item_url: /docs/
   footer:
     content:
       logo:
@@ -25,15 +25,15 @@ doks:
       copyright: Copyright &copy; 2017. - Snorkel <br>All rights reserved.
     nav:
       - item_name: Get Started
-        item_url: "#"
+        item_url: /get-started/
       - item_name: Use Cases
-        item_url: "#"
+        item_url: /use-cases/
       - item_name: Ecosystem
-        item_url: "#"
+        item_url: /ecosystem/
       - item_name: Blog
-        item_url: "#"
+        item_url: /blog/
       - item_name: Docs
-        item_url: "#"
+        item_url: /docs/
   google_analytics:
     tracking_code: # Add your Google Analytics tracking code to activate Google Analytics
   comments:
@@ -47,5 +47,28 @@ sass:
 # Jekyll settings
 layouts_dir: ./doks-theme/_layouts
 includes_dir: ./doks-theme/_includes
-exclude: ["README.md", "CHANGELOG.md"]
 permalink: /:title/
+exclude: [
+  'designs',
+  'README.md',
+  'Gemfile'
+]
+
+page_gen-dirs: true
+page_gen:
+  - data: contentful.spaces.snorkel.useCases
+    name: slug
+    template: default
+    dir: use-cases
+  - data: contentful.spaces.snorkel.tutorials
+    name: slug
+    template: default
+    dir: ecosystem
+  - data: contentful.spaces.snorkel.posts
+    name: slug
+    template: default
+    dir: blog
+  - data: contentful.spaces.snorkel.docs
+    name: slug
+    template: default
+    dir: docs

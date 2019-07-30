@@ -22,9 +22,8 @@
             />
           </div>
         </div>
-        <!-- End Row -->
         <div class="row row-spacing">
-          <div class="col-sm-6">
+          <div class="col-sm-6 hidden-xs">
             <img
               src="/doks-theme/assets/images/layout/Pattern 1.png"
               alt="Pattern 1"
@@ -43,46 +42,69 @@
             <button class="btn">Button</button>
           </div>
         </div>
-        <!-- End Row -->
         <div class="row">
           <div class="col-sm-12"><p>USED BY</p></div>
         </div>
-        <!-- End Row -->
-        <div class="row row-spacing">
-          <div class="col-sm-1"></div>
-          <div class="col-sm-2">
+        <div class="row row-spacing hidden-xs">
+          <div class="col-xs-1"></div>
+          <div class="col-xs-2">
             <img
               src="/doks-theme/assets/images/layout/Google.svg"
               alt="Google Logo"
             />
           </div>
-          <div class="col-sm-2">
+          <div class="col-xs-2">
             <img
               src="/doks-theme/assets/images/layout/Microsoft.svg"
               alt="Microsoft Logo"
             />
           </div>
-          <div class="col-sm-2">
+          <div class="col-xs-2">
             <img
               src="/doks-theme/assets/images/layout/Intel.svg"
               alt="Intel Logo"
             />
           </div>
-          <div class="col-sm-2">
+          <div class="col-xs-2">
             <img
               src="/doks-theme/assets/images/layout/YouTube.svg"
               alt="YouTube Logo"
             />
           </div>
-          <div class="col-sm-2">
+          <div class="col-xs-2">
             <img
               src="/doks-theme/assets/images/layout/Toshiba.svg"
               alt="Toshiba Logo"
             />
           </div>
-          <div class="col-sm-1"></div>
+          <div class="col-xs-1"></div>
         </div>
-        <!-- End Row -->
+        <div class="mobile-logos">
+          <img
+            src="/doks-theme/assets/images/layout/Google.svg"
+            alt="Google Logo"
+          />
+          <img
+              src="/doks-theme/assets/images/layout/Microsoft.svg"
+              alt="Microsoft Logo"
+          />
+        </div>
+        <div class="mobile-logos">
+          <img
+            src="/doks-theme/assets/images/layout/Intel.svg"
+            alt="Intel Logo"
+          />
+          <img
+              src="/doks-theme/assets/images/layout/YouTube.svg"
+              alt="YouTube Logo"
+          />
+        </div>
+        <div class="mobile-logos">
+            <img
+            src="/doks-theme/assets/images/layout/Toshiba.svg"
+            alt="Toshiba Logo"
+          />
+        </div>
       </div>
       <div class="container-fluid">
         <div class="row dark-row">
@@ -119,20 +141,20 @@
           ></a>
         </div>
       </div>
-      <!-- End Container Fluid -->
-      <!-- End Continer Fluid -->
       <div class="container">
         <div class="row">
-          <p class="subheadline">see what snorkel can do</p>
+          <div class="col-sm-12">
+            <p class="subheadline">see what snorkel can do</p>
+          </div>
         </div>
-        <!-- End Row -->
         <div class="row">
-          <h1>Features and Capabilities</h1>
+          <div class="col-sm-12">
+            <h1>Features and Capabilities</h1>
+          </div>
         </div>
-        <!-- End Row -->
         <div class="row row-spacing">
           <div class="col-sm-5">
-            <p class="purple">01</p>
+            <p class="purple-numbers">01</p>
             <h4>Labeling</h4>
             <p>
               Rather than requiring users to label training data points by hand,
@@ -152,9 +174,8 @@
             />
           </div>
         </div>
-        <!-- End Row -->
         <div class="row row-spacing">
-          <div class="col-sm-5">
+          <div class="col-sm-5 hidden-xs">
             <img
               src="/doks-theme/assets/images/layout/Transforming.png"
               alt="Pattern 1"
@@ -163,7 +184,7 @@
           </div>
           <div class="col-sm-1"></div>
           <div class="col-sm-6">
-            <p class="purple">02</p>
+            <p class="purple-numbers">02</p>
             <h4>Transforming</h4>
             <p>
               Snorkel also lets users write transformation functions (TFs) to
@@ -175,11 +196,17 @@
               tasks to optimize for a representative training set.
             </p>
           </div>
+          <div class="col-sm-12 visible-xs-block">
+            <img
+              src="/doks-theme/assets/images/layout/Transforming.png"
+              alt="Pattern 1"
+              style="margin-top: 110px;"
+            />
+          </div>
         </div>
-        <!-- End Row -->
         <div class="row row-spacing">
           <div class="col-sm-5">
-            <p class="purple">03</p>
+            <p class="purple-numbers">03</p>
             <h4>Slicing</h4>
             <p>
               Finally, Snorkel also lets users write slicing functions (SFs) to
@@ -200,7 +227,6 @@
             />
           </div>
         </div>
-        <!-- End Row -->
         <div class="row row-spacing">
           <div class="col-sm-5">
             <img
@@ -220,20 +246,18 @@
               <p>
                 # python -m spacy download en_core_web_sm
               </p>
-              <p><span style="color: #9D3FA7;">import</span><span style="color: #18171C;"> spacy</p>
+              <span style="color: #9D3FA7;">import</span><span style="color: #18171C;"> spacy
             </div>
             <a href="https://github.com/HazyResearch/snorkel" class="btn"
               >Github</a
             >
           </div>
         </div>
-        <!-- End Row -->
       </div>
-      <!-- End Container -->
       <div class="container-fluid">
         <div class="row light-row">
           <div class="light-card">
-            <p class="purple">01</p>
+            <p class="purple-numbers">01</p>
             <h4>Use Case Title</h4>
             <p>
               Is designed to help you do real work — to build real products, or
@@ -244,7 +268,7 @@
             </a>
           </div>
           <div class="light-card">
-            <p class="purple">02</p>
+            <p class="purple-numbers">02</p>
             <h4>Use Case Title</h4>
             <p>
               Is designed to help you do real work — to build real products, or
@@ -255,7 +279,7 @@
             </a>
           </div>
           <div class="light-card">
-            <p class="purple">03</p>
+            <p class="purple-numbers">03</p>
             <h4>Use Case Title</h4>
             <p>
               Is designed to help you do real work — to build real products, or
@@ -266,9 +290,7 @@
             </a>
           </div>
         </div>
-        <!-- End Row -->
       </div>
-      <!-- End Container Fluid -->
       <div class="container-fluid">
         <div class="row cta-row row-spacing">
           <a class="card-cta" href="#"
@@ -276,7 +298,6 @@
           ></a>
         </div>
       </div>
-      <!-- End Container Fluid -->
       <div class="container">
         <div class="row">
           <div class="col-sm-4">
@@ -298,7 +319,6 @@
           </div>
         </div>
       </div>
-      <!-- End Container -->
     </div>
     {% include site-footer.html %}
   </body>

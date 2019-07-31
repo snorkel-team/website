@@ -47,7 +47,7 @@ h6,
   font-family: $font-family-secondary;
   font-weight: 400;
   line-height: $line-height-headings;
-  margin: 2.5rem 0 0.9375rem 0;
+  margin: 1rem 0 0.9375rem 0;
 
   &[id] {
     position: relative;
@@ -108,8 +108,6 @@ p {
 a {
   color: inherit;
   text-decoration: none;
-  border-bottom: 0.0625em solid;
-  border-color: inherit;
   padding-bottom: 0.125em;
 }
 
@@ -156,13 +154,6 @@ ul {
   li {
     position: relative;
     margin-bottom: 0.3125rem;
-
-    &:before {
-      content: "\2014";
-      color: $color-list-prefix;
-      position: absolute;
-      left: 0;
-    }
   }
 }
 
@@ -253,5 +244,109 @@ button {
 
   &:focus {
     outline: none;
+  }
+}
+
+/* ----- Other Classes ----- */
+
+.subheadline {
+  color: $color-purple;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+
+  &:before {
+    content: "";
+    display: block;
+    width: 30px;
+    border: 1px solid $color-purple;
+    margin-right: 8px;
+  }
+}
+
+.purple {
+  color: $color-purple;
+  text-transform: uppercase;
+}
+
+.purple-numbers {
+  @extend .purple;
+  font-family: $font-family-monospace;
+}
+
+.dark-row {
+  background-color: $color-dark-blue;
+  padding-top: 130px;
+  display: flex;
+  justify-content: space-between;
+  background-image: url("../../assets/images/layout/PatternRow.png");
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-size: 1076px 341px;
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.light-row {
+  @extend .dark-row;
+  background-color: $color-light-blue;
+}
+
+.card {
+  width: 320px;
+  height: 305px;
+  padding: 40px;
+  color: $color-white;
+  background-color: #15233b;
+
+  @media (max-width: 1024px) {
+    margin-bottom: 40px;
+  }
+
+  @media (max-width: 375px) {
+    width: 250px;
+  }
+}
+
+.light-card {
+  @extend .card;
+  color: $color-black;
+  background-color: $color-white;
+}
+
+.row-spacing {
+  margin-bottom: 100px;
+}
+
+.card-cta {
+  color: #65baf6;
+}
+
+.cta-row {
+  background-color: $color-light-blue;
+  padding: 65px 160px;
+  display: flex;
+  justify-content: flex-end;
+
+  @media (max-width: 768px) {
+    padding: 65px 40px;
+  }
+}
+
+.cta-dark-row {
+  @extend .cta-row;
+  background-color: $color-dark-blue;
+}
+
+.mobile-logos {
+  display: none;
+
+  @media (max-width: 768px) {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 40px;
   }
 }

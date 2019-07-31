@@ -8,7 +8,7 @@ doks:
       image: true
     nav:
       - item_name: Get Started
-        item_url: getstarted.html
+        item_url: /default
       - item_name: Use Cases
         item_url: "#"
       - item_name: Ecosystem

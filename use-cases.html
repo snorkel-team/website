@@ -5,7 +5,7 @@ layout: default
 <h1>Use Cases</h1>
 
 <nav>
-  {% for cases in site.data.contentful.spaces.snorkel.useCases %}
-    <a href="{{ page.permalink }}{{ cases.slug }}">{{ cases.title }}</a><br />
+  {% for case in site.use_cases %}
+    <a href="{{ case.url }}">{{ case.title }}</a><br />
   {% endfor %}
 </nav>

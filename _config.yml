@@ -12,7 +12,7 @@ doks:
       - item_name: Use Cases
         item_url: /use-cases/
       - item_name: Ecosystem
-        item_url: /ecosystem/
+        item_url: /tutorials/
       - item_name: Blog
         item_url: /blog/
       - item_name: Docs
@@ -29,7 +29,7 @@ doks:
       - item_name: Use Cases
         item_url: /use-cases/
       - item_name: Ecosystem
-        item_url: /ecosystem/
+        item_url: /tutorials/
       - item_name: Blog
         item_url: /blog/
       - item_name: Docs
@@ -50,27 +50,14 @@ sass:
 layouts_dir: ./doks-theme/_layouts
 includes_dir: ./doks-theme/_includes
 permalink: /:title/
-exclude: [
-  'designs',
-  'README.md',
-  'Gemfile'
-]
-
-page_gen-dirs: true
-page_gen:
-  - data: contentful.spaces.snorkel.useCases
-    name: slug
-    template: default
-    dir: use-cases
-  - data: contentful.spaces.snorkel.tutorials
-    name: slug
-    template: default
-    dir: ecosystem
-  - data: contentful.spaces.snorkel.posts
-    name: slug
-    template: default
-    dir: blog
-  - data: contentful.spaces.snorkel.docs
-    name: slug
-    template: default
-    dir: docs
+exclude: ['README.md', 'Gemfile']
+collections:
+  tutorials:
+    output: true
+  blog:
+    output: true
+  docs:
+    output: true
+  use_cases:
+    output: true
+    permalink: /use-cases/:name

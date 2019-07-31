@@ -1,0 +1,11 @@
+---
+# Page settings
+layout: default
+---
+<h1>Tutorials</h1>
+
+<nav>
+  {% for tutorial in site.tutorials %}
+    <a href="{{ tutorial.url }}">{{ tutorial.title }}</a><br />
+  {% endfor %}
+</nav>

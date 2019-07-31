@@ -11,6 +11,9 @@
       >
     </li>
     {% endfor %}
+    <li>
+      <a href="https://github.com/HazyResearch/snorkel">Github</a>
+    </li>
   </ul>
   <!-- /.offcanvas__nav -->
 </div>
@@ -20,7 +23,7 @@ site.doks.header.nav %}
 <header class="site-header">
   <div class="container">
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-xs-12 flex">
         {% if site.doks.header.logo.text %}
         <a
           href="{% if jekyll.environment == 'production' %}{{
@@ -39,7 +42,7 @@ site.doks.header.nav %}
           <img
             src="{% if jekyll.environment == 'production' %}{{
               site.doks.baseurl
-            }}{% endif %}/doks-theme/assets/images/layout/logo.png"
+            }}{% endif %}/doks-theme/assets/images/layout/Snorkel.png"
           /> </a
         ><!-- /.site-header__logo -->
         {% endif %} {% if site.doks.header.nav %}
@@ -54,6 +57,32 @@ site.doks.header.nav %}
             >
           </li>
           {% endfor %}
+          <li class="github">
+            <a href="https://github.com/HazyResearch/snorkel"
+              ><i class="icon icon--github"></i
+            ></a>
+            <a
+              class="github-button"
+              href="https://github.com/HazyResearch/snorkel"
+              data-icon="octicon-star"
+              data-size="large"
+              data-show-count="true"
+              aria-label="Star HazyResearch/snorkel on GitHub"
+              >Star</a
+            >
+            <a
+              class="github-button"
+              href="https://github.com/HazyResearch/snorkel/fork"
+              data-icon="octicon-repo-forked"
+              data-size="large"
+              data-show-count="true"
+              aria-label="Fork HazyResearch/snorkel on GitHub"
+              >Fork</a
+            >
+          </li>
+          <li class="github-small">
+            <a href="https://github.com/HazyResearch/snorkel">Github</a>
+          </li>
         </ul>
         <!-- /.site-header__nav -->
         <button class="offcanvas-toggle visible-xs">

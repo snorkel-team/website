@@ -7,8 +7,10 @@
 $color-white: #fff !default;
 $color-black: #000 !default;
 $color-dark: #333 !default;
-$color-dark-blue: #253951 !default;
+$color-dark-blue: #1c2c49 !default;
+$color-light-blue: #f4fbff !default;
 $color-yellow: #f6d000 !default;
+$color-purple: #9d3fa7 !default;
 
 // Base
 $color-h2-border: #dadada !default;
@@ -36,23 +38,26 @@ $color-callout-warning: #fffae9 !default;
 $color-callout-danger: #ffedeb !default;
 
 // Footer
-$color-footer-bg: #f5f5f5 !default;
+$color-footer-bg: #18171c !default;
 $color-footer-copyright: #bdbdbd !default;
 
 // Social list
 $color-social-item: #bdbdbd !default;
 
 // Themes
-$color-theme-green: #F0FAE6 !default;
-$color-theme-blue: #E8F2FC !default;
-$color-theme-purple: #FDE8F8 !default;
-$color-theme-red: #FFECE6 !default;
-$color-theme-yellow: #FCFDE8 !default;
+$color-theme-green: #f0fae6 !default;
+$color-theme-blue: #e8f2fc !default;
+$color-theme-purple: #fde8f8 !default;
+$color-theme-red: #ffece6 !default;
+$color-theme-yellow: #fcfde8 !default;
+
+//Buttons
+$color-button: #65baf6 !default;
 
 /* ----- Font families ----- */
-$font-family-primary: 'Noto Sans', sans-serif !default;
-$font-family-secondary: 'Montserrat', sans-serif !default;
-$font-family-monospace: 'Source Code Pro', monospace !default;
+$font-family-primary: "Noto Sans", sans-serif !default;
+$font-family-secondary: "Montserrat", sans-serif !default;
+$font-family-monospace: "Source Code Pro", monospace !default;
 
 /* ----- Font sizes ----- */
 // Base

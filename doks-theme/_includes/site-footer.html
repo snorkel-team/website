@@ -3,7 +3,7 @@ or site.doks.footer.content.copyright or site.doks.footer.social_list %}
 <footer class="site-footer">
   <div class="container">
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-sm-3">
         {% if site.doks.footer.content.logo.text %}
         <a
           href="{% if jekyll.environment == 'production' %}{{
@@ -13,39 +13,44 @@ or site.doks.footer.content.copyright or site.doks.footer.social_list %}
           >{{ site.doks.footer.content.logo.text }}</a
         >
         {% elsif site.doks.footer.content.logo.image %}
-        <a
-          href="{% if jekyll.environment == 'production' %}{{
-            site.doks.baseurl
-          }}{% endif %}/"
-          class="site-footer__logo"
-        >
-          <img
-            src="{% if jekyll.environment == 'production' %}{{
-              site.doks.baseurl
-            }}{% endif %}/doks-theme/assets/images/layout/logo-footer.png"
-          /> </a
-        ><!-- /.site-footer__logo -->
-        {% endif %} {% if site.doks.footer.content.copyright %}
-        <hr />
-        <p class="site-footer__copyright">
-          {{ site.doks.footer.content.copyright }}
-        </p>
-        {% endif %}
-      </div>
-      <!-- /.col -->
-      {% if site.doks.footer.nav %}
-      <ul class="site-header__nav hidden-xs">
-        {% for item in site.doks.footer.nav %}
-        <li>
+        <div class="footer-logo">
           <a
             href="{% if jekyll.environment == 'production' %}{{
               site.doks.baseurl
-            }}{% endif %}{{ item.item_url }}"
-            >{{ item.item_name }}</a
+            }}{% endif %}/"
+            class="site-footer__logo"
           >
-        </li>
-        {% endfor %}
-      </ul>
+            <img
+              src="{% if jekyll.environment == 'production' %}{{
+                site.doks.baseurl
+              }}{% endif %}/doks-theme/assets/images/layout/logo-footer.png"
+            />
+          </a>
+          {% if site.doks.footer.content.copyright %}
+          <p class="site-footer__copyright">
+            {{ site.doks.footer.content.copyright }}
+          </p>
+          {% endif %}
+        </div>
+        <!-- /.site-footer__logo -->
+        {% endif %}
+      </div>
+      <!-- /.col -->
+      <div class="col-sm-9">
+        {% if site.doks.footer.nav %}
+        <ul class="site-footer__nav hidden-xs">
+          {% for item in site.doks.footer.nav %}
+          <li>
+            <a
+              href="{% if jekyll.environment == 'production' %}{{
+                site.doks.baseurl
+              }}{% endif %}{{ item.item_url }}"
+              >{{ item.item_name }}</a
+            >
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
       <!-- /.site-header__nav -->
       <button class="offcanvas-toggle visible-xs">
         <span></span>

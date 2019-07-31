@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Use Case
+title: Another Use Case
 preview: Is designed to help you do real work — to build real products, or gather real insights.
 ---
-# Use Case
+# Another Use Case

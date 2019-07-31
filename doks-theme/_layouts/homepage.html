@@ -74,35 +74,18 @@
     </div>
     <div class="container-fluid">
       <div class="row dark-row">
-        <div class="card">
-          <p class="purple">recent news</p>
-          <h4>Recent news post title</h4>
-          <p>
-            Is designed to help you do real work — to build real products, or
-            gather real insights.
-          </p>
-        </div>
-        <div class="card">
-          <p class="purple">recent news</p>
-          <h4>Recent news post title</h4>
-          <p>
-            Is designed to help you do real work — to build real products, or
-            gather real insights.
-          </p>
-        </div>
-        <div class="card">
-          <p class="purple">recent news</p>
-          <h4>Recent news post title</h4>
-          <p>
-            Is designed to help you do real work — to build real products, or
-            gather real insights.
-          </p>
-        </div>
+        {% for post in site.blog limit:3 %}
+          <a class="card" href="{{ post.url }}">
+            <p class="purple">recent news</p>
+            <h4>{{ post.title }}</h4>
+            <p>{{ post.preview }}</p>
+          </a>
+        {% endfor %}
       </div>
     </div>
     <div class="container-fluid">
       <div class="row cta-dark-row row-spacing">
-        <a class="card-cta" href="#">SEE ALL NEWS <i class="icon icon--arrow-right"></i></a>
+        <a class="card-cta" href="/blog/">SEE ALL NEWS <i class="icon icon--arrow-right"></i></a>
       </div>
     </div>
     <div class="container">
@@ -199,44 +182,21 @@
     </div>
     <div class="container-fluid">
       <div class="row light-row">
-        <div class="light-card">
-          <p class="purple-numbers">01</p>
-          <h4>Use Case Title</h4>
-          <p>
-            Is designed to help you do real work — to build real products, or
-            gather real insights.
-          </p>
-          <a class="card-cta" href="#">
-            LEARN MORE <i class="icon icon--arrow-right"></i>
+        {% for case in site.use_cases limit:3 %}
+          <a class="light-card" href="{{ case.url }}">
+            <p class="purple-numbers">{{ forloop.index | prepend: '00' | slice: -2, 2 }}</p>
+            <h4>{{ case.title }}</h4>
+            <p>{{ case.preview }}</p>
+            <span class="card-cta">
+              LEARN MORE <i class="icon icon--arrow-right"></i>
+            </span>
           </a>
-        </div>
-        <div class="light-card">
-          <p class="purple-numbers">02</p>
-          <h4>Use Case Title</h4>
-          <p>
-            Is designed to help you do real work — to build real products, or
-            gather real insights.
-          </p>
-          <a class="card-cta" href="#">
-            READ NEWS <i class="icon icon--arrow-right"></i>
-          </a>
-        </div>
-        <div class="light-card">
-          <p class="purple-numbers">03</p>
-          <h4>Use Case Title</h4>
-          <p>
-            Is designed to help you do real work — to build real products, or
-            gather real insights.
-          </p>
-          <a class="card-cta" href="#">
-            SEE USE CASES <i class="icon icon--arrow-right"></i>
-          </a>
-        </div>
+        {% endfor %}
       </div>
     </div>
     <div class="container-fluid">
       <div class="row cta-row row-spacing">
-        <a class="card-cta" href="#">SEE ALL USE CASES <i class="icon icon--arrow-right"></i></a>
+        <a class="card-cta" href="/use-cases/">SEE ALL USE CASES <i class="icon icon--arrow-right"></i></a>
       </div>
     </div>
     <div class="container">
@@ -245,11 +205,9 @@
           <p class="subheadline">Learn More</p>
           <h4>Publications</h4>
           <ul style="list-style-type: disc; margin-left: 18px;">
-            <li>Publication</li>
-            <li>Publication</li>
-            <li>Publication</li>
-            <li>Publication</li>
-            <li>Publication</li>
+            {% for post in site.blog %}
+              <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+            {% endfor %}
           </ul>
         </div>
         <div class="col-sm-8">

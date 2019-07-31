@@ -1,0 +1,11 @@
+---
+# Page settings
+layout: default
+---
+<h1>Docs</h1>
+
+<nav>
+  {% for doc in site.data.contentful.spaces.snorkel.docs %}
+  <a href="{{ page.permalink }}{{ doc.slug }}">{{ doc.title }}</a><br />
+  {% endfor %}
+</nav>

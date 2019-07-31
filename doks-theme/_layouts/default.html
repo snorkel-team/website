@@ -66,7 +66,11 @@
 				<div class="row">
 					<div class="col-md-7">
 						<div class="content">
-							{{ content }}
+              {% if page.body %}
+                {{ page.body | rich_text }}
+              {% else %}
+						    {{ content }}
+              {% endif %}
 						</div><!-- /.content -->
 					</div><!-- /.col -->
 					<div class="col-md-4 col-md-offset-1">

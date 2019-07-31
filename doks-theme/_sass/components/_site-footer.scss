@@ -29,6 +29,12 @@
   }
 }
 
+.footer-logo {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
 /* ----- Copyright ----- */
 .site-footer__copyright {
   color: $color-footer-copyright;
@@ -57,15 +63,6 @@
     font-family: $font-family-secondary;
     line-height: calc(5.625rem - 1px);
     text-transform: uppercase;
-    border-bottom: 1px solid;
-    border-color: transparent;
-    transition: border-color 0.2s;
-
-    &:hover,
-    &:focus,
-    &:active {
-      border-color: #d8d8d8;
-    }
 
     @media (max-width: 992px) {
       font-size: 0.7em;

@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Docs Two
+title: Tutorial Three
 ---
 ## What is Doks?
 

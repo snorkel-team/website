@@ -135,11 +135,12 @@
   width: 4.5rem;
   cursor: pointer;
   position: fixed;
-  right: 0;
-  top: 0;
+  right: 10px;
+  top: 10px;
   @include translate3d(0, 0, 0);
   z-index: $z-index-offcanvas-toggle;
-  background-color: $color-white;
+  background-color: rgba($color-white, 0.6);
+  border-radius: 4px;
 
   span {
     display: block;

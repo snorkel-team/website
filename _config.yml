@@ -47,6 +47,7 @@ sass:
   style: :compressed
 
 # Jekyll settings
+site_name: Snorkel
 layouts_dir: ./doks-theme/_layouts
 includes_dir: ./doks-theme/_includes
 permalink: /:title/

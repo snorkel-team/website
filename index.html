@@ -1,0 +1,202 @@
+---
+layout: homepage
+---
+<div class="hero-subheader{% if page.grid_navigation %} hero-subheader--before-out{% endif %}">
+  <div class="container">
+    <div class="row row-spacing vertical-align mobile-padding">
+      <div class="col-sm-6 mobile-margin">
+        <p class="subheadline">MEET SNORKEL</p>
+        <h1>An open source deep learning platform</h1>
+        <button class="btn btn--dark">Get Started</button>
+      </div>
+      <div class="col-sm-6">
+        <img src="/doks-theme/assets/images/layout/Pattern 1.png" alt="Pattern 1" />
+      </div>
+    </div>
+    <div class="row row-spacing vertical-align mobile-padding">
+      <div class="col-sm-6 hidden-xs">
+        <img src="https://via.placeholder.com/600/" alt="Pattern 1" />
+      </div>
+      <div class="col-sm-1"></div>
+      <div class="col-sm-5">
+        <p class="subheadline">subheadline</p>
+        <h1>Training Data</h1>
+        <p>
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aut
+          animi, vero in illo, alias possimus corporis itaque iure accusamus
+          est veniam tenetur fuga ipsa cumque dolorum enim! Quis, deserunt
+          tempore.
+        </p>
+        <button class="btn">Button</button>
+      </div>
+    </div>
+    <div class="row mobile-padding">
+      <div class="col-sm-12">
+        <p>USED BY</p>
+      </div>
+    </div>
+    <div class="row row-spacing hidden-xs mobile-padding">
+      <div class="used-by">
+        <img src="/doks-theme/assets/images/layout/Google.svg" alt="Google Logo" />
+        <img src="/doks-theme/assets/images/layout/Microsoft.svg" alt="Microsoft Logo" />
+        <img src="/doks-theme/assets/images/layout/Intel.svg" alt="Intel Logo" />
+        <img src="/doks-theme/assets/images/layout/YouTube.svg" alt="YouTube Logo" />
+        <img src="/doks-theme/assets/images/layout/Toshiba.svg" alt="Toshiba Logo" />
+      </div>
+    </div>
+    <div class="mobile-logos">
+      <img src="/doks-theme/assets/images/layout/Google.svg" alt="Google Logo" />
+      <img src="/doks-theme/assets/images/layout/Microsoft.svg" alt="Microsoft Logo" />
+    </div>
+    <div class="mobile-logos">
+      <img src="/doks-theme/assets/images/layout/Intel.svg" alt="Intel Logo" />
+      <img src="/doks-theme/assets/images/layout/YouTube.svg" alt="YouTube Logo" />
+    </div>
+    <div class="mobile-logos">
+      <img src="/doks-theme/assets/images/layout/Toshiba.svg" alt="Toshiba Logo" />
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row dark-row">
+      {% for post in site.posts limit:3 %}
+        <a class="card" href="{{ post.url }}">
+          <p class="purple">recent news</p>
+          <h4>{{ post.title }}</h4>
+          <p>{{ post.excerpt }}</p>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row cta-dark-row row-spacing">
+      <a class="card-cta" href="/blog/">SEE ALL NEWS <i class="icon icon--arrow-right"></i></a>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row mobile-padding">
+      <div class="col-sm-12">
+        <p class="subheadline">see what snorkel can do</p>
+      </div>
+    </div>
+    <div class="row mobile-padding">
+      <div class="col-sm-12">
+        <h1>Features and Capabilities</h1>
+      </div>
+    </div>
+    <div class="row row-spacing mobile-padding">
+      <div class="col-sm-5">
+        <p class="purple-numbers">01</p>
+        <h4>Labeling</h4>
+        <p>
+          Rather than requiring users to label training data points by hand,
+          Snorkel takes as input labeling functions (LFs), functions that
+          heuristically or noisily label some subset of the training
+          examples. Snorkel then models the quality and correlations of
+          these LFs using novel, theoretically-grounded statistical modeling
+          techniques.
+        </p>
+      </div>
+      <div class="col-sm-1"></div>
+      <div class="col-sm-6">
+        <img src="/doks-theme/assets/images/layout/Labeling.png" alt="Labeling" style="margin-top: 110px;" />
+      </div>
+    </div>
+    <div class="row row-spacing mobile-padding">
+      <div class="col-sm-5 hidden-xs">
+        <img src="/doks-theme/assets/images/layout/Transforming.png" alt="Transforming" style="margin-top: 110px;" />
+      </div>
+      <div class="col-sm-1"></div>
+      <div class="col-sm-6">
+        <p class="purple-numbers">02</p>
+        <h4>Transforming</h4>
+        <p>
+          Snorkel also lets users write transformation functions (TFs) to
+          heuristically generate new, modified training examples by
+          transforming existing ones---a strategy often referred to as data
+          augmentation. Rather than requiring users to tune these data
+          augmentation or transformation strategies by hand, Snorkel learns
+          compositions of transformations across various domain-specific
+          tasks to optimize for a representative training set.
+        </p>
+      </div>
+      <div class="col-sm-12 visible-xs-block">
+        <img src="/doks-theme/assets/images/layout/Transforming.png" alt="Transforming" style="margin-top: 110px;" />
+      </div>
+    </div>
+    <div class="row row-spacing mobile-padding">
+      <div class="col-sm-5">
+        <p class="purple-numbers">03</p>
+        <h4>Slicing</h4>
+        <p>
+          Finally, Snorkel also lets users write slicing functions (SFs) to
+          heuristically identify subsets of the data the model should
+          particularly care about, e.g. have extra representative capacity
+          for, due to their difficulty and/or importance. It models slices
+          in the style of multi-task learning and an attention-mechanism is
+          then learned over these heads.
+        </p>
+        <button class="btn">SEE DETAILS</button>
+      </div>
+      <div class="col-sm-1"></div>
+      <div class="col-sm-6">
+        <img src="/doks-theme/assets/images/layout/Slicing.png" alt="Slicing" style="margin-top: 80px;" />
+      </div>
+    </div>
+    <div class="row row-spacing mobile-padding">
+      <div class="col-sm-5 mobile-margin">
+        <img src="https://via.placeholder.com/600/" alt="Pattern 1" />
+      </div>
+      <div class="col-sm-1"></div>
+      <div class="col-sm-6">
+        <p class="subheadline">start in minutes</p>
+        <h1>Quickstart</h1>
+        <p>
+          Run the following to install:
+        </p>
+        <div class="code-block">
+          <p># pip install spacy</p>
+          <p>
+            # python -m spacy download en_core_web_sm
+          </p>
+          <span style="color: #9D3FA7;">import</span><span style="color: #18171C;"> spacy
+        </div>
+        <a href="https://github.com/HazyResearch/snorkel" class="btn">Github</a>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row light-row">
+      {% for case in site.use_cases limit:3 %}
+        <a class="light-card" href="{{ case.url }}">
+          <p class="purple-numbers">{{ forloop.index | prepend: '00' | slice: -2, 2 }}</p>
+          <h4>{{ case.title }}</h4>
+          <p>{{ case.excerpt }}</p>
+          <span class="card-cta">
+            LEARN MORE <i class="icon icon--arrow-right"></i>
+          </span>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row cta-row row-spacing">
+      <a class="card-cta" href="/use-cases/">SEE ALL USE CASES <i class="icon icon--arrow-right"></i></a>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row vertical-align mobile-padding">
+      <div class="col-sm-5 mobile-margin">
+        <p class="subheadline">Learn More</p>
+        <h1>Publications</h1>
+        <ul style="list-style-type: disc; margin-left: 18px;">
+          {% for post in site.posts %}
+            <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-sm-7">
+        <img src="/doks-theme/assets/images/layout/Pattern 3.png" alt="Pattern 3" />
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,8 @@
 ---
 layout: default
 title: Tutorial One
+description: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.
+excerpt: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 ---
 ## What is Doks?
 

@@ -1,6 +1,8 @@
 ---
 layout: default
 title: Docs Three
+description: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.
+excerpt: Is designed to help you do real work — to build real products, or gather real insights.
 ---
 ## What is Doks?
 

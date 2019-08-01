@@ -1,13 +1,8 @@
 ---
-# Page settings
 layout: default
-
-# Hero section
 title: Docs One
-description: First documentation post example
-
-# Micro navigation
-micro_nav: true
+description: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.
+excerpt: Is designed to help you do real work — to build real products, or gather real insights.
 ---
 ## What is Doks?
 

@@ -1,11 +1,5 @@
 ---
-# Page settings
-layout: default
+layout: default-list
+title: Use Cases
 ---
-<h1>Use Cases</h1>
-
-<nav>
-  {% for case in site.use_cases %}
-    <a href="{{ case.url }}">{{ case.title }}</a><br />
-  {% endfor %}
-</nav>
+{% include grid-navigation.html items=site.use_cases %}

@@ -1,11 +1,5 @@
 ---
-# Page settings
-layout: default
+layout: default-list
+title: Blog
 ---
-<h1>Blog</h1>
-
-<nav>
-  {% for post in site.blog %}
-    <a href="{{ post.url }}">{{ post.title }}</a><br />
-  {% endfor %}
-</nav>
+{% include grid-navigation.html items=site.posts %}

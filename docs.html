@@ -1,11 +1,5 @@
 ---
-# Page settings
-layout: default
+layout: default-list
+title: Documentation
 ---
-<h1>Docs</h1>
-
-<nav>
-  {% for doc in site.docs %}
-    <a href="{{ doc.url }}">{{ doc.title }}</a><br />
-  {% endfor %}
-</nav>
+{% include grid-navigation.html items=site.docs %}

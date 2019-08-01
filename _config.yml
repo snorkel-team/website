@@ -12,7 +12,7 @@ doks:
       - item_name: Use Cases
         item_url: /use-cases/
       - item_name: Ecosystem
-        item_url: /tutorials/
+        item_url: /ecosystem/
       - item_name: Blog
         item_url: /blog/
       - item_name: Docs
@@ -29,7 +29,7 @@ doks:
       - item_name: Use Cases
         item_url: /use-cases/
       - item_name: Ecosystem
-        item_url: /tutorials/
+        item_url: /ecosystem/
       - item_name: Blog
         item_url: /blog/
       - item_name: Docs
@@ -52,12 +52,11 @@ includes_dir: ./doks-theme/_includes
 permalink: /:title/
 exclude: ['README.md', 'Gemfile']
 collections:
-  tutorials:
-    output: true
-  blog:
-    output: true
   docs:
     output: true
+  tutorials:
+    output: true
+    permalink: /ecosystem/:name
   use_cases:
     output: true
     permalink: /use-cases/:name

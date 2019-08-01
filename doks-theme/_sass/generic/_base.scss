@@ -376,3 +376,8 @@ button {
     padding: 0 2rem;
   }
 }
+
+.row.vertical-align:after,
+.row.vertical-align:before {
+  display: none;
+}

@@ -1,11 +1,5 @@
 ---
-# Page settings
-layout: default
+layout: default-list
+title: Use Cases
 ---
-<h1>Use Cases</h1>
-
-<nav>
-  {% for cases in site.data.contentful.spaces.snorkel.useCases %}
-    <a href="{{ page.permalink }}{{ cases.slug }}">{{ cases.title }}</a><br />
-  {% endfor %}
-</nav>
+{% include grid-navigation.html items=site.use_cases %}

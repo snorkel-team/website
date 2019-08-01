@@ -1,11 +1,6 @@
 ---
 # Page settings
-layout: default
+layout: default-list
+title: Tutorials
 ---
-<h1>Ecosystem</h1>
-
-<nav>
-  {% for tutorial in site.data.contentful.spaces.snorkel.tutorials %}
-    <a href="{{ page.permalink }}{{ tutorial.slug }}">{{ tutorial.title }}</a><br />
-  {% endfor %}
-</nav>
+{% include grid-navigation.html items=site.tutorials %}

@@ -1,11 +1,5 @@
 ---
-# Page settings
-layout: default
+layout: default-list
+title: Blog
 ---
-<h1>Blog</h1>
-
-<nav>
-  {% for post in site.data.contentful.spaces.snorkel.posts %}
-  <a href="{{ page.permalink }}{{ post.slug }}">{{ post.title }}</a><br />
-  {% endfor %}
-</nav>
+{% include grid-navigation.html items=site.posts %}

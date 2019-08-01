@@ -1,0 +1,41 @@
+---
+layout: default
+title: Tutorial Four
+description: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.
+excerpt: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+---
+## What is Doks?
+
+Doks is Jekyll theme created for project documentations.
+You can use it with [GitHub](https://github.com) and [GitLab Pages](https://gitlab.com) as well as a standalone project.
+
+## What is Jekyll?
+
+[Jekyll](https://jekyllrb.com) is a simple, blog-aware, static site generator. It takes a template directory containing raw text files in various formats, runs it through a converter (like Markdown) and Liquid renderer, and spits out a complete, ready-to-publish static website suitable for serving with your favourite web server.
+
+> ##### Full Jekyll documentation
+> You can find full Jekyll documentation [here](https://jekyllrb.com).
+
+## Install Jekyll
+
+### Requirements
+
+Installing Jekyll should be straight-forward if all requirements are met. Before you start, make sure your system has the following:
+
+- GNU/Linux, Unix, or macOS
+- Ruby version 2.0 or above, including all development headers
+- RubyGems
+- GCC and Make (in case your system doesn’t have them installed, which you can check by running `gcc -v` and `make -v` in your system’s command line interface)
+
+### Install with RubyGems
+
+The best way to install Jekyll is via RubyGems. At the terminal prompt, simply run the following command to install Jekyll:
+
+```bash
+$ gem install jekyll
+```
+
+All of Jekyll’s gem dependencies are automatically installed by the above command, so you won’t have to worry about them at all.
+
+> ##### Full Jekyll documentation
+> You can find full Jekyll documentation [here](https://jekyllrb.com).

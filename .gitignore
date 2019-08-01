@@ -20,5 +20,3 @@ Thumbs.db
 # ---------------
 .sass-cache
 _site
-_data/contentful
-_config.dev.yml

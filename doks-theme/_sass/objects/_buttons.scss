@@ -12,6 +12,11 @@
   color: $color-white;
   background-color: $color-button;
   padding: 20px 30px;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.7;
+  }
 }
 
 /* ----- Variations ----- */
@@ -29,6 +34,11 @@
   background-color: $color-black;
   padding: 0.5625rem 1.5625rem;
   transition: color 0.2s, background-color 0.2s;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.7;
+  }
 
   @media (min-width: $screen-sm-min) {
     padding: 0.8125rem 2.1875rem;

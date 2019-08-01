@@ -131,14 +131,16 @@
 
 /* ----- Offcanvas toggle ----- */
 .offcanvas-toggle {
-  height: calc(5.625rem - 1px);
-  width: 5.625rem;
+  height: calc(3.625rem - 1px);
+  width: 4.5rem;
   cursor: pointer;
   position: fixed;
-  right: 0;
-  top: 0;
+  right: 10px;
+  top: 10px;
   @include translate3d(0, 0, 0);
   z-index: $z-index-offcanvas-toggle;
+  background-color: rgba($color-white, 0.6);
+  border-radius: 4px;
 
   span {
     display: block;
@@ -146,19 +148,19 @@
     width: 1.875rem;
     background-color: $color-dark-blue;
     position: absolute;
-    left: 1.875rem;
+    left: 1.275rem;
     transition: top 0.2s, transform 0.2s, opacity 0.2s;
 
     &:first-child {
-      top: 2.125rem;
+      top: 1.125rem;
     }
 
     &:nth-child(2) {
-      top: 2.6875rem;
+      top: 1.6875rem;
     }
 
     &:last-child {
-      top: 3.25rem;
+      top: 2.25rem;
     }
   }
 
@@ -166,7 +168,7 @@
     span {
       &:first-child,
       &:last-child {
-        top: 2.6875rem;
+        top: 1.6875rem;
       }
 
       &:first-child {

@@ -47,7 +47,7 @@ h6,
   font-family: $font-family-secondary;
   font-weight: 400;
   line-height: $line-height-headings;
-  margin: 1rem 0 0.9375rem 0;
+  margin: 0 0 0.9375rem 0;
 
   &[id] {
     position: relative;
@@ -272,6 +272,7 @@ button {
 .purple-numbers {
   @extend .purple;
   font-family: $font-family-monospace;
+  margin: 0;
 }
 
 .dark-row {
@@ -349,4 +350,34 @@ button {
     justify-content: space-around;
     margin-bottom: 40px;
   }
+}
+
+.used-by {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 15px;
+}
+
+.vertical-align {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.mobile-margin {
+  margin-bottom: 60px;
+}
+
+.mobile-padding {
+  @media (max-width: 768px) {
+    padding: 0 4rem;
+  }
+  @media (max-width: 576px) {
+    padding: 0 2rem;
+  }
+}
+
+.row.vertical-align:after,
+.row.vertical-align:before {
+  display: none;
 }

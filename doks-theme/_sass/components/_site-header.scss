@@ -9,6 +9,11 @@
   height: 5.625rem;
 }
 
+.blue-site-header {
+  @extend .site-header;
+  background-color: $color-light-blue;
+}
+
 /* ----- Navigation ----- */
 .site-header__logo {
   @include link-reset;

@@ -5,14 +5,39 @@ title: Get Started
 <div class="hero-subheader">
   <div class="container">
     <div class="row row-spacing vertical-align mobile-padding">
-      <div class="col-sm-6 mobile-margin">
+      <div class="col-sm-5 mobile-margin">
         <p class="subheadline">INSTALL NOW</p>
         <h1>GET STARTED</h1>
+        <p>
+          Run the following to install:
+        </p>
+        <div class="code-block">
+          <p># pip install spacy</p>
+          <p>
+            # python -m spacy download en_core_web_sm
+          </p>
+          <span style="color: #9D3FA7;">import</span><span style="color: #18171C;"> spacy
+        </div>
         <a class="btn" href="/ecosystem/">TUTORIALS</a>
       </div>
+      <div class="col-sm-1"></div>
       <div class="col-sm-6">
         <img src="/doks-theme/assets/images/layout/Pattern 1.png" alt="Pattern 1" />
       </div>
+    </div>
+    <div class="row row-spacing mobile-padding">
+        <div class="light-blue-card-container">
+            {% for tutorial in site.tutorials limit:3 %}
+                <a class="light-blue-card" href="{{ tutorial.url }}">
+                  <p class="purple-numbers">{{ forloop.index | prepend: '00' | slice: -2, 2 }}</p>
+                  <h4>{{ tutorial.title }}</h4>
+                  <p>{{ tutorial.excerpt }}</p>
+                  <span class="card-cta">
+                    LEARN MORE <i class="icon icon--arrow-right"></i>
+                  </span>
+                </a>
+            {% endfor %}
+        </div>
     </div>
     <div class="row mobile-padding">
       <div class="col-sm-12">

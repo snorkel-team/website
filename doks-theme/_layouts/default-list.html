@@ -4,7 +4,7 @@
     {% include site-head.html %}
   </head>
   <body class="{{ site.doks.color_theme }}">
-    {% include site-header.html %}
+    {% include site-header.html class="blue-site-header" %}
     <div
       class="blue-hero-subheader{% if page.grid_navigation %} hero-subheader--before-out{% endif %}"
     >
@@ -17,8 +17,8 @@
                 <h1 class="hero-subheader__title">{{ page.title }}</h1>
                 {% endif %} {% if page.description %}
                 <p class="hero-subheader__desc">{{ page.description }}</p>
-                {% endif %} {% if page.button %}
-                <a class="btn" href="{{ button.url }}">{{ page.button }}</a>
+                {% endif %} {% if page.cta %}
+                <a class="btn" href="{{ button.cta_url }}">{{ page.cta }}</a>
                 {% endif %} {% for button in page.buttons %} {% if
                 button.external_url == true %}
                 <a

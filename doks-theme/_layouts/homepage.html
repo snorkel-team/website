@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
-<head>
-  {% include site-head.html %}
-</head>
-<body class="{{ site.doks.color_theme }}">
-  {% include site-header.html %}
-  {{ content }}
-  {% include site-footer.html %}
-</body>
+  <head>
+    {% include site-head.html %}
+  </head>
+  <body class="{{ site.doks.color_theme }}">
+    {% include site-header.html class="site-header" %}
+    {{ content }}
+    {% include site-footer.html %}
+  </body>
 </html>

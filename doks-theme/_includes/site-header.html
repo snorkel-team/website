@@ -20,9 +20,7 @@
 <!-- /.offcanvas -->
 {% endif %} {% if site.doks.header.logo.text or site.doks.header.logo.image or
 site.doks.header.nav %}
-<header
-  class="{% if page.url == '/docs/' or page.url == '/ecosystem/' %} blue-site-header {% else %} site-header {% endif %}"
->
+<header class="{{ include.class }}">
   <div class="container">
     <div class="row">
       <div class="col-xs-12 flex">

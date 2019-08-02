@@ -4,6 +4,7 @@ title: Docs One
 description: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.
 excerpt: Is designed to help you do real work — to build real products, or gather real insights.
 ---
+
 ## What is Doks?
 
 Doks is Jekyll theme created for project documentations.
@@ -14,6 +15,7 @@ You can use it with [GitHub](https://github.com) and [GitLab Pages](https://gitl
 [Jekyll](https://jekyllrb.com) is a simple, blog-aware, static site generator. It takes a template directory containing raw text files in various formats, runs it through a converter (like Markdown) and Liquid renderer, and spits out a complete, ready-to-publish static website suitable for serving with your favourite web server.
 
 > ##### Full Jekyll documentation
+>
 > You can find full Jekyll documentation [here](https://jekyllrb.com).
 
 ## Install Jekyll
@@ -38,4 +40,5 @@ $ gem install jekyll
 All of Jekyll’s gem dependencies are automatically installed by the above command, so you won’t have to worry about them at all.
 
 > ##### Full Jekyll documentation
+>
 > You can find full Jekyll documentation [here](https://jekyllrb.com).

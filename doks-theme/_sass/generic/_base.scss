@@ -422,3 +422,11 @@ button {
 .row.vertical-align:before {
   display: none;
 }
+
+.tweets {
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}

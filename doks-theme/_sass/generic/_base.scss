@@ -329,16 +329,19 @@ button {
 }
 
 .border-card {
-  width: 379px;
-  height: 269px;
   border: 5px solid #4A90E2;
   background-color: $color-white;
   color: $color-black;
-  padding: 10px;
+  padding: 20px;
+  margin-right: 20px;
 
   p {
-    font-size: 0.7em;
+    font-size: 1em;
     line-height: 1.5em;
+  }
+
+  @media (max-width: 992px) {
+    margin: 0 0 40px 0;
   }
 }
 

@@ -34,6 +34,19 @@
   img {
     height: calc(5.625rem - 1px);
   }
+
+  .big-logo {
+    @media (max-width: 992px) {
+      display: none;
+    }
+  }
+
+  .small-logo {
+    display: none;
+    @media (max-width: 992px) {
+      display: inline;
+    }
+  }
 }
 
 /* ----- Navigation ----- */
@@ -213,7 +226,7 @@
     }
   }
 
-  @media (max-width: 3000px) {
+  @media (max-width: 1200px) {
     display: none;
   }
 }
@@ -221,7 +234,7 @@
 .github-small {
   display: none;
 
-  @media (max-width: 3000px) {
+  @media (max-width: 1200px) {
     display: block;
   }
 }

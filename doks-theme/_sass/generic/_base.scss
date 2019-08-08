@@ -277,9 +277,10 @@ button {
 
 .dark-row {
   background-color: $color-dark-blue;
-  padding: 65px 0;
+  padding: 65px 20px 65px 40px;
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  justify-content: center;
   background-image: url("../../assets/images/layout/PatternRow.png");
   background-repeat: no-repeat;
   background-position: left top;
@@ -295,6 +296,10 @@ button {
   @extend .dark-row;
   background-color: $color-light-blue;
   padding: 130px 0 0 0;
+
+  @media (max-width: 1350px) {
+    padding: 130px 20px 0 40px;
+  }
 }
 
 .card {
@@ -303,9 +308,11 @@ button {
   padding: 40px;
   color: $color-white;
   background-color: #15233b;
+  margin: 0 100px 50px 0;
+
 
   @media (max-width: 1024px) {
-    margin-bottom: 40px;
+    margin: 0 0 40px 0;
   }
 
   @media (max-width: 375px) {

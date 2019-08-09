@@ -277,9 +277,10 @@ button {
 
 .dark-row {
   background-color: $color-dark-blue;
-  padding-top: 130px;
+  padding: 65px 20px 65px 40px;
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  justify-content: center;
   background-image: url("../../assets/images/layout/PatternRow.png");
   background-repeat: no-repeat;
   background-position: left top;
@@ -294,6 +295,11 @@ button {
 .light-row {
   @extend .dark-row;
   background-color: $color-light-blue;
+  padding: 130px 0 0 0;
+
+  @media (max-width: 1350px) {
+    padding: 130px 20px 0 40px;
+  }
 }
 
 .card {
@@ -302,9 +308,11 @@ button {
   padding: 40px;
   color: $color-white;
   background-color: #15233b;
+  margin: 0 100px 50px 0;
+
 
   @media (max-width: 1024px) {
-    margin-bottom: 40px;
+    margin: 0 0 40px 0;
   }
 
   @media (max-width: 375px) {
@@ -324,6 +332,28 @@ button {
 
   @media (max-width: 1200px) {
     width: 275px;
+  }
+}
+
+.border-card {
+  display: flex;
+  flex-direction: column;
+  border: 3px solid rgba(#4A90E2, .2);
+  background-color: $color-white;
+  color: $color-black;
+  padding: 30px;
+  margin: 0 20px;
+
+  p {
+    font-size: 1em;
+    line-height: 1.5em;
+  }
+  p:not(.subheadline) {
+    flex: 1;
+  }
+
+  @media (max-width: 992px) {
+    margin: 0 0 40px 0;
   }
 }
 
@@ -372,10 +402,15 @@ button {
 
 .used-by {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  flex-wrap: wrap;
   padding: 0 15px;
   @media (max-width: 768px) {
     display: none;
+  }
+
+  img {
+    margin: 0 32px 32px 0;
   }
 }
 
@@ -401,4 +436,12 @@ button {
 .row.vertical-align:after,
 .row.vertical-align:before {
   display: none;
+}
+
+.tweets {
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }

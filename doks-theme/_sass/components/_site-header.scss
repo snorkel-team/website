@@ -36,14 +36,14 @@
   }
 
   .big-logo {
-    @media (max-width: 992px) {
+    @media (max-width: 1200px) {
       display: none;
     }
   }
 
   .small-logo {
     display: none;
-    @media (max-width: 992px) {
+    @media (max-width: 1200px) {
       display: inline;
     }
   }
@@ -226,15 +226,4 @@
     }
   }
 
-  @media (max-width: 1200px) {
-    display: none;
-  }
-}
-
-.github-small {
-  display: none;
-
-  @media (max-width: 1200px) {
-    display: block;
-  }
 }

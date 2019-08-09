@@ -16,7 +16,7 @@ title: Get Started
           <p>
             # python -m spacy download en_core_web_sm
           </p>
-          <span style="color: #9D3FA7;">import</span><span style="color: #18171C;"> spacy
+          <span style="color: #9D3FA7;">import</span><span style="color: #18171C;"> spacy</span>
         </div>
         <a class="btn" href="/ecosystem/">TUTORIALS</a>
       </div>
@@ -25,9 +25,35 @@ title: Get Started
         <img src="/doks-theme/assets/images/layout/Pattern 1.png" alt="Pattern 1" />
       </div>
     </div>
-    <div>
-      <h1>Markdown goes here.</h1>
-    </div>
+
+<div markdown="1">
+# Snorkel 101
+
+## Install Jekyll
+
+### Requirements
+
+Installing Jekyll should be straight-forward if all requirements are met. Before you start, make sure your system has the following:
+
+- GNU/Linux, Unix, or macOS
+- Ruby version 2.0 or above, including all development headers
+- RubyGems
+- GCC and Make (in case your system doesn’t have them installed, which you can check by running `gcc -v` and `make -v` in your system’s command line interface)
+
+### Install with RubyGems
+
+The best way to install Jekyll is via RubyGems. At the terminal prompt, simply run the following command to install Jekyll:
+
+```bash
+$ gem install jekyll
+```
+
+All of Jekyll’s gem dependencies are automatically installed by the above command, so you won’t have to worry about them at all.
+
+> ##### Full Jekyll documentation
+> You can find full Jekyll documentation [here](https://jekyllrb.com).
+</div>
+
     <div class="row row-spacing mobile-padding">
       <h1>Tutorials</h1>
       <div class="light-blue-card-container">

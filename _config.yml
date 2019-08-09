@@ -7,6 +7,8 @@ doks:
       text:
       image: true
     nav:
+      - item_name: Get Started
+        item_url: /get-started/
       - item_name: Use Cases
         item_url: /use-cases/
       - item_name: Features
@@ -24,6 +26,8 @@ doks:
         image: true
       copyright: "&copy; 2019 Snorkel"
     nav:
+      - item_name: Get Started
+        item_url: /get-started/
       - item_name: Use Cases
         item_url: /use-cases/
       - item_name: Ecosystem

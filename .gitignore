@@ -8,6 +8,7 @@
 *.bak
 *.swp
 Thumbs.db
+Gemfile.lock
 
 # -----------------------
 # Local Development Tools

@@ -25,44 +25,23 @@ title: Get Started
         <img src="/doks-theme/assets/images/layout/Pattern 1.png" alt="Pattern 1" />
       </div>
     </div>
+    <div>
+      <h1>Markdown goes here.</h1>
+    </div>
     <div class="row row-spacing mobile-padding">
-        <div class="light-blue-card-container">
-            {% for tutorial in site.tutorials limit:3 %}
-                <a class="light-blue-card" href="{{ tutorial.url }}">
-                  <p class="purple-numbers">{{ forloop.index | prepend: '00' | slice: -2, 2 }}</p>
-                  <h4>{{ tutorial.title }}</h4>
-                  <p>{{ tutorial.excerpt }}</p>
-                  <span class="card-cta">
-                    LEARN MORE <i class="icon icon--arrow-right"></i>
-                  </span>
-                </a>
-            {% endfor %}
-        </div>
-    </div>
-    <div class="row mobile-padding">
-      <div class="col-sm-12">
-        <p>USED BY</p>
+      <h1>Tutorials</h1>
+      <div class="light-blue-card-container">
+        {% for tutorial in site.tutorials limit:3 %}
+        <a class="light-blue-card" href="{{ tutorial.url }}">
+          <p class="purple-numbers">{{ forloop.index | prepend: '00' | slice: -2, 2 }}</p>
+          <h4>{{ tutorial.title }}</h4>
+          <p>{{ tutorial.excerpt }}</p>
+          <span class="card-cta">
+            LEARN MORE <i class="icon icon--arrow-right"></i>
+          </span>
+        </a>
+        {% endfor %}
       </div>
-    </div>
-    <div class="row row-spacing hidden-xs mobile-padding">
-      <div class="used-by">
-        <img src="/doks-theme/assets/images/layout/Google.svg" alt="Google Logo" />
-        <img src="/doks-theme/assets/images/layout/Microsoft.svg" alt="Microsoft Logo" />
-        <img src="/doks-theme/assets/images/layout/Intel.svg" alt="Intel Logo" />
-        <img src="/doks-theme/assets/images/layout/YouTube.svg" alt="YouTube Logo" />
-        <img src="/doks-theme/assets/images/layout/Toshiba.svg" alt="Toshiba Logo" />
-      </div>
-    </div>
-    <div class="mobile-logos">
-      <img src="/doks-theme/assets/images/layout/Google.svg" alt="Google Logo" />
-      <img src="/doks-theme/assets/images/layout/Microsoft.svg" alt="Microsoft Logo" />
-    </div>
-    <div class="mobile-logos">
-      <img src="/doks-theme/assets/images/layout/Intel.svg" alt="Intel Logo" />
-      <img src="/doks-theme/assets/images/layout/YouTube.svg" alt="YouTube Logo" />
-    </div>
-    <div class="mobile-logos">
-      <img src="/doks-theme/assets/images/layout/Toshiba.svg" alt="Toshiba Logo" />
     </div>
   </div>
 </div>

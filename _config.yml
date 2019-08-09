@@ -7,16 +7,16 @@ doks:
       text:
       image: true
     nav:
-      - item_name: Get Started
-        item_url: /get-started/
       - item_name: Use Cases
         item_url: /use-cases/
-      - item_name: Ecosystem
-        item_url: /ecosystem/
+      - item_name: Features
+        item_url: /features/
       - item_name: Blog
         item_url: /blog/
+      - item_name: Community
+        item_url: https://spectrum.chat/snorkel
       - item_name: Docs
-        item_url: /docs/
+        item_url: https://allenai.github.io/allennlp-docs/
   footer:
     content:
       logo:
@@ -24,8 +24,6 @@ doks:
         image: true
       copyright: "&copy; 2019 Snorkel"
     nav:
-      - item_name: Get Started
-        item_url: /get-started/
       - item_name: Use Cases
         item_url: /use-cases/
       - item_name: Ecosystem

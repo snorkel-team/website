@@ -1,0 +1,92 @@
+---
+layout: homepage
+title: Features and Capabilities
+---
+
+<div class="hero-subheader">
+  <div class="container">
+    <div class="row row-spacing mobile-padding">
+      <div class="col-sm-12">
+        <h1>{{ page.title }}</h1>
+      </div>
+    </div>
+    <div class="row row-spacing vertical-align mobile-padding">
+      <div class="col-sm-6">
+        <h3>Training Data Operations</h3>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto quis dolor doloribus ab sit ipsa animi aut
+          corrupti ipsum placeat amet libero, hic officiis cupiditate dignissimos! Eveniet laboriosam quaerat magni.
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Commodi corporis libero, amet dolore consequatur
+          molestias iure voluptatem. Quisquam adipisci dolorem magnam, perferendis, dolor amet modi id corrupti sint
+          expedita necessitatibus! Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum voluptates sequi
+          dolor est ullam corrupti autem, quia fugiat in nesciunt quae rerum perferendis tempora id architecto? Laborum
+          tempore sint autem?</p>
+      </div>
+      <div class="col-sm-6">
+        <img src="/doks-theme/assets/images/layout/TrainingData.png" alt="Training Data Operations">
+      </div>
+    </div>
+    <hr>
+    <br>
+    <div class="row row-spacing mobile-padding">
+      <div class="col-sm-5">
+        <p class="purple-numbers">01</p>
+        <h4>Labeling</h4>
+        <p>
+          Rather than requiring users to label training data points by hand,
+          Snorkel takes as input labeling functions (LFs), functions that
+          heuristically or noisily label some subset of the training
+          examples. Snorkel then models the quality and correlations of
+          these LFs using novel, theoretically-grounded statistical modeling
+          techniques.
+        </p>
+        <button class="btn">LF Tutorial</button>
+      </div>
+      <div class="col-sm-1"></div>
+      <div class="col-sm-6">
+        <img src="/doks-theme/assets/images/layout/Labeling.png" alt="Labeling" style="margin-top: 110px;" />
+      </div>
+    </div>
+    <div class="row row-spacing mobile-padding">
+      <div class="col-sm-5 hidden-xs">
+        <img src="/doks-theme/assets/images/layout/Transforming.png" alt="Transforming" style="margin-top: 110px;" />
+      </div>
+      <div class="col-sm-1"></div>
+      <div class="col-sm-6">
+        <p class="purple-numbers">02</p>
+        <h4>Transforming</h4>
+        <p>
+          Snorkel also lets users write transformation functions (TFs) to
+          heuristically generate new, modified training examples by
+          transforming existing ones---a strategy often referred to as data
+          augmentation. Rather than requiring users to tune these data
+          augmentation or transformation strategies by hand, Snorkel learns
+          compositions of transformations across various domain-specific
+          tasks to optimize for a representative training set.
+        </p>
+        <button class="btn">TF Tutorial</button>
+      </div>
+      <div class="col-sm-12 visible-xs-block">
+        <img src="/doks-theme/assets/images/layout/Transforming.png" alt="Transforming" style="margin-top: 110px;" />
+      </div>
+    </div>
+    <div class="row row-spacing mobile-padding">
+      <div class="col-sm-5">
+        <p class="purple-numbers">03</p>
+        <h4>Slicing</h4>
+        <p>
+          Finally, Snorkel also lets users write slicing functions (SFs) to
+          heuristically identify subsets of the data the model should
+          particularly care about, e.g. have extra representative capacity
+          for, due to their difficulty and/or importance. It models slices
+          in the style of multi-task learning and an attention-mechanism is
+          then learned over these heads.
+        </p>
+        <button class="btn">SF Tutorial</button>
+      </div>
+      <div class="col-sm-1"></div>
+      <div class="col-sm-6">
+        <img src="/doks-theme/assets/images/layout/Slicing.png" alt="Slicing" style="margin-top: 80px;" />
+      </div>
+    </div>
+  </div>
+</div>

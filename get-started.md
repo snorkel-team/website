@@ -55,7 +55,7 @@ All of Jekyll’s gem dependencies are automatically installed by the above comm
     <div class="row row-spacing mobile-padding">
       <h1>Tutorials</h1>
       <div class="light-blue-card-container">
-        {% for tutorial in site.tutorials limit:3 %}
+        {% for tutorial in site.use_cases limit:3 %}
         <a class="light-blue-card" href="{{ tutorial.url }}">
           <p class="purple-numbers">{{ forloop.index | prepend: '00' | slice: -2, 2 }}</p>
           <h4>{{ tutorial.title }}</h4>

@@ -3,6 +3,7 @@ layout: default
 title: Multitask Classification
 description: Multitask classification with Snorkel
 excerpt: Multitask classification with Snorkel
+order: 5
 ---
 
 # Multi-Task Learning (MTL) Basics Tutorial

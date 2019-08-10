@@ -3,6 +3,7 @@ layout: default
 title: Visual Relation Detection
 description: Labeling visual relationships in images
 excerpt: Labeling visual relationships in images
+order: 4
 ---
 
 # Visual Relationship Detection

@@ -3,6 +3,7 @@ layout: default
 title: Crowdsourcing
 description: Using Snorkel over crowdworker labels
 excerpt: Using Snorkel over crowdworker labels
+order: 3
 ---
 
 # Crowdsourcing tutorial

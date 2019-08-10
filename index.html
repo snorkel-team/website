@@ -66,7 +66,8 @@ layout: homepage
   </div>
   <div class="container-fluid">
     <div class="row light-row">
-      {% for case in site.use_cases limit:3 %}
+      {% assign cases = site.use_cases | sort: 'order' %}
+      {% for case in cases limit:3 %}
       <a class="light-card" href="{{ case.url }}">
         <p class="purple-numbers">{{ forloop.index | prepend: '00' | slice: -2, 2 }}</p>
         <h4>{{ case.title }}</h4>
@@ -80,7 +81,7 @@ layout: homepage
   </div>
   <div class="container-fluid">
     <div class="row cta-row row-spacing">
-      <a class="card-cta" href="/use-cases/">SEE ALL USE CASES <i class="icon icon--arrow-right"></i></a>
+      <a class="card-cta" href="/use-cases/">SEE ALL TUTORIALS <i class="icon icon--arrow-right"></i></a>
     </div>
   </div>
   <div class="container">

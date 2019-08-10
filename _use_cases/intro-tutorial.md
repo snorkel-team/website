@@ -3,6 +3,7 @@ layout: default
 title: Intro Tutorial
 description: Labeling data for spam classification
 excerpt: Labeling data for spam classification
+order: 1
 ---
 
 # 🚀 Snorkel Intro Tutorial: Spam Detection

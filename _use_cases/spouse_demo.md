@@ -3,6 +3,7 @@ layout: default
 title: Relation Extraction
 description: Labeling spouse mentions in sentences
 excerpt: Labeling spouse mentions in sentences
+order: 2
 ---
 
 # Detecting spouse mentions in sentences

@@ -1,8 +1,8 @@
 ---
 layout: default
-title: Intro Tutorial (No Output)
-description: Introduction to Snorkel with Spam Classification.
-excerpt: is designed to help you explore the world.
+title: Intro Tutorial
+description: Labeling data for spam classification
+excerpt: Labeling data for spam classification
 ---
 
 # 🚀 Snorkel Intro Tutorial: Spam Detection

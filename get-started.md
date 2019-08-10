@@ -7,18 +7,16 @@ title: Get Started
     <div class="row row-spacing vertical-align mobile-padding">
       <div class="col-sm-5 mobile-margin">
         <p class="subheadline">INSTALL NOW</p>
-        <h1>GET STARTED</h1>
+        <h1>Get Started</h1>
         <p>
           Run the following to install:
         </p>
         <div class="code-block">
-          <p># pip install spacy</p>
-          <p>
-            # python -m spacy download en_core_web_sm
-          </p>
-          <span style="color: #9D3FA7;">import</span><span style="color: #18171C;"> spacy</span>
+          <p># pip install snorkel</p>
+          <span style="color: #9D3FA7;">import</span><span style="color: #18171C;"> snorkel</span>
         </div>
-        <a class="btn" href="/ecosystem/">TUTORIALS</a>
+        <a class="btn" href="/use-cases/">Tutorials</a>
+        <a class="btn" href="https://github.com/snorkel-team/snorkel-tutorials">GitHub</a>
       </div>
       <div class="col-sm-1"></div>
       <div class="col-sm-6">

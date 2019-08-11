@@ -128,7 +128,7 @@ L_train = applier.apply(df_train)
 # Train the label model and compute the training labels
 label_model = LabelModel(cardinality=2, verbose=True)
 label_model.fit(L_train, n_epochs=500, log_freq=50, seed=123)
-df_train['label'] = label_model.predict(L=L_train)
+df_train['label'] = label_model.predict(L=L_train, tie_break_policy='abstain')
 ```
 
 Note that we used the `LabelModel` to label data; however, on many data points, all the labeling functions abstain, and so the `LabelModel` abstains as well.
@@ -136,7 +136,7 @@ We'll filter these examples out of our training set now:
 
 
 ```python
-# TODO: Filter out abstains
+df_train = df_train[df_train.label != ABSTAIN]
 ```
 
 Our ultimate goal is to use the resulting labeled training data points to train a machine learning model that can **generalize beyond the coverage of the labeling functions and the `LabelModel`**.
@@ -194,12 +194,28 @@ For more detail, see the [transformation function tutorial](#).
 
 ## (4) Writing a Slicing Function
 
-TODO
+Finally, a third operator in Snorkel, *slicing functions (SFs)*, handles the reality that many dataset have certain subsets or _slices_ that are more important than others.
+In Snorkel, we can write SFs to (a) monitor specific slices and (b) improve model performance over them by adding representational capacity.
+
+Writing a slicing function is simple; for example, we could write one that looks for suspiciously shortened links, which might be critical due to their likelihood of linking to malicious sites:
+
+
+```python
+from snorkel.slicing import slicing_function
+
+@slicing_function()
+def short_link(x):
+    """Returns whether text matches common pattern for shortened ".ly" links."""
+    return bool(re.search(r"\w+\.ly", x.text))
+```
+
+We can now use Snorkel monitor the performance over this slice, and to add representational capacity to whatever model we are using in order to increase performance.
+For a walkthrough of these steps, see the [slicing tutorial](#).
 
 ## (5) Training a Machine Learning Model
 
 The ultimate goal in Snorkel is to **create a training dataset**, which can then be plugged into any machine learning framework (e.g. TensorFlow, Keras, PyTorch, Scikit-Learn, Ludwig, XGBoost, etc.) to train powerful machine learning models.
-Here, to complete this initial walkthrough, we'll train an extremely simple model: a simple "bag of n-grams" logistic regression model using SciKit-Learn:
+Here, to complete this initial walkthrough, we'll train an extremely simple model---a simple "bag of n-grams" logistic regression model in SciKit-Learn---using the weakly labeled and augmented training set we made with our labeling and transformation functions:
 
 
 ```python

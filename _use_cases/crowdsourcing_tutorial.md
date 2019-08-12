@@ -266,10 +266,6 @@ discriminative model over the tweets themselves.
 Let's generate a set of probabilistic labels for the training set.
 
 ```python
-
-```
-
-```python
 Y_train_prob = label_model.predict_proba(L_train)
 ```
 

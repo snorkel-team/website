@@ -18,7 +18,7 @@ doks:
       - item_name: Community
         item_url: https://spectrum.chat/snorkel
       - item_name: Docs
-        item_url: https://allenai.github.io/allennlp-docs/
+        item_url: https://snorkel.readthedocs.io/en/redux/
   footer:
     content:
       logo:

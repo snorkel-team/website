@@ -12,34 +12,68 @@ title: Features and Capabilities
     </div>
     <div class="row row-spacing vertical-align mobile-padding">
       <div class="col-sm-6">
-        <h3>Training Data Operations</h3>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto quis dolor doloribus ab sit ipsa animi aut
-          corrupti ipsum placeat amet libero, hic officiis cupiditate dignissimos! Eveniet laboriosam quaerat magni.
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Commodi corporis libero, amet dolore consequatur
-          molestias iure voluptatem. Quisquam adipisci dolorem magnam, perferendis, dolor amet modi id corrupti sint
-          expedita necessitatibus! Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum voluptates sequi
-          dolor est ullam corrupti autem, quia fugiat in nesciunt quae rerum perferendis tempora id architecto? Laborum
-          tempore sint autem?</p>
+        <h3>Programmatically Build and Manage Your Training Data</h3>
+        <p>
+          Snorkel is a system for programmatically building and managing training datasets.
+          In Snorkel, users can <i>develop</i> training datasets in hours or days rather than hand-labeling them over weeks or months.
+        </p>
+        <p>
+          Snorkel currently exposes three key programmatic operations: <i>labeling</i> data, for example using heuristic rules or distant supervision techniques; <i>transforming</i> data, for example rotating or stretching images to perform data augmentation; and <i>slicing data</i> into different critical subsets.
+          Snorkel then automatically models, cleans, and integrates the resulting training data using <a href="#">novel, theoretically-grounded techniques</a>.
+        </p>
+        <p>
+          Snorkel has been deployed in <a href="/use-cases/">industry, medicine, science, and government</a> to build new ML applications in a fraction of the time; for more, see <a href="/use-cases">use cases and tutorials</a>.
+        </p>
       </div>
       <div class="col-sm-6">
         <img src="/doks-theme/assets/images/layout/TrainingData.png" alt="Training Data Operations">
       </div>
     </div>
-    <hr>
     <br>
     <div class="row row-spacing mobile-padding">
+      <h2>Key Advantages</h2>
+      <div class="light-blue-card-container">
+        <div class="border-card">
+          <p class="subheadline">Speed</p>
+          <h3>
+            Training Data in Hours, Not Months
+          </h3>
+          <p>
+            Label and manage training datasets by writing code to quickly leverage ML for new applications.
+          </p>
+        </div>
+        <div class="border-card">
+          <p class="subheadline">Flexibility</p>
+          <h3>Easily Adapt to Changing Settings</h3>
+          <p>
+            Adapt training sets to changing conditions or problem specifications by modifying code, rather that expensive re-labeling.
+          </p>
+        </div>
+        <div class="border-card">
+          <p class="subheadline">Privacy</p>
+          <h3>Label Without Eyes On Data</h3>
+          <p>
+            Programmatic labeling strategies can be completely decoupled from sensitive data.
+          </p>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row row-spacing mobile-padding">
+      <h2>Core Operations</h2>
       <div class="col-sm-5">
         <p class="purple-numbers">01</p>
         <h4>Labeling</h4>
         <p>
-          Rather than requiring users to label training data points by hand,
-          Snorkel takes as input labeling functions (LFs), functions that
-          heuristically or noisily label some subset of the training
-          examples. Snorkel then models the quality and correlations of
-          these LFs using novel, theoretically-grounded statistical modeling
-          techniques.
+          Write <i>labeling functions (LFs)</i> to heuristically or noisily label some subset of the training examples.
+          Snorkel then models the quality and correlations of these LFs using novel, theoretically-grounded statistical modeling techniques.
         </p>
-        <button class="btn">LF Tutorial</button>
+        <button href="http://hazyresearch.github.io/snorkel/blog/weak_supervision.html" class="btn btn--rounded btn--dark">Blog</button>
+        <button href="snorkel.org" class="btn btn--rounded btn--dark">Tutorial</button>
+        <button href="https://arxiv.org/abs/1711.10160" class="btn btn--rounded btn--dark">VLDB'18 Paper</button>
+        <button href="https://arxiv.org/abs/1605.07723" class="btn btn--rounded btn--dark">NeurIPS'16 Paper</button>
+        <button href="https://arxiv.org/abs/1810.02840" class="btn btn--rounded btn--dark">AAAI'19 Paper</button>
+        <button href="https://arxiv.org/abs/1810.02840" class="btn btn--rounded btn--dark">ICML'19 Paper</button>
       </div>
       <div class="col-sm-1"></div>
       <div class="col-sm-6">
@@ -55,15 +89,13 @@ title: Features and Capabilities
         <p class="purple-numbers">02</p>
         <h4>Transforming</h4>
         <p>
-          Snorkel also lets users write transformation functions (TFs) to
-          heuristically generate new, modified training examples by
-          transforming existing ones---a strategy often referred to as data
-          augmentation. Rather than requiring users to tune these data
-          augmentation or transformation strategies by hand, Snorkel learns
-          compositions of transformations across various domain-specific
-          tasks to optimize for a representative training set.
+          Write <i>transformation functions (TFs)</i> to heuristically generate new, modified training examples by transforming existing ones, a strategy often referred to as <i>data augmentation</i>.
+          Rather than requiring users to tune these data augmentation strategies by hand, Snorkel uses data augmentation policies that can be learned automatically. 
         </p>
-        <button class="btn">TF Tutorial</button>
+        <button href="https://hazyresearch.github.io/snorkel/blog/tanda.html" class="btn btn--rounded btn--dark">Blog</button>
+        <button href="snorkel.org" class="btn btn--rounded btn--dark">Tutorial</button>
+        <button href="https://arxiv.org/abs/1803.06084" class="btn btn--rounded btn--dark">NeurIPS'17 Paper</button>
+        <button href="https://arxiv.org/abs/1803.06084" class="btn btn--rounded btn--dark">ICML'19 Paper</button>
       </div>
       <div class="col-sm-12 visible-xs-block">
         <img src="/doks-theme/assets/images/layout/Transforming.png" alt="Transforming" style="margin-top: 110px;" />
@@ -74,14 +106,11 @@ title: Features and Capabilities
         <p class="purple-numbers">03</p>
         <h4>Slicing</h4>
         <p>
-          Finally, Snorkel also lets users write slicing functions (SFs) to
-          heuristically identify subsets of the data the model should
-          particularly care about, e.g. have extra representative capacity
-          for, due to their difficulty and/or importance. It models slices
-          in the style of multi-task learning and an attention-mechanism is
-          then learned over these heads.
+          Write <i>slicing functions (SFs)</i> to heuristically identify subsets of the data the model should particularly care about, e.g. have extra representative capacity for, due to their difficulty and/or importance.
+          Snorkel models slices in the style of multi-task learning and an attention-mechanism is then learned over these heads.
         </p>
-        <button class="btn">SF Tutorial</button>
+        <button href="http://hazyresearch.github.io/snorkel/blog/superglue.html" class="btn btn--rounded btn--dark">Blog</button>
+        <button href="snorkel.org" class="btn btn--rounded btn--dark">Tutorial</button>
       </div>
       <div class="col-sm-1"></div>
       <div class="col-sm-6">

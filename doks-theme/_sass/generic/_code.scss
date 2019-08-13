@@ -34,6 +34,16 @@ pre {
   padding: 13px 17px;
   color: #46659e;
   margin-bottom: 40px;
+
+  @media (max-width: 450px) {
+    width: 280px;
+  }
+
+  p {
+    @media (max-width: 1200px) {
+      word-wrap: break-word;
+    }
+  }
 }
 
 /* ----- Highlight ----- */

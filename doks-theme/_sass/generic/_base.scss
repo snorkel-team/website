@@ -310,7 +310,6 @@ button {
   background-color: #15233b;
   margin: 0 100px 50px 0;
 
-
   @media (max-width: 1024px) {
     margin: 0 0 40px 0;
   }
@@ -338,7 +337,7 @@ button {
 .border-card {
   display: flex;
   flex-direction: column;
-  border: 3px solid rgba(#4A90E2, .2);
+  border: 3px solid rgba(#4a90e2, 0.2);
   background-color: $color-white;
   color: $color-black;
   padding: 30px;
@@ -443,5 +442,11 @@ button {
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+}
+
+.list-links {
+  a {
+    color: $color-nav-hover;
   }
 }

@@ -1,10 +1,11 @@
 ---
 layout: default
-title: Relation Extraction
+title: Information Extraction in Snorkel
 description: Labeling spouse mentions in sentences
 excerpt: Labeling spouse mentions in sentences
-order: 2
+order: 7
 ---
+
 
 # Detecting spouse mentions in sentences
 
@@ -17,12 +18,13 @@ We want to classify each __candidate__ or pair of people mentioned in a sentence
 In the above example, our candidate represents the possible relation `(Barack Obama, Michelle Obama)`. As readers, we know this mention is true due to external knowledge and the keyword of `wedding` occuring later in the sentence.
 We begin with some basic setup and data downloading.
 
+
+
 ```python
 %matplotlib inline
 
 import os
 import pickle
-import numpy as np
 
 if os.path.basename(os.getcwd()) == "snorkel-tutorials":
     os.chdir("spouse")
@@ -36,6 +38,7 @@ from utils import load_data
 
 We also have certain **preprocessed fields**, that we discuss a few cells below.
 
+
 ```python
 import pandas as pd
 
@@ -46,6 +49,7 @@ df_dev.head()
 ```
 
 Let's look at a candidate in the development set:
+
 
 ```python
 from preprocessors import get_person_text
@@ -62,10 +66,10 @@ print("Person 2: ", person_names[1])
 
 In a real application, there is a lot of data preparation, parsing, and database loading that needs to be completed before we generate candidates and dive into writing labeling functions. Here we've pre-generated candidates in a pandas DataFrame object per split (train,dev,test).
 
-
 ### Labeling Function Helpers
 
 When writing labeling functions, there are several functions you will use over and over again. In the case of text relation extraction as with this task, common functions include those for fetching text between mentions of the two people in a candidate, examing word windows around person mentions, and so on. We will wrap these functions as `preprocessors`.
+
 
 ```python
 from snorkel.preprocess import preprocessor
@@ -89,6 +93,7 @@ For the purposes of the tutorial, we have three fields (`between_tokens`, `perso
 * `get_person_lastnames(cand)`: `person_lastnames`
 * `get_left_tokens(cand)`: `person1_left_tokens`, `person2_left_tokens`
 
+
 ```python
 from preprocessors import get_left_tokens, get_person_last_names
 
@@ -96,6 +101,7 @@ POSITIVE = 1
 NEGATIVE = 0
 ABSTAIN = -1
 ```
+
 
 ```python
 from snorkel.labeling import labeling_function
@@ -109,6 +115,7 @@ def lf_husband_wife(x, spouses):
     return POSITIVE if len(spouses.intersection(set(x.between_tokens))) > 0 else ABSTAIN
 ```
 
+
 ```python
 # Check for the `spouse` words appearing to the left of the person mentions
 @labeling_function(resources=dict(spouses=spouses), pre=[get_left_tokens])
@@ -121,6 +128,7 @@ def lf_husband_wife_left_window(x, spouses):
         return ABSTAIN
 ```
 
+
 ```python
 # Check for the person mentions having the same last name
 @labeling_function(pre=[get_person_last_names])
@@ -132,12 +140,14 @@ def lf_same_last_name(x):
     return ABSTAIN
 ```
 
+
 ```python
 # Check for the word `married` between person mentions
 @labeling_function()
 def lf_married(x):
     return POSITIVE if "married" in x.between_tokens else ABSTAIN
 ```
+
 
 ```python
 # Check for words that refer to `family` relationships between and to the left of the person mentions
@@ -172,6 +182,7 @@ def lf_family_left_window(x, family):
         return ABSTAIN
 ```
 
+
 ```python
 # Check for `other` relationship words between person mentions
 other = {"boyfriend", "girlfriend", "boss", "employee", "secretary", "co-worker"}
@@ -186,13 +197,12 @@ def lf_other_relationship(x, other):
 
 In addition to using factories that encode pattern matching heuristics, we can also write labeling functions that _distantly supervise_ examples. Here, we'll load in a list of known spouse pairs and check to see if the pair of persons in a candidate matches one of these.
 
-[**DBpedia**](http://wiki.dbpedia.org/)
-
-Our database of known spouses comes from DBpedia, which is a community-driven resource similar to Wikipedia but for curating structured data. We'll use a preprocessed snapshot as our knowledge base for all labeling function development.
+[**DBpedia**](http://wiki.dbpedia.org/): Our database of known spouses comes from DBpedia, which is a community-driven resource similar to Wikipedia but for curating structured data. We'll use a preprocessed snapshot as our knowledge base for all labeling function development.
 
 We can look at some of the example entries from DBPedia and use them in a simple distant supervision labeling function.
 
 Make sure `dbpedia.pkl` is in the `spouse/data` directory.
+
 
 ```python
 with open("data/dbpedia.pkl", "rb") as f:
@@ -200,6 +210,7 @@ with open("data/dbpedia.pkl", "rb") as f:
 
 list(known_spouses)[0:5]
 ```
+
 
 ```python
 @labeling_function(resources=dict(known_spouses=known_spouses), pre=[get_person_text])
@@ -210,6 +221,7 @@ def lf_distant_supervision(x, known_spouses):
     else:
         return ABSTAIN
 ```
+
 
 ```python
 from preprocessors import last_name
@@ -239,6 +251,7 @@ def lf_distant_supervision_last_names(x, last_names):
 #### Apply Labeling Functions to the Data
 We create a list of labeling functions and apply them to the data
 
+
 ```python
 from snorkel.labeling import PandasLFApplier
 
@@ -256,6 +269,7 @@ lfs = [
 applier = PandasLFApplier(lfs)
 ```
 
+
 ```python
 from snorkel.labeling import LFAnalysis
 
@@ -269,6 +283,7 @@ LFAnalysis(dev_L, lfs).lf_summary(Y_dev)
 
 Now, we'll train a model of the LFs to estimate their weights and combine their outputs. Once the model is trained, we can combine the outputs of the LFs into a single, noise-aware training label set for our extractor.
 
+
 ```python
 from snorkel.labeling import LabelModel
 
@@ -278,6 +293,7 @@ label_model.fit(train_L, Y_dev, n_epochs=5000, log_freq=500, seed=12345)
 
 ### Label Model Metrics
 Since our dataset is highly unbalanced (91% of the labels are negative), even a trivial baseline that always outputs negative can get a high accuracy. So we evaluate the label model using the F1 score and ROC-AUC rather than accuracy.
+
 
 ```python
 from snorkel.analysis import metric_score
@@ -295,40 +311,40 @@ print(
 
 ### Part 4: Training our End Extraction Model
 
-In this final section of the tutorial, we'll use our noisy training labels alongside the development set labels to train our end machine learning model. We start by filtering out training examples which did not recieve a label from any LF, as these examples contain no signal. Then we concatenate them with dev set examples.
+In this final section of the tutorial, we'll use our noisy training labels to train our end machine learning model. We start by filtering out training examples which did not recieve a label from any LF, as these examples contain no signal.
+
+
 
 ```python
-from snorkel.utils import preds_to_probs
 from snorkel.labeling import filter_unlabeled_dataframe
-
-# Change dev labels 1D array to 2D categorical labels array as required for training end model.
-Y_probs_dev = preds_to_probs(Y_dev, 2)
 
 Y_probs_train = label_model.predict_proba(train_L)
 df_train_filtered, Y_probs_train_filtered = filter_unlabeled_dataframe(
     X=df_train, y=Y_probs_train, L=train_L
 )
-
-df_combined = pd.concat([df_dev, df_train_filtered])
-Y_probs_combined = np.concatenate([Y_probs_dev, Y_probs_train_filtered], 0)
 ```
 
 Next, we train a simple [LSTM](https://en.wikipedia.org/wiki/Long_short-term_memory) network for classifying candidates. `tf_model` contains functions for processing features and building the keras model for training and evaluation.
 
+
 ```python
 from tf_model import get_model, get_feature_arrays
+from utils import get_n_epochs
 
 model = get_model()
-tokens, idx1, idx2 = get_feature_arrays(df_combined)
+tokens, idx1, idx2 = get_feature_arrays(df_train_filtered)
 
 batch_size = 64
-num_epochs = 20  # TODO: Change this to ~50. Warning: Training takes several minutes!
 model.fit(
-    (tokens, idx1, idx2), Y_probs_combined, batch_size=batch_size, epochs=num_epochs
+    (tokens, idx1, idx2),
+    Y_probs_train_filtered,
+    batch_size=batch_size,
+    epochs=get_n_epochs(),
 )
 ```
 
 Finally, we evaluate the trained model by measuring its F1 score and ROC_AUC.
+
 
 ```python
 test_tokens, test_idx1, test_idx2 = get_feature_arrays(df_test)

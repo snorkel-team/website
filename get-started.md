@@ -2,9 +2,10 @@
 layout: homepage
 title: Get Started
 ---
+
 <div class="hero-subheader">
   <div class="container">
-    <div class="row row-spacing vertical-align mobile-padding">
+    <div class="row double-row-spacing vertical-align mobile-padding">
       <div class="col-sm-5 mobile-margin">
         <p class="subheadline">INSTALL NOW</p>
         <h1>GET STARTED</h1>
@@ -51,7 +52,9 @@ $ gem install jekyll
 All of Jekyll’s gem dependencies are automatically installed by the above command, so you won’t have to worry about them at all.
 
 > ##### Full Jekyll documentation
+>
 > You can find full Jekyll documentation [here](https://jekyllrb.com).
+
 </div>
 
     <div class="row row-spacing mobile-padding">
@@ -69,5 +72,6 @@ All of Jekyll’s gem dependencies are automatically installed by the above comm
         {% endfor %}
       </div>
     </div>
+
   </div>
 </div>

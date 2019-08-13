@@ -30,11 +30,6 @@
   }
 }
 
-.blue-hero-subheader {
-  @extend .hero-subheader;
-  background-color: $color-light-blue;
-}
-
 .hero-subheader--before-out {
   @media (min-width: $screen-sm-min) {
     padding: 9.375rem 0 (15.3125rem - 1.25rem) 0;

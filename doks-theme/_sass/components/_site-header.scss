@@ -9,11 +9,6 @@
   height: 5.625rem;
 }
 
-.blue-site-header {
-  @extend .site-header;
-  background-color: $color-light-blue;
-}
-
 /* ----- Navigation ----- */
 .site-header__logo {
   @include link-reset;
@@ -61,7 +56,7 @@
   margin-bottom: 0;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  margin-top: 40px;
 
   li {
     &::before {
@@ -81,7 +76,6 @@
     font-size: 0.875em;
     font-weight: 500;
     font-family: $font-family-secondary;
-    // line-height: calc(5.625rem - 1px);
     text-transform: uppercase;
     border-bottom: 1px solid;
     border-color: transparent;
@@ -206,24 +200,7 @@
 
 /* ----- Github Buttons ----- */
 .github {
-  display: flex;
-  align-items: center;
-
   i {
-    font-size: 25px;
-    margin-right: 20px;
+    font-size: 20px;
   }
-
-  span {
-    margin-right: 6px;
-  }
-
-  a {
-    &:hover,
-    &:focus,
-    &:active {
-      border-color: $color-white;
-    }
-  }
-
 }

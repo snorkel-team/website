@@ -295,10 +295,10 @@ button {
 .light-row {
   @extend .dark-row;
   background-color: $color-light-blue;
-  padding: 130px 0 0 0;
+  padding: 80px 0 0 0;
 
   @media (max-width: 1350px) {
-    padding: 130px 20px 0 40px;
+    padding: 80px 20px 0 40px;
   }
 }
 
@@ -310,7 +310,6 @@ button {
   background-color: #15233b;
   margin: 0 100px 50px 0;
 
-
   @media (max-width: 1024px) {
     margin: 0 0 40px 0;
   }
@@ -318,6 +317,13 @@ button {
   @media (max-width: 375px) {
     width: 250px;
   }
+}
+
+.blog-card {
+  @extend .card;
+  width: 250px;
+  height: 350px;
+  margin: 0 20px 50px 0;
 }
 
 .light-card {
@@ -336,12 +342,13 @@ button {
 }
 
 .border-card {
+  width: 350px;
   display: flex;
   flex-direction: column;
-  border: 3px solid rgba(#4A90E2, .2);
+  border: 3px solid rgba(#4a90e2, 0.2);
   background-color: $color-white;
   color: $color-black;
-  padding: 30px;
+  padding: 20px;
   margin: 0 20px;
 
   p {
@@ -352,8 +359,21 @@ button {
     flex: 1;
   }
 
+  @media (max-width: 1200px) {
+    width: 300px;
+  }
+
   @media (max-width: 992px) {
+    width: 500px;
     margin: 0 0 40px 0;
+  }
+
+  @media (max-width: 576px) {
+    width: 400px;
+  }
+
+  @media (max-width: 450px) {
+    width: 280px;
   }
 }
 
@@ -370,18 +390,26 @@ button {
   margin-bottom: 100px;
 }
 
+.half-row-spacing {
+  margin-bottom: 50px;
+}
+
+.double-row-spacing {
+  margin-bottom: 200px;
+}
+
 .card-cta {
   color: #65baf6;
 }
 
 .cta-row {
   background-color: $color-light-blue;
-  padding: 65px 160px;
+  padding: 40px 160px;
   display: flex;
   justify-content: flex-end;
 
   @media (max-width: 768px) {
-    padding: 65px 40px;
+    padding: 40px 40px;
   }
 }
 
@@ -443,5 +471,11 @@ button {
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+}
+
+.list-test {
+  a {
+    color: $color-nav-hover;
   }
 }

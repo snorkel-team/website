@@ -8,8 +8,8 @@ layout: homepage
   <div class="container">
     <div class="row row-spacing vertical-align mobile-padding">
       <div class="col-sm-6 mobile-margin">
-        <p class="subheadline">MEET SNORKEL</p>
-        <h1>Programmatic Training Data For Dynamic, Real-world ML</h1>
+        <p class="subheadline">SNORKEL: THE SYSTEM FOR</p>
+        <h1>Programmatically Building and Managing Training Data</h1>
       </div>
       <div class="col-sm-6">
         <img
@@ -21,31 +21,56 @@ layout: homepage
     <div class="row row-spacing mobile-padding">
       <div class="light-blue-card-container">
         <div class="border-card">
+<<<<<<< HEAD
           <p class="subheadline">build</p>
           <h3>Build Training Sets Programmatically</h3>
           <p>
             Labeling and managing training datasets by hand is one of the
             biggest bottlenecks in machine learning. In Snorkel, write heuristic
             functions to do this programmatically instead!
+=======
+          <p class="subheadline">Build</p>
+          <h3>
+            Build Training Sets Programmatically
+          </h3>
+          <p>
+            Labeling and managing training datasets by hand is one of the biggest bottlenecks in machine learning.
+            In Snorkel, write heuristic functions to do this programmatically instead!
+>>>>>>> master
           </p>
           <button class="btn">Get Started!</button>
         </div>
         <div class="border-card">
+<<<<<<< HEAD
           <p class="subheadline">model</p>
           <h3>Model Weak Supervision</h3>
           <p>
             Programmatic or weak supervision sources can be noisy and
             correlated. Snorkel uses novel, theoretically grounded unsupervised
             modeling techniques to automatically clean and integrate them.
+=======
+          <p class="subheadline">Model</p>
+          <h3>Model Weak Supervision</h3>
+          <p>
+            Programmatic or <i>weak</i> supervision sources can be noisy and correlated.
+            Snorkel uses novel, theoretically-grounded unsupervised modeling techniques to automatically clean and integrate them.
+>>>>>>> master
           </p>
           <button class="btn">Read More</button>
         </div>
         <div class="border-card">
+<<<<<<< HEAD
           <p class="subheadline">train</p>
           <h3>Train Modern ML Models</h3>
           <p>
             Snorkel outputs clean, confidence weighted training datasets that
             easily plug into any modern machine learning framework.
+=======
+          <p class="subheadline">Train</p>
+          <h3>Train Modern ML Models</h3>
+          <p>
+            Snorkel outputs clean, confidence-weighted training datasets that easily plug into any modern machine learning framework.
+>>>>>>> master
           </p>
           <button class="btn">Use Cases</button>
         </div>
@@ -66,12 +91,17 @@ layout: homepage
           Run the following to install:
         </p>
         <div class="code-block">
+<<<<<<< HEAD
           <p># pip install spacy</p>
           <p>
             git+https://github.com/HazyResearch/snorkel#egg=snorkel
           </p>
           <span style="color: #9D3FA7;">import</span
           ><span style="color: #18171C;"> spacy</span>
+=======
+          <p>pip3 install -U git+https://github.com/HazyResearch/snorkel#egg=snorkel</p>
+          <span style="color: #9D3FA7;">import</span><span style="color: #18171C;"> snorkel</span>
+>>>>>>> master
         </div>
         <a
           href="https://github.com/HazyResearch/snorkel"
@@ -84,7 +114,8 @@ layout: homepage
   </div>
   <div class="container-fluid">
     <div class="row light-row">
-      {% for case in site.use_cases limit:3 %}
+      {% assign cases = site.use_cases | sort: 'order' %}
+      {% for case in cases limit:3 %}
       <a class="light-card" href="{{ case.url }}">
         <p class="purple-numbers">
           {{ forloop.index | prepend: '00' | slice: -2, 2 }}
@@ -100,9 +131,13 @@ layout: homepage
   </div>
   <div class="container-fluid">
     <div class="row cta-row row-spacing">
+<<<<<<< HEAD
       <a class="card-cta" href="/use-cases/"
         >SEE ALL USE CASES <i class="icon icon--arrow-right"></i
       ></a>
+=======
+      <a class="card-cta" href="/use-cases/">SEE ALL TUTORIALS <i class="icon icon--arrow-right"></i></a>
+>>>>>>> master
     </div>
   </div>
   <div class="container">
@@ -202,7 +237,7 @@ layout: homepage
   <div class="container">
     <div class="row mobile-padding">
       <div class="col-sm-2 col-sm-offset-5">
-        <p>SPACY IS TRUSTED BY</p>
+        <p>USERS & SPONSORS</p>
       </div>
     </div>
     <div class="row row-spacing hidden-xs mobile-padding">

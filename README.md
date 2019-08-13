@@ -2,22 +2,20 @@
 
 ### Getting Started
 
-Set up environment as outlined below, then run:
-
+* [Install Jekyll.](https://jekyllrb.com/docs/installation/macos/) Note the special instructions for macOS Mojave!
+* Clone this repo
+* Run the following
 ```bash
-$ jekyll contentful --config _config.yml,_config.dev.yml
+$ bundle install
 $ jekyll serve
 ```
 
-### Environment
-
-Create this file before building, replacing [VALUES] with actual values.
-
-###### _config.dev.yml
-```yaml
-contentful:
-  spaces:
-    - snorkel:
-        space: [CONTENTFUL_SPACE_ID]
-        access_token: [CONTENTFUL_ACCESS_TOKEN]
+If the above fails to work, try 
+```bash
+$ bundle install
+$ bundle exec jekyll serve
 ```
+
+If the above (still) fails to work, edit the `Gemfile` to include 
+`gem 'github-pages', group: :jekyll_plugins`
+in the second line.

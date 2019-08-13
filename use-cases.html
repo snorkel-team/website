@@ -1,0 +1,111 @@
+---
+layout: homepage
+title: Tutorials
+---
+<div class="hero-subheader">
+  <div class="container" style="margin-bottom: 100px;">
+    <h1>{{ page.title }}</h1>
+</div>
+
+  {% include grid-navigation.html items=site.use_cases %}
+
+
+  <div class="container" style="margin-top: 100px">
+    <div class="row vertical-align mobile-padding">
+      <div class="col-sm-5 mobile-margin">
+        <p class="subheadline">Learn More</p>
+        <h1>Use Cases</h1>
+        <ul style="list-style-type: disc; margin-left: 18px;">
+            <li>
+                Conversational agents at IBM: <a href="https://arxiv.org/pdf/1812.06176.pdf">Bootstrapping Conversational Agents With Weak Supervision (AAAI 2019)</a>
+              </li>
+              <li>
+                Web content & event classification at Google: <a href="https://arxiv.org/abs/1812.00417">Snorkel DryBell: A Case Study in Deploying Weak Supervision at Industrial Scale (SIGMOD Industry 2019)</a>, and <a href="https://ai.googleblog.com/2019/03/harnessing-organizational-knowledge-for.html">Google AI blog post</a>
+              </li>
+              <li>
+                Business intelligence at Intel: <a href="https://ajratner.github.io/assets/papers/Osprey_DEEM.pdf">Osprey: Non-Programmer Weak Supervision of Imbalanced Extraction Problems (SIGMOD DEEM 2019)</a>
+              </li>
+              <li>
+                Anti-semitic tweet classification w/ Snorkel + transfer learning: <a href="https://t.co/h0zGQwDD59">A Technique for Building NLP Classifiers Efficiently with Transfer Learning and Weak Supervision (Blog post 2019)</a>
+              </li>
+              <li>
+                  Clinical text classification: <a href="https://bmcmedinformdecismak.biomedcentral.com/articles/10.1186/s12911-018-0723-6">A clinical text classification paradigm using weak supervision and deep representation (BMC MIDM 2019)</a>
+                </li>
+              <li>
+                Social media text mining: <a href="https://ieeexplore.ieee.org/abstract/document/8609589/authors#authors">Deep Text Mining of Instagram Data without Strong Supervision (ICWI 2018)</a>
+              </li>
+              <li>
+                Cardiac MRI classification with Stanford Medicine: <a href="https://www.biorxiv.org/content/biorxiv/early/2018/06/05/339630.full.pdf">Weakly supervised classification of rare aortic valve malformations using unlabeled cardiac MRI sequences (BioArxiv 2018)</a>
+              </li>
+              <li>
+                Catching cheating at Chegg (<a href="https://www.edsurge.com/news/2018-03-01-cheating-on-chegg-maybe-not-on-its-tutoring-platform">Article</a>)
+              </li>
+              <li>
+                Medical image triaging at Stanford Radiology: <a href="#">Cross-Modal Data Programming for Medical Images (NeurIPS ML4H 2017)</a>
+              </li>
+              <li>
+                GWAS KBC with Stanford Genomics: <a href="https://ajratner.github.io/assets/papers/neurips2016-healthcare.pdf">A Machine-Compiled Database of Genome-Wide Association Studies (NeurIPS ML4H 2016)</a>
+              </li>
+        <ul>
+        </div>
+      </div>
+    </div>
+
+  <div class="container" style="margin-top: 100px">
+    <div class="row vertical-align mobile-padding">
+      <div class="col-sm-5 mobile-margin">
+        <p class="subheadline">Learn More</p>
+        <h1>Publications</h1>
+        <ul style="list-style-type: disc; margin-left: 18px;">
+          <li>
+            <a href="https://arxiv.org/abs/1711.10160">Snorkel: Rapid Training Data Creation with Weak Supervision</a> (VLDB 2018)
+          </li>
+        <li>
+          <a href="https://arxiv.org/abs/1605.07723">Data Programming: Creating Large Training Sets, Quickly</a> (NeurIPS 2016)
+        </li>
+        <li>
+            <a href="https://cs.stanford.edu/~chrismre/papers/Chris_Re-KDD.pdf">Snorkel and the Software 2.0 vision</a> (KDD 2018)
+        </li>
+          <a href="https://arxiv.org/abs/1703.00854">Learning the Structure of Generative Models without Labeled Data</a> (ICML 2017)
+        </li>
+        <li>
+           <a href="https://arxiv.org/pdf/1903.05844.pdf">Learning Dependency Structures for Weak Supervision Models</a> (Arxiv 2019)
+        </li>
+        <li>
+          <a href="https://arxiv.org/abs/1810.02840">Training Complex Models with Multi-Task Weak Supervision</a> (AAAI 2019)
+        </li>
+        <li>
+          <a href="https://ajratner.github.io/assets/papers/software_2_mmt_vision.pdf">The Role of Massively Multi-Task and Weak Supervision in Software 2.0</a> (CIDR 2019)
+        </li>
+        <li>
+          <a href="pdfs/snorkel_demo.pdf">Snorkel: Fast Training Set Generation for Information Extraction</a> (SIGMOD DEMO 2017)
+        </li>
+        <li>
+          <a href="https://arxiv.org/abs/1709.02477">Inferring Generative Model Structure with Static Analysis</a> (NeurIPS 2017)
+        </li>
+        <li>
+          <a href="https://arxiv.org/abs/1805.03818">Training Classifiers with Natural Language Explanations</a> (ACL 2018)
+        </li>
+        <li>
+          <a href="http://cs.stanford.edu/people/chrismre/papers/DDL_HILDA_2016.pdf">Data Programming with DDLite: Putting Humans in a Different Part of the Loop</a> (HILDA @ SIGMOD 2016; note Snorkel was previously <em>DDLite</em>)
+        </li>
+        <li>
+          <a href="https://arxiv.org/abs/1610.08123">Socratic Learning: Correcting Misspecified Generative Models using Discriminative Models</a>
+        </li>
+        <li>
+          <a href="https://arxiv.org/abs/1703.05028" target="_blank">Fonduer: Knowledge Base Construction from Richly Formatted Data</a> (SIGMOD 2018)
+        </li>
+        <li>
+            <a href="https://arxiv.org/abs/1709.01643">Learning to Compose Domain-Specific Transformations for Data Augmentation</a> (NeurIPS 2017)
+          </li>
+          <li>
+            <a href="https://arxiv.org/abs/1709.02605">Gaussian Quadrature for Kernel Features</a> (NeurIPS 2017)
+          </li>
+        </ul>
+      </div>
+      <div class="col-sm-7">
+        <img src="/doks-theme/assets/images/layout/Pattern 3.png" alt="Pattern 3" />
+      </div>
+    </div>
+  </div>
+</div>

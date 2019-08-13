@@ -1,11 +1,10 @@
 ---
 layout: default
-title: Information Extraction in Snorkel
+title: Relation Extraction
 description: Labeling spouse mentions in sentences
 excerpt: Labeling spouse mentions in sentences
-order: 7
+order: 2
 ---
-
 
 # Detecting spouse mentions in sentences
 
@@ -18,13 +17,12 @@ We want to classify each __candidate__ or pair of people mentioned in a sentence
 In the above example, our candidate represents the possible relation `(Barack Obama, Michelle Obama)`. As readers, we know this mention is true due to external knowledge and the keyword of `wedding` occuring later in the sentence.
 We begin with some basic setup and data downloading.
 
-
-
 ```python
 %matplotlib inline
 
 import os
 import pickle
+import numpy as np
 
 if os.path.basename(os.getcwd()) == "snorkel-tutorials":
     os.chdir("spouse")
@@ -38,7 +36,6 @@ from utils import load_data
 
 We also have certain **preprocessed fields**, that we discuss a few cells below.
 
-
 ```python
 import pandas as pd
 
@@ -48,95 +45,7 @@ pd.set_option("display.max_colwidth", 0)
 df_dev.head()
 ```
 
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>person1_word_idx</th>
-      <th>person2_word_idx</th>
-      <th>sentence</th>
-      <th>tokens</th>
-      <th>person1_right_tokens</th>
-      <th>person2_right_tokens</th>
-      <th>between_tokens</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>(1, 1)</td>
-      <td>(22, 24)</td>
-      <td>The Richards are half-sisters to Kathy Hilton, the mother of socialite Paris Hilton and spouse of luxury hotel magnate Richard Howard Hilton.</td>
-      <td>[The, Richards, are, half, -, sisters, to, Kathy, Hilton, ,, the, mother, of, socialite, Paris, Hilton, and, spouse, of, luxury, hotel, magnate, Richard, Howard, Hilton, ., ]</td>
-      <td>[are, half, -, sisters]</td>
-      <td>[., ]</td>
-      <td>[are, half, -, sisters, to, Kathy, Hilton, ,, the, mother, of, socialite, Paris, Hilton, and, spouse, of, luxury, hotel, magnate]</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>(1, 1)</td>
-      <td>(7, 8)</td>
-      <td>The Richards are half-sisters to Kathy Hilton, the mother of socialite Paris Hilton and spouse of luxury hotel magnate Richard Howard Hilton.</td>
-      <td>[The, Richards, are, half, -, sisters, to, Kathy, Hilton, ,, the, mother, of, socialite, Paris, Hilton, and, spouse, of, luxury, hotel, magnate, Richard, Howard, Hilton, ., ]</td>
-      <td>[are, half, -, sisters]</td>
-      <td>[,, the, mother, of]</td>
-      <td>[are, half, -, sisters, to]</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>(7, 8)</td>
-      <td>(22, 24)</td>
-      <td>The Richards are half-sisters to Kathy Hilton, the mother of socialite Paris Hilton and spouse of luxury hotel magnate Richard Howard Hilton.</td>
-      <td>[The, Richards, are, half, -, sisters, to, Kathy, Hilton, ,, the, mother, of, socialite, Paris, Hilton, and, spouse, of, luxury, hotel, magnate, Richard, Howard, Hilton, ., ]</td>
-      <td>[,, the, mother, of]</td>
-      <td>[., ]</td>
-      <td>[,, the, mother, of, socialite, Paris, Hilton, and, spouse, of, luxury, hotel, magnate]</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>(6, 6)</td>
-      <td>(20, 21)</td>
-      <td>Prior to both his guests, Colbert's monologue - parts of which he did sitting down - ripped into Donald Trump and his oft-mocked policy of building a wall at the US-Mexico border and not eating Oreos anymore.</td>
-      <td>[Prior, to, both, his, guests, ,, Colbert, s, monologue, -, parts, of, which, he, did, sitting, down, -, ripped, into, Donald, Trump, and, his, oft, -, mocked, policy, of, building, a, wall, at, the, US, -, Mexico, border, and, not, eating, Oreos, anymore, ., ]</td>
-      <td>[s, monologue, -, parts]</td>
-      <td>[and, his, oft, -]</td>
-      <td>[s, monologue, -, parts, of, which, he, did, sitting, down, -, ripped, into]</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>(2, 2)</td>
-      <td>(4, 5)</td>
-      <td>People reported Williams and Ven Veen tied the knot Saturday at Brush Creek Ranch in Saratoga, Wyoming, in front of about 200 guests.</td>
-      <td>[People, reported, Williams, and, Ven, Veen, tied, the, knot, Saturday, at, Brush, Creek, Ranch, in, Saratoga, ,, Wyoming, ,, in, front, of, about, 200, guests, .]</td>
-      <td>[and, Ven, Veen, tied]</td>
-      <td>[tied, the, knot, Saturday]</td>
-      <td>[and]</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
 Let's look at a candidate in the development set:
-
 
 ```python
 from preprocessors import get_person_text
@@ -149,19 +58,14 @@ print("Person 1: ", person_names[0])
 print("Person 2: ", person_names[1])
 ```
 
-    Sentence:  The Richards are half-sisters to Kathy Hilton, the mother of socialite Paris Hilton and spouse of luxury hotel magnate Richard Howard Hilton.   
-    Person 1:  Kathy Hilton
-    Person 2:  Richard Howard Hilton
-
-
 ### Preprocessing the Data
 
 In a real application, there is a lot of data preparation, parsing, and database loading that needs to be completed before we generate candidates and dive into writing labeling functions. Here we've pre-generated candidates in a pandas DataFrame object per split (train,dev,test).
 
+
 ### Labeling Function Helpers
 
 When writing labeling functions, there are several functions you will use over and over again. In the case of text relation extraction as with this task, common functions include those for fetching text between mentions of the two people in a candidate, examing word windows around person mentions, and so on. We will wrap these functions as `preprocessors`.
-
 
 ```python
 from snorkel.preprocess import preprocessor
@@ -185,7 +89,6 @@ For the purposes of the tutorial, we have three fields (`between_tokens`, `perso
 * `get_person_lastnames(cand)`: `person_lastnames`
 * `get_left_tokens(cand)`: `person1_left_tokens`, `person2_left_tokens`
 
-
 ```python
 from preprocessors import get_left_tokens, get_person_last_names
 
@@ -193,7 +96,6 @@ POSITIVE = 1
 NEGATIVE = 0
 ABSTAIN = -1
 ```
-
 
 ```python
 from snorkel.labeling import labeling_function
@@ -207,7 +109,6 @@ def lf_husband_wife(x, spouses):
     return POSITIVE if len(spouses.intersection(set(x.between_tokens))) > 0 else ABSTAIN
 ```
 
-
 ```python
 # Check for the `spouse` words appearing to the left of the person mentions
 @labeling_function(resources=dict(spouses=spouses), pre=[get_left_tokens])
@@ -220,7 +121,6 @@ def lf_husband_wife_left_window(x, spouses):
         return ABSTAIN
 ```
 
-
 ```python
 # Check for the person mentions having the same last name
 @labeling_function(pre=[get_person_last_names])
@@ -232,14 +132,12 @@ def lf_same_last_name(x):
     return ABSTAIN
 ```
 
-
 ```python
 # Check for the word `married` between person mentions
 @labeling_function()
 def lf_married(x):
     return POSITIVE if "married" in x.between_tokens else ABSTAIN
 ```
-
 
 ```python
 # Check for words that refer to `family` relationships between and to the left of the person mentions
@@ -274,7 +172,6 @@ def lf_family_left_window(x, family):
         return ABSTAIN
 ```
 
-
 ```python
 # Check for `other` relationship words between person mentions
 other = {"boyfriend", "girlfriend", "boss", "employee", "secretary", "co-worker"}
@@ -289,12 +186,13 @@ def lf_other_relationship(x, other):
 
 In addition to using factories that encode pattern matching heuristics, we can also write labeling functions that _distantly supervise_ examples. Here, we'll load in a list of known spouse pairs and check to see if the pair of persons in a candidate matches one of these.
 
-[**DBpedia**](http://wiki.dbpedia.org/): Our database of known spouses comes from DBpedia, which is a community-driven resource similar to Wikipedia but for curating structured data. We'll use a preprocessed snapshot as our knowledge base for all labeling function development.
+[**DBpedia**](http://wiki.dbpedia.org/)
+
+Our database of known spouses comes from DBpedia, which is a community-driven resource similar to Wikipedia but for curating structured data. We'll use a preprocessed snapshot as our knowledge base for all labeling function development.
 
 We can look at some of the example entries from DBPedia and use them in a simple distant supervision labeling function.
 
 Make sure `dbpedia.pkl` is in the `spouse/data` directory.
-
 
 ```python
 with open("data/dbpedia.pkl", "rb") as f:
@@ -302,18 +200,6 @@ with open("data/dbpedia.pkl", "rb") as f:
 
 list(known_spouses)[0:5]
 ```
-
-
-
-
-    [('Albert', 'Dorothea'),
-     ('Lawrence Washington', 'Mildred Gale'),
-     ('Belle Goshorn MacCorkle', 'William A. MacCorkle'),
-     ('Ann Morgan Guilbert', 'George Eckstein'),
-     ('Antonio Herrera Cerilles', 'Aurora E. Cerilles')]
-
-
-
 
 ```python
 @labeling_function(resources=dict(known_spouses=known_spouses), pre=[get_person_text])
@@ -324,7 +210,6 @@ def lf_distant_supervision(x, known_spouses):
     else:
         return ABSTAIN
 ```
-
 
 ```python
 from preprocessors import last_name
@@ -354,7 +239,6 @@ def lf_distant_supervision_last_names(x, last_names):
 #### Apply Labeling Functions to the Data
 We create a list of labeling functions and apply them to the data
 
-
 ```python
 from snorkel.labeling import PandasLFApplier
 
@@ -372,7 +256,6 @@ lfs = [
 applier = PandasLFApplier(lfs)
 ```
 
-
 ```python
 from snorkel.labeling import LFAnalysis
 
@@ -382,151 +265,9 @@ train_L = applier.apply(df_train)
 LFAnalysis(dev_L, lfs).lf_summary(Y_dev)
 ```
 
-    100%|██████████| 2811/2811 [00:07<00:00, 378.01it/s]
-    100%|██████████| 22254/22254 [00:59<00:00, 373.96it/s]
-
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>j</th>
-      <th>Polarity</th>
-      <th>Coverage</th>
-      <th>Overlaps</th>
-      <th>Conflicts</th>
-      <th>Correct</th>
-      <th>Incorrect</th>
-      <th>Emp. Acc.</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>lf_husband_wife</th>
-      <td>0</td>
-      <td>[1]</td>
-      <td>0.089648</td>
-      <td>0.036642</td>
-      <td>0.017432</td>
-      <td>93</td>
-      <td>159</td>
-      <td>0.369048</td>
-    </tr>
-    <tr>
-      <th>lf_husband_wife_left_window</th>
-      <td>1</td>
-      <td>[1]</td>
-      <td>0.025258</td>
-      <td>0.021345</td>
-      <td>0.003557</td>
-      <td>30</td>
-      <td>41</td>
-      <td>0.422535</td>
-    </tr>
-    <tr>
-      <th>lf_same_last_name</th>
-      <td>2</td>
-      <td>[1]</td>
-      <td>0.040555</td>
-      <td>0.016009</td>
-      <td>0.008538</td>
-      <td>19</td>
-      <td>95</td>
-      <td>0.166667</td>
-    </tr>
-    <tr>
-      <th>lf_married</th>
-      <td>3</td>
-      <td>[1]</td>
-      <td>0.019210</td>
-      <td>0.006759</td>
-      <td>0.002490</td>
-      <td>22</td>
-      <td>32</td>
-      <td>0.407407</td>
-    </tr>
-    <tr>
-      <th>lf_familial_relationship</th>
-      <td>4</td>
-      <td>[0]</td>
-      <td>0.115617</td>
-      <td>0.051939</td>
-      <td>0.026325</td>
-      <td>310</td>
-      <td>15</td>
-      <td>0.953846</td>
-    </tr>
-    <tr>
-      <th>lf_family_left_window</th>
-      <td>5</td>
-      <td>[0]</td>
-      <td>0.041266</td>
-      <td>0.033440</td>
-      <td>0.007826</td>
-      <td>114</td>
-      <td>2</td>
-      <td>0.982759</td>
-    </tr>
-    <tr>
-      <th>lf_other_relationship</th>
-      <td>6</td>
-      <td>[0]</td>
-      <td>0.013874</td>
-      <td>0.002846</td>
-      <td>0.002846</td>
-      <td>33</td>
-      <td>6</td>
-      <td>0.846154</td>
-    </tr>
-    <tr>
-      <th>lf_distant_supervision</th>
-      <td>7</td>
-      <td>[1]</td>
-      <td>0.001067</td>
-      <td>0.001067</td>
-      <td>0.000000</td>
-      <td>2</td>
-      <td>1</td>
-      <td>0.666667</td>
-    </tr>
-    <tr>
-      <th>lf_distant_supervision_last_names</th>
-      <td>8</td>
-      <td>[1]</td>
-      <td>0.001067</td>
-      <td>0.000711</td>
-      <td>0.000356</td>
-      <td>0</td>
-      <td>3</td>
-      <td>0.000000</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
 ### Training the Label Model
 
 Now, we'll train a model of the LFs to estimate their weights and combine their outputs. Once the model is trained, we can combine the outputs of the LFs into a single, noise-aware training label set for our extractor.
-
 
 ```python
 from snorkel.labeling import LabelModel
@@ -537,7 +278,6 @@ label_model.fit(train_L, Y_dev, n_epochs=5000, log_freq=500, seed=12345)
 
 ### Label Model Metrics
 Since our dataset is highly unbalanced (91% of the labels are negative), even a trivial baseline that always outputs negative can get a high accuracy. So we evaluate the label model using the F1 score and ROC-AUC rather than accuracy.
-
 
 ```python
 from snorkel.analysis import metric_score
@@ -553,156 +293,42 @@ print(
 )
 ```
 
-    Label model f1 score: 0.4199134199134199
-    Label model roc-auc: 0.7421454246069199
-
-
 ### Part 4: Training our End Extraction Model
 
-In this final section of the tutorial, we'll use our noisy training labels to train our end machine learning model. We start by filtering out training examples which did not recieve a label from any LF, as these examples contain no signal.
-
-
+In this final section of the tutorial, we'll use our noisy training labels alongside the development set labels to train our end machine learning model. We start by filtering out training examples which did not recieve a label from any LF, as these examples contain no signal. Then we concatenate them with dev set examples.
 
 ```python
+from snorkel.utils import preds_to_probs
 from snorkel.labeling import filter_unlabeled_dataframe
+
+# Change dev labels 1D array to 2D categorical labels array as required for training end model.
+Y_probs_dev = preds_to_probs(Y_dev, 2)
 
 Y_probs_train = label_model.predict_proba(train_L)
 df_train_filtered, Y_probs_train_filtered = filter_unlabeled_dataframe(
     X=df_train, y=Y_probs_train, L=train_L
 )
+
+df_combined = pd.concat([df_dev, df_train_filtered])
+Y_probs_combined = np.concatenate([Y_probs_dev, Y_probs_train_filtered], 0)
 ```
 
 Next, we train a simple [LSTM](https://en.wikipedia.org/wiki/Long_short-term_memory) network for classifying candidates. `tf_model` contains functions for processing features and building the keras model for training and evaluation.
 
-
 ```python
 from tf_model import get_model, get_feature_arrays
-from utils import get_n_epochs
 
 model = get_model()
-tokens, idx1, idx2 = get_feature_arrays(df_train_filtered)
+tokens, idx1, idx2 = get_feature_arrays(df_combined)
 
 batch_size = 64
+num_epochs = 20  # TODO: Change this to ~50. Warning: Training takes several minutes!
 model.fit(
-    (tokens, idx1, idx2),
-    Y_probs_train_filtered,
-    batch_size=batch_size,
-    epochs=get_n_epochs(),
+    (tokens, idx1, idx2), Y_probs_combined, batch_size=batch_size, epochs=num_epochs
 )
 ```
 
-    /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:516: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_qint8 = np.dtype([("qint8", np.int8, 1)])
-    /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:517: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
-    /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:518: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_qint16 = np.dtype([("qint16", np.int16, 1)])
-    /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:519: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
-    /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:520: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_qint32 = np.dtype([("qint32", np.int32, 1)])
-    /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:525: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      np_resource = np.dtype([("resource", np.ubyte, 1)])
-    /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:541: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_qint8 = np.dtype([("qint8", np.int8, 1)])
-    /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:542: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
-    /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:543: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_qint16 = np.dtype([("qint16", np.int16, 1)])
-    /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:544: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
-    /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:545: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_qint32 = np.dtype([("qint32", np.int32, 1)])
-    /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:550: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      np_resource = np.dtype([("resource", np.ubyte, 1)])
-    WARNING: Logging before flag parsing goes to stderr.
-    W0812 17:38:32.589718 140554608953152 deprecation.py:506] From /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorflow/python/keras/initializers.py:119: calling RandomUniform.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
-    Instructions for updating:
-    Call initializer instance with the dtype argument instead of passing it to the constructor
-    W0812 17:38:32.679018 140554608953152 deprecation.py:506] From /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
-    Instructions for updating:
-    Call initializer instance with the dtype argument instead of passing it to the constructor
-    W0812 17:38:33.063451 140554608953152 deprecation.py:323] From /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorflow/python/keras/backend.py:3794: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
-    Instructions for updating:
-    Use tf.where in 2.0, which has the same broadcast rule as np.where
-    W0812 17:38:33.099548 140554608953152 deprecation_wrapper.py:119] From /home/ubuntu/snorkel-tutorials/spouse/tf_model.py:56: The name tf.train.AdagradOptimizer is deprecated. Please use tf.compat.v1.train.AdagradOptimizer instead.
-    
-    W0812 17:38:33.739813 140554608953152 deprecation.py:506] From /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorflow/python/training/adagrad.py:76: calling Constant.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
-    Instructions for updating:
-    Call initializer instance with the dtype argument instead of passing it to the constructor
-
-
-    Epoch 1/30
-    5734/5734 [==============================] - 4s 625us/sample - loss: 0.6597
-    Epoch 2/30
-    5734/5734 [==============================] - 3s 529us/sample - loss: 0.6587
-    Epoch 3/30
-    5734/5734 [==============================] - 3s 531us/sample - loss: 0.6583
-    Epoch 4/30
-    5734/5734 [==============================] - 3s 528us/sample - loss: 0.6581
-    Epoch 5/30
-    5734/5734 [==============================] - 3s 528us/sample - loss: 0.6577
-    Epoch 6/30
-    5734/5734 [==============================] - 3s 529us/sample - loss: 0.6573
-    Epoch 7/30
-    5734/5734 [==============================] - 3s 531us/sample - loss: 0.6568
-    Epoch 8/30
-    5734/5734 [==============================] - 3s 528us/sample - loss: 0.6559
-    Epoch 9/30
-    5734/5734 [==============================] - 3s 528us/sample - loss: 0.6541
-    Epoch 10/30
-    5734/5734 [==============================] - 3s 529us/sample - loss: 0.6513
-    Epoch 11/30
-    5734/5734 [==============================] - 3s 530us/sample - loss: 0.6457
-    Epoch 12/30
-    5734/5734 [==============================] - 3s 527us/sample - loss: 0.6361
-    Epoch 13/30
-    5734/5734 [==============================] - 3s 533us/sample - loss: 0.6148
-    Epoch 14/30
-    5734/5734 [==============================] - 3s 530us/sample - loss: 0.5623
-    Epoch 15/30
-    5734/5734 [==============================] - 3s 528us/sample - loss: 0.5355
-    Epoch 16/30
-    5734/5734 [==============================] - 3s 531us/sample - loss: 0.5254
-    Epoch 17/30
-    5734/5734 [==============================] - 3s 528us/sample - loss: 0.5212
-    Epoch 18/30
-    5734/5734 [==============================] - 3s 531us/sample - loss: 0.5131
-    Epoch 19/30
-    5734/5734 [==============================] - 3s 532us/sample - loss: 0.5090
-    Epoch 20/30
-    5734/5734 [==============================] - 3s 531us/sample - loss: 0.5068
-    Epoch 21/30
-    5734/5734 [==============================] - 3s 528us/sample - loss: 0.5029
-    Epoch 22/30
-    5734/5734 [==============================] - 3s 527us/sample - loss: 0.5021
-    Epoch 23/30
-    5734/5734 [==============================] - 3s 531us/sample - loss: 0.4983
-    Epoch 24/30
-    5734/5734 [==============================] - 3s 530us/sample - loss: 0.4979
-    Epoch 25/30
-    5734/5734 [==============================] - 3s 526us/sample - loss: 0.4951
-    Epoch 26/30
-    5734/5734 [==============================] - 3s 529us/sample - loss: 0.4989
-    Epoch 27/30
-    5734/5734 [==============================] - 3s 531us/sample - loss: 0.4938
-    Epoch 28/30
-    5734/5734 [==============================] - 3s 530us/sample - loss: 0.4918
-    Epoch 29/30
-    5734/5734 [==============================] - 3s 529us/sample - loss: 0.4906
-    Epoch 30/30
-    5734/5734 [==============================] - 3s 531us/sample - loss: 0.4901
-
-
-
-
-
-    <tensorflow.python.keras.callbacks.History at 0x7fd48432b828>
-
-
-
 Finally, we evaluate the trained model by measuring its F1 score and ROC_AUC.
-
 
 ```python
 test_tokens, test_idx1, test_idx2 = get_feature_arrays(df_test)
@@ -715,10 +341,6 @@ print(
     f"Test ROC-AUC when trained with soft labels: {metric_score(Y_test, probs=probs, metric='roc_auc')}"
 )
 ```
-
-    Test F1 when trained with soft labels: 0.2773722627737226
-    Test ROC-AUC when trained with soft labels: 0.7229435390009865
-
 
 ## Summary
 In this tutorial, we showed how Snorkel can be used for Information Extraction. We demonstrated how to create LFs that leverage keywords and external knowledge bases (distant supervision). Finally, we showed how a model trained using the probabilistic outputs of the Label Model can achieve comparable performance while generalizing to all examples.

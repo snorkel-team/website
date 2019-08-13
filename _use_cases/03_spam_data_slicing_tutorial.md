@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Introduction to Slicing Functions
+title: Intro to Slicing Functions
 description: Monitoring models for spam classification
 excerpt: Monitoring models for spam classification
 order: 3

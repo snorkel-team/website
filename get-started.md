@@ -9,11 +9,12 @@ title: Get Started
         <p class="subheadline">INSTALL NOW</p>
         <h1>Get Started</h1>
         <p>
-          Run the following to install:
+          Run any of the following to install:
         </p>
         <div class="code-block">
-          <p># pip install snorkel</p>
-          <span style="color: #9D3FA7;">import</span><span style="color: #18171C;"> snorkel</span>
+         <p>pip install snorkel</p>
+          <p>conda install snorkel -c conda-forge</p>
+          <!-- <span style="color: #9D3FA7;">import</span><span style="color: #18171C;"> snorkel</span> -->
         </div>
         <a class="btn" href="/use-cases/">Tutorials</a>
         <a class="btn" href="https://github.com/snorkel-team/snorkel-tutorials">GitHub</a>
@@ -39,7 +40,7 @@ title: Get Started
           <h4>{{ tutorial.title }}</h4>
           <p>{{ tutorial.excerpt }}</p>
           <span class="card-cta">
-            LEARN MORE <i class="icon icon--arrow-right"></i>
+            READ MORE <i class="icon icon--arrow-right"></i>
           </span>
         </a>
         {% endfor %}

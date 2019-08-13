@@ -23,7 +23,7 @@ layout: homepage
             Labeling and managing training datasets by hand is one of the biggest bottlenecks in machine learning.
             In Snorkel, write heuristic functions to do this programmatically instead!
           </p>
-          <button class="btn">Get Started!</button>
+          <a href="/get-started/" class="btn" target="_blank">Get Started!</a>
         </div>
         <div class="border-card">
           <p class="subheadline">Model</p>
@@ -32,7 +32,7 @@ layout: homepage
             Programmatic or <i>weak</i> supervision sources can be noisy and correlated.
             Snorkel uses novel, theoretically-grounded unsupervised modeling techniques to automatically clean and integrate them.
           </p>
-          <button class="btn">Read More</button>
+          <a href="/blog/" class="btn">Read More!</a>
         </div>
         <div class="border-card">
           <p class="subheadline">Train</p>
@@ -40,7 +40,7 @@ layout: homepage
           <p>
             Snorkel outputs clean, confidence-weighted training datasets that easily plug into any modern machine learning framework.
           </p>
-          <button class="btn">Use Cases</button>
+          <a href="/use-cases/" class="btn">Tutorials</a>
         </div>
       </div>
     </div>
@@ -53,13 +53,14 @@ layout: homepage
         <p class="subheadline">start in minutes</p>
         <h1>Quickstart</h1>
         <p>
-          Run the following to install:
+          Run any of the following to install:
         </p>
         <div class="code-block">
-          <p>pip3 install -U git+https://github.com/HazyResearch/snorkel#egg=snorkel</p>
-          <span style="color: #9D3FA7;">import</span><span style="color: #18171C;"> snorkel</span>
+          <p>pip install snorkel</p>
+          <p>conda install snorkel -c conda-forge</p>
+          <!-- <span style="color: #9D3FA7;">import</span><span style="color: #18171C;"> snorkel</span> -->
         </div>
-        <a href="https://github.com/HazyResearch/snorkel" class="btn" target="_blank">GITHUB</a>
+        <a href="https://github.com/snorkel-team/snorkel" class="btn" target="_blank">GitHub</a>
       </div>
     </div>
   </div>
@@ -72,7 +73,7 @@ layout: homepage
         <h4>{{ case.title }}</h4>
         <p>{{ case.excerpt }}</p>
         <span class="card-cta">
-          LEARN MORE <i class="icon icon--arrow-right"></i>
+          READ MORE <i class="icon icon--arrow-right"></i>
         </span>
       </a>
       {% endfor %}
@@ -172,15 +173,23 @@ layout: homepage
       <img src="/doks-theme/assets/images/layout/Toshiba.svg" alt="Toshiba Logo" />
     </div>
   </div>
+</div>
   <div class="container-fluid">
     <div class="row dark-row">
-      {% for post in site.posts limit:5 %}
+      {% for post in site.posts limit:4 %}
       <a class="card" href="{{ post.url }}">
-        <p class="purple">Learn More</p>
+        <p class="purple-numbers">{{ forloop.index | prepend: '00' | slice: -2, 2 }}</p>
         <h4>{{ post.title }}</h4>
         <p>{{ post.excerpt }}</p>
+        <span class="dark-card-cta">
+          READ MORE <i class="icon icon--arrow-right"></i>
+        </span>
       </a>
       {% endfor %}
     </div>
   </div>
-</div>
+  <div class="container-fluid">
+    <div class="row cta-dark-row row-spacing">
+      <a class="dark-card-cta" href="/use-cases/">SEE ALL BLOGS<i class="icon icon--arrow-right"></i></a>
+    </div>
+  </div>

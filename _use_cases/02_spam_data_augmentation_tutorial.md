@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Introduction to Transformation Functions
+title: Intro to Transformation Functions
 description: Data augmentation for spam classification
 excerpt: Data augmentation for spam classification
 order: 2

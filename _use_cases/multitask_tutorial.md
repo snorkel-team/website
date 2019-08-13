@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Introduction to Snorkel's Multitask Learning System
+title: Intro to Snorkel's Multitask Learning System
 description: State-of-the-art pretraining and task flows
 excerpt: State-of-the-art pretraining and task flows
 order: 8

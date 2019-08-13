@@ -1,8 +1,8 @@
 ---
 layout: default
-title: Training for SuperGLUE
-description: Achieve state-of-the-art result on the SuperGLUE NLP benchmark.
-excerpt: Achieve state-of-the-art result on the SuperGLUE NLP benchmark.
+title: SuperGLUE with Snorkel
+description: Snorkel achieves state-of-the-art result on the SuperGLUE NLP benchmark.
+excerpt: Snorkel achieves state-of-the-art result on the SuperGLUE NLP benchmark.
 ---
 
 > Using standard models (i.e. pretrained BERT) and minimal tuning, we leverage key abstractions for _programmatically building and managing training data_ to achieve a <mark>state-of-the-art result on SuperGLUE</mark>—a a newly curated benchmark with six tasks for evaluating “general-purpose language understanding technologies.”[^superglue]

@@ -1,8 +1,8 @@
 ---
 layout: default
-title: Weak Supervision Overview
-description: The New Programming Paradigm for Machine Learning.
-excerpt: The New Programming Paradigm for Machine Learning.
+title: An Overview of Weak Supervision
+description: Overcoming the training data bottleneck.
+excerpt: Overcoming the training data bottleneck.
 ---
 
 Getting labeled training data has become _the_ key development bottleneck in

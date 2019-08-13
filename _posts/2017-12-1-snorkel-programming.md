@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Programming Training Data
-description: The New Interface for ML.
-excerpt: The New Interface for ML.
+description: The new interface for ML.
+excerpt: The new interface for ML.
 ---
 
 Machine learning today is both far more and far less accessible than ever before. On the one hand, without any manual feature engineering or custom algorithm development, a developer can have a deep learning model downloaded and running near state-of-the-art within minutes. However, in other ways, machine learning has never been so opaque and inaccessible. Modern deep learning models admit one primary input type---training data---and other than that, are largely black boxes. Given some knowledge of a new domain or task, how do we inject this into our model? Given some modification to our objectives, how do we quickly modify our model? How does one *program* the modern machine learning stack?
@@ -12,7 +12,7 @@ One answer, of course, is that today’s ML systems don’t need to be programme
 
 ## Code as Supervision: Training ML by Programming
 
-Our system, Snorkel---which we report on in **a new VLDB 2018 paper posted [here](https://arxiv.org/abs/1711.10160)**---is one attempt to build a system around this new type of interaction with ML. In [Snorkel](http://snorkel.stanford.edu/), we use **no hand-labeled training data**, but instead ask users to write *labeling functions (LFs)*, bits of black-box code which label subsets of unlabeled data. For example, suppose we were trying to train a machine learning model to [extract mentions of adverse drug reactions](https://github.com/HazyResearch/snorkel/tree/master/tutorials/cdr) from the scientific literature. To encode a heuristic about negation, for example, we could try writing the LF below:
+Our system, Snorkel---which we report on in **a new VLDB 2018 paper posted [here](https://arxiv.org/abs/1711.10160)**---is one attempt to build a system around this new type of interaction with ML. In [Snorkel](http://snorkel.stanford.edu/), we use **no hand-labeled training data**, but instead ask users to write *labeling functions (LFs)*, bits of black-box code which label subsets of unlabeled data. For example, suppose we were trying to train a machine learning model to [extract mentions of adverse drug reactions](https://github.com/snorkel-team/snorkel-extraction/tree/master/tutorials/cdr) from the scientific literature. To encode a heuristic about negation, for example, we could try writing the LF below:
 
 <figure>
 	<img src="/doks-theme/assets/images/2017-12-1-snorkel-programming/snorkel_lf.png" style="width: 100%; max-width: 500px;" alt="Example LF in Snorkel"/>

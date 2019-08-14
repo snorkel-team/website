@@ -30,6 +30,7 @@
 }
 
 .btn--dark {
+  font-size: 14px;
   color: $color-white;
   background-color: $color-black;
   padding: 0.5625rem 1.5625rem;
@@ -41,7 +42,7 @@
   }
 
   @media (min-width: $screen-sm-min) {
-    padding: 0.8125rem 2.1875rem;
+    padding: 0.6125rem 0.7875rem;
   }
 }
 

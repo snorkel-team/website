@@ -26,7 +26,7 @@ title: Get Started
     </div>
 
   <div markdown="1">
-    {% include_relative _tutorials/intro_tutorial.md %}
+    {% include_relative _getting_stared/getting_started.md %}
   </div>
   <br>
 

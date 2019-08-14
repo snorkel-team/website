@@ -10,7 +10,7 @@ Snorkel currently exposes three key programmatic operations:
 - **Slicing data** into different critical subsets.
 Snorkel then automatically models, cleans, and integrates the resulting training data using novel, theoretically-grounded techniques.
 
-<img src="/doks-theme/assets/images/layout/TrainingData.png" align="center" style="display: block; margin-left: auto; margin-right: auto;">
+<img src="/doks-theme/assets/images/layout/Overview.png" align="center" style="display: block; margin-left: auto; margin-right: auto;">
 
 In this quick walkthrough, we'll preview the high level workflow and interfaces of Snorkel using a canonical machine learning problem: classifying spam.
 We'll use a public [YouTube comments dataset](https://www.kaggle.com/goneee/youtube-spam-classifiedcomments) from Kaggle, and see how **Snorkel can enable you to train a machine learning model without _any_ hand-labeled training data!**

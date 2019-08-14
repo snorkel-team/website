@@ -48,93 +48,6 @@ pd.set_option("display.max_colwidth", 0)
 df_dev.head()
 ```
 
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>person1_word_idx</th>
-      <th>person2_word_idx</th>
-      <th>sentence</th>
-      <th>tokens</th>
-      <th>person1_right_tokens</th>
-      <th>person2_right_tokens</th>
-      <th>between_tokens</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>(1, 1)</td>
-      <td>(22, 24)</td>
-      <td>The Richards are half-sisters to Kathy Hilton, the mother of socialite Paris Hilton and spouse of luxury hotel magnate Richard Howard Hilton.</td>
-      <td>[The, Richards, are, half, -, sisters, to, Kathy, Hilton, ,, the, mother, of, socialite, Paris, Hilton, and, spouse, of, luxury, hotel, magnate, Richard, Howard, Hilton, ., ]</td>
-      <td>[are, half, -, sisters]</td>
-      <td>[., ]</td>
-      <td>[are, half, -, sisters, to, Kathy, Hilton, ,, the, mother, of, socialite, Paris, Hilton, and, spouse, of, luxury, hotel, magnate]</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>(1, 1)</td>
-      <td>(7, 8)</td>
-      <td>The Richards are half-sisters to Kathy Hilton, the mother of socialite Paris Hilton and spouse of luxury hotel magnate Richard Howard Hilton.</td>
-      <td>[The, Richards, are, half, -, sisters, to, Kathy, Hilton, ,, the, mother, of, socialite, Paris, Hilton, and, spouse, of, luxury, hotel, magnate, Richard, Howard, Hilton, ., ]</td>
-      <td>[are, half, -, sisters]</td>
-      <td>[,, the, mother, of]</td>
-      <td>[are, half, -, sisters, to]</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>(7, 8)</td>
-      <td>(22, 24)</td>
-      <td>The Richards are half-sisters to Kathy Hilton, the mother of socialite Paris Hilton and spouse of luxury hotel magnate Richard Howard Hilton.</td>
-      <td>[The, Richards, are, half, -, sisters, to, Kathy, Hilton, ,, the, mother, of, socialite, Paris, Hilton, and, spouse, of, luxury, hotel, magnate, Richard, Howard, Hilton, ., ]</td>
-      <td>[,, the, mother, of]</td>
-      <td>[., ]</td>
-      <td>[,, the, mother, of, socialite, Paris, Hilton, and, spouse, of, luxury, hotel, magnate]</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>(6, 6)</td>
-      <td>(20, 21)</td>
-      <td>Prior to both his guests, Colbert's monologue - parts of which he did sitting down - ripped into Donald Trump and his oft-mocked policy of building a wall at the US-Mexico border and not eating Oreos anymore.</td>
-      <td>[Prior, to, both, his, guests, ,, Colbert, s, monologue, -, parts, of, which, he, did, sitting, down, -, ripped, into, Donald, Trump, and, his, oft, -, mocked, policy, of, building, a, wall, at, the, US, -, Mexico, border, and, not, eating, Oreos, anymore, ., ]</td>
-      <td>[s, monologue, -, parts]</td>
-      <td>[and, his, oft, -]</td>
-      <td>[s, monologue, -, parts, of, which, he, did, sitting, down, -, ripped, into]</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>(2, 2)</td>
-      <td>(4, 5)</td>
-      <td>People reported Williams and Ven Veen tied the knot Saturday at Brush Creek Ranch in Saratoga, Wyoming, in front of about 200 guests.</td>
-      <td>[People, reported, Williams, and, Ven, Veen, tied, the, knot, Saturday, at, Brush, Creek, Ranch, in, Saratoga, ,, Wyoming, ,, in, front, of, about, 200, guests, .]</td>
-      <td>[and, Ven, Veen, tied]</td>
-      <td>[tied, the, knot, Saturday]</td>
-      <td>[and]</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
 Let's look at a candidate in the development set:
 
 
@@ -148,11 +61,6 @@ print("Sentence: ", candidate["sentence"])
 print("Person 1: ", person_names[0])
 print("Person 2: ", person_names[1])
 ```
-
-    Sentence:  The Richards are half-sisters to Kathy Hilton, the mother of socialite Paris Hilton and spouse of luxury hotel magnate Richard Howard Hilton.   
-    Person 1:  Kathy Hilton
-    Person 2:  Richard Howard Hilton
-
 
 ### Preprocessing the Data
 
@@ -304,17 +212,6 @@ list(known_spouses)[0:5]
 ```
 
 
-
-
-    [('Albert', 'Dorothea'),
-     ('Lawrence Washington', 'Mildred Gale'),
-     ('Belle Goshorn MacCorkle', 'William A. MacCorkle'),
-     ('Ann Morgan Guilbert', 'George Eckstein'),
-     ('Antonio Herrera Cerilles', 'Aurora E. Cerilles')]
-
-
-
-
 ```python
 @labeling_function(resources=dict(known_spouses=known_spouses), pre=[get_person_text])
 def lf_distant_supervision(x, known_spouses):
@@ -382,147 +279,6 @@ train_L = applier.apply(df_train)
 LFAnalysis(dev_L, lfs).lf_summary(Y_dev)
 ```
 
-    100%|██████████| 2811/2811 [00:07<00:00, 378.01it/s]
-    100%|██████████| 22254/22254 [00:59<00:00, 373.96it/s]
-
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>j</th>
-      <th>Polarity</th>
-      <th>Coverage</th>
-      <th>Overlaps</th>
-      <th>Conflicts</th>
-      <th>Correct</th>
-      <th>Incorrect</th>
-      <th>Emp. Acc.</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>lf_husband_wife</th>
-      <td>0</td>
-      <td>[1]</td>
-      <td>0.089648</td>
-      <td>0.036642</td>
-      <td>0.017432</td>
-      <td>93</td>
-      <td>159</td>
-      <td>0.369048</td>
-    </tr>
-    <tr>
-      <th>lf_husband_wife_left_window</th>
-      <td>1</td>
-      <td>[1]</td>
-      <td>0.025258</td>
-      <td>0.021345</td>
-      <td>0.003557</td>
-      <td>30</td>
-      <td>41</td>
-      <td>0.422535</td>
-    </tr>
-    <tr>
-      <th>lf_same_last_name</th>
-      <td>2</td>
-      <td>[1]</td>
-      <td>0.040555</td>
-      <td>0.016009</td>
-      <td>0.008538</td>
-      <td>19</td>
-      <td>95</td>
-      <td>0.166667</td>
-    </tr>
-    <tr>
-      <th>lf_married</th>
-      <td>3</td>
-      <td>[1]</td>
-      <td>0.019210</td>
-      <td>0.006759</td>
-      <td>0.002490</td>
-      <td>22</td>
-      <td>32</td>
-      <td>0.407407</td>
-    </tr>
-    <tr>
-      <th>lf_familial_relationship</th>
-      <td>4</td>
-      <td>[0]</td>
-      <td>0.115617</td>
-      <td>0.051939</td>
-      <td>0.026325</td>
-      <td>310</td>
-      <td>15</td>
-      <td>0.953846</td>
-    </tr>
-    <tr>
-      <th>lf_family_left_window</th>
-      <td>5</td>
-      <td>[0]</td>
-      <td>0.041266</td>
-      <td>0.033440</td>
-      <td>0.007826</td>
-      <td>114</td>
-      <td>2</td>
-      <td>0.982759</td>
-    </tr>
-    <tr>
-      <th>lf_other_relationship</th>
-      <td>6</td>
-      <td>[0]</td>
-      <td>0.013874</td>
-      <td>0.002846</td>
-      <td>0.002846</td>
-      <td>33</td>
-      <td>6</td>
-      <td>0.846154</td>
-    </tr>
-    <tr>
-      <th>lf_distant_supervision</th>
-      <td>7</td>
-      <td>[1]</td>
-      <td>0.001067</td>
-      <td>0.001067</td>
-      <td>0.000000</td>
-      <td>2</td>
-      <td>1</td>
-      <td>0.666667</td>
-    </tr>
-    <tr>
-      <th>lf_distant_supervision_last_names</th>
-      <td>8</td>
-      <td>[1]</td>
-      <td>0.001067</td>
-      <td>0.000711</td>
-      <td>0.000356</td>
-      <td>0</td>
-      <td>3</td>
-      <td>0.000000</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
 ### Training the Label Model
 
 Now, we'll train a model of the LFs to estimate their weights and combine their outputs. Once the model is trained, we can combine the outputs of the LFs into a single, noise-aware training label set for our extractor.
@@ -552,10 +308,6 @@ print(
     f"Label model roc-auc: {metric_score(Y_dev, Y_preds_dev, probs=Y_probs_dev, metric='roc_auc')}"
 )
 ```
-
-    Label model f1 score: 0.4199134199134199
-    Label model roc-auc: 0.7421454246069199
-
 
 ### Part 4: Training our End Extraction Model
 
@@ -591,116 +343,6 @@ model.fit(
 )
 ```
 
-    /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:516: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_qint8 = np.dtype([("qint8", np.int8, 1)])
-    /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:517: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
-    /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:518: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_qint16 = np.dtype([("qint16", np.int16, 1)])
-    /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:519: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
-    /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:520: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_qint32 = np.dtype([("qint32", np.int32, 1)])
-    /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:525: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      np_resource = np.dtype([("resource", np.ubyte, 1)])
-    /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:541: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_qint8 = np.dtype([("qint8", np.int8, 1)])
-    /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:542: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
-    /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:543: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_qint16 = np.dtype([("qint16", np.int16, 1)])
-    /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:544: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
-    /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:545: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_qint32 = np.dtype([("qint32", np.int32, 1)])
-    /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:550: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      np_resource = np.dtype([("resource", np.ubyte, 1)])
-    WARNING: Logging before flag parsing goes to stderr.
-    W0812 17:38:32.589718 140554608953152 deprecation.py:506] From /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorflow/python/keras/initializers.py:119: calling RandomUniform.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
-    Instructions for updating:
-    Call initializer instance with the dtype argument instead of passing it to the constructor
-    W0812 17:38:32.679018 140554608953152 deprecation.py:506] From /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
-    Instructions for updating:
-    Call initializer instance with the dtype argument instead of passing it to the constructor
-    W0812 17:38:33.063451 140554608953152 deprecation.py:323] From /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorflow/python/keras/backend.py:3794: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
-    Instructions for updating:
-    Use tf.where in 2.0, which has the same broadcast rule as np.where
-    W0812 17:38:33.099548 140554608953152 deprecation_wrapper.py:119] From /home/ubuntu/snorkel-tutorials/spouse/tf_model.py:56: The name tf.train.AdagradOptimizer is deprecated. Please use tf.compat.v1.train.AdagradOptimizer instead.
-    
-    W0812 17:38:33.739813 140554608953152 deprecation.py:506] From /home/ubuntu/snorkel-tutorials/.tox/spouse/lib/python3.6/site-packages/tensorflow/python/training/adagrad.py:76: calling Constant.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
-    Instructions for updating:
-    Call initializer instance with the dtype argument instead of passing it to the constructor
-
-
-    Epoch 1/30
-    5734/5734 [==============================] - 4s 625us/sample - loss: 0.6597
-    Epoch 2/30
-    5734/5734 [==============================] - 3s 529us/sample - loss: 0.6587
-    Epoch 3/30
-    5734/5734 [==============================] - 3s 531us/sample - loss: 0.6583
-    Epoch 4/30
-    5734/5734 [==============================] - 3s 528us/sample - loss: 0.6581
-    Epoch 5/30
-    5734/5734 [==============================] - 3s 528us/sample - loss: 0.6577
-    Epoch 6/30
-    5734/5734 [==============================] - 3s 529us/sample - loss: 0.6573
-    Epoch 7/30
-    5734/5734 [==============================] - 3s 531us/sample - loss: 0.6568
-    Epoch 8/30
-    5734/5734 [==============================] - 3s 528us/sample - loss: 0.6559
-    Epoch 9/30
-    5734/5734 [==============================] - 3s 528us/sample - loss: 0.6541
-    Epoch 10/30
-    5734/5734 [==============================] - 3s 529us/sample - loss: 0.6513
-    Epoch 11/30
-    5734/5734 [==============================] - 3s 530us/sample - loss: 0.6457
-    Epoch 12/30
-    5734/5734 [==============================] - 3s 527us/sample - loss: 0.6361
-    Epoch 13/30
-    5734/5734 [==============================] - 3s 533us/sample - loss: 0.6148
-    Epoch 14/30
-    5734/5734 [==============================] - 3s 530us/sample - loss: 0.5623
-    Epoch 15/30
-    5734/5734 [==============================] - 3s 528us/sample - loss: 0.5355
-    Epoch 16/30
-    5734/5734 [==============================] - 3s 531us/sample - loss: 0.5254
-    Epoch 17/30
-    5734/5734 [==============================] - 3s 528us/sample - loss: 0.5212
-    Epoch 18/30
-    5734/5734 [==============================] - 3s 531us/sample - loss: 0.5131
-    Epoch 19/30
-    5734/5734 [==============================] - 3s 532us/sample - loss: 0.5090
-    Epoch 20/30
-    5734/5734 [==============================] - 3s 531us/sample - loss: 0.5068
-    Epoch 21/30
-    5734/5734 [==============================] - 3s 528us/sample - loss: 0.5029
-    Epoch 22/30
-    5734/5734 [==============================] - 3s 527us/sample - loss: 0.5021
-    Epoch 23/30
-    5734/5734 [==============================] - 3s 531us/sample - loss: 0.4983
-    Epoch 24/30
-    5734/5734 [==============================] - 3s 530us/sample - loss: 0.4979
-    Epoch 25/30
-    5734/5734 [==============================] - 3s 526us/sample - loss: 0.4951
-    Epoch 26/30
-    5734/5734 [==============================] - 3s 529us/sample - loss: 0.4989
-    Epoch 27/30
-    5734/5734 [==============================] - 3s 531us/sample - loss: 0.4938
-    Epoch 28/30
-    5734/5734 [==============================] - 3s 530us/sample - loss: 0.4918
-    Epoch 29/30
-    5734/5734 [==============================] - 3s 529us/sample - loss: 0.4906
-    Epoch 30/30
-    5734/5734 [==============================] - 3s 531us/sample - loss: 0.4901
-
-
-
-
-
-    <tensorflow.python.keras.callbacks.History at 0x7fd48432b828>
-
-
-
 Finally, we evaluate the trained model by measuring its F1 score and ROC_AUC.
 
 
@@ -715,10 +357,6 @@ print(
     f"Test ROC-AUC when trained with soft labels: {metric_score(Y_test, probs=probs, metric='roc_auc')}"
 )
 ```
-
-    Test F1 when trained with soft labels: 0.2773722627737226
-    Test ROC-AUC when trained with soft labels: 0.7229435390009865
-
 
 ## Summary
 In this tutorial, we showed how Snorkel can be used for Information Extraction. We demonstrated how to create LFs that leverage keywords and external knowledge bases (distant supervision). Finally, we showed how a model trained using the probabilistic outputs of the Label Model can achieve comparable performance while generalizing to all examples.

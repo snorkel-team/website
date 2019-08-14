@@ -73,75 +73,6 @@ pd.set_option("display.max_colwidth", 0)
 df_dev.head()
 ```
 
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>tweet_id</th>
-      <th>tweet_text</th>
-      <th>sentiment</th>
-    </tr>
-    <tr>
-      <th>tweet_id</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>79197834</th>
-      <td>79197834</td>
-      <td>@mention not in sunny dover! haha</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>80059939</th>
-      <td>80059939</td>
-      <td>It is literally pissing it down in sideways rain. I have nothing to protect me from this monstrous weather.</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>79196441</th>
-      <td>79196441</td>
-      <td>Dear perfect weather, thanks for the vest lunch hour of all time. (@ Lady Bird Lake Trail w/ 2 others) {link}</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>84047300</th>
-      <td>84047300</td>
-      <td>RT @mention: I can't wait for the storm tonight :)</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>83255121</th>
-      <td>83255121</td>
-      <td>60 degrees. And its almost the end of may. Wisconsin... I hate you.</td>
-      <td>0</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
 Now let's take a look at the crowd labels.
 We'll convert these into labeling functions.
 
@@ -149,68 +80,6 @@ We'll convert these into labeling functions.
 ```python
 crowd_labels.head()
 ```
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>worker_id</th>
-      <th>label</th>
-    </tr>
-    <tr>
-      <th>tweet_id</th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>82510997</th>
-      <td>18034918</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>82510997</th>
-      <td>7450342</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>82510997</th>
-      <td>18465660</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>82510997</th>
-      <td>17475684</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>82510997</th>
-      <td>14472526</td>
-      <td>1</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
 
 ## Writing Labeling Functions
 Each crowdworker can be thought of as a single labeling function,
@@ -232,9 +101,6 @@ for worker_id in labels_by_annotator.groups:
 
 print("Number of workers:", len(worker_dicts))
 ```
-
-    Number of workers: 100
-
 
 
 ```python
@@ -267,10 +133,6 @@ L_train = applier.apply(df_train)
 L_dev = applier.apply(df_dev)
 ```
 
-    100%|██████████| 187/187 [00:00<00:00, 927.50it/s]
-    100%|██████████| 50/50 [00:00<00:00, 927.47it/s]
-
-
 Note that because our dev set is so small and our LFs are relatively sparse, many LFs will appear to have zero coverage.
 Fortunately, our label model learns weights for LFs based on their outputs on the training set, which is generally much larger.
 
@@ -281,99 +143,6 @@ from snorkel.labeling import LFAnalysis
 LFAnalysis(L_dev, worker_lfs).lf_summary(Y_dev).sample(5)
 ```
 
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>j</th>
-      <th>Polarity</th>
-      <th>Coverage</th>
-      <th>Overlaps</th>
-      <th>Conflicts</th>
-      <th>Correct</th>
-      <th>Incorrect</th>
-      <th>Emp. Acc.</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>worker_6453108</th>
-      <td>11</td>
-      <td>[0, 1]</td>
-      <td>0.06</td>
-      <td>0.06</td>
-      <td>0.04</td>
-      <td>3</td>
-      <td>0</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>worker_18465660</th>
-      <td>80</td>
-      <td>[0, 1]</td>
-      <td>0.06</td>
-      <td>0.06</td>
-      <td>0.06</td>
-      <td>3</td>
-      <td>0</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>worker_15847995</th>
-      <td>56</td>
-      <td>[1]</td>
-      <td>0.02</td>
-      <td>0.02</td>
-      <td>0.00</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>worker_15124755</th>
-      <td>53</td>
-      <td>[0, 1]</td>
-      <td>0.06</td>
-      <td>0.06</td>
-      <td>0.06</td>
-      <td>3</td>
-      <td>0</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>worker_17475684</th>
-      <td>68</td>
-      <td>[0, 1]</td>
-      <td>0.30</td>
-      <td>0.30</td>
-      <td>0.28</td>
-      <td>10</td>
-      <td>5</td>
-      <td>0.666667</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
 So the crowd labels in general are quite good! But how much of our dev and training
 sets do they cover?
 
@@ -382,10 +151,6 @@ sets do they cover?
 print(f"Training set coverage: {LFAnalysis(L_train).label_coverage(): 0.3f}")
 print(f"Dev set coverage: {LFAnalysis(L_dev).label_coverage(): 0.3f}")
 ```
-
-    Training set coverage:  0.503
-    Dev set coverage:  0.500
-
 
 ### Additional labeling functions
 
@@ -437,107 +202,10 @@ L_train = applier.apply(df_train)
 L_dev = applier.apply(df_dev)
 ```
 
-    100%|██████████| 187/187 [00:00<00:00, 519.91it/s]
-    100%|██████████| 50/50 [00:00<00:00, 572.53it/s]
-
-
 
 ```python
 LFAnalysis(L_dev, lfs).lf_summary(Y_dev).head()
 ```
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>j</th>
-      <th>Polarity</th>
-      <th>Coverage</th>
-      <th>Overlaps</th>
-      <th>Conflicts</th>
-      <th>Correct</th>
-      <th>Incorrect</th>
-      <th>Emp. Acc.</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>polarity_positive</th>
-      <td>0</td>
-      <td>[1]</td>
-      <td>0.30</td>
-      <td>0.16</td>
-      <td>0.12</td>
-      <td>15</td>
-      <td>0</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>polarity_negative</th>
-      <td>1</td>
-      <td>[0]</td>
-      <td>0.10</td>
-      <td>0.10</td>
-      <td>0.04</td>
-      <td>5</td>
-      <td>0</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>polarity_negative_2</th>
-      <td>2</td>
-      <td>[0]</td>
-      <td>0.70</td>
-      <td>0.40</td>
-      <td>0.32</td>
-      <td>26</td>
-      <td>9</td>
-      <td>0.742857</td>
-    </tr>
-    <tr>
-      <th>worker_6332651</th>
-      <td>3</td>
-      <td>[0, 1]</td>
-      <td>0.06</td>
-      <td>0.06</td>
-      <td>0.06</td>
-      <td>1</td>
-      <td>2</td>
-      <td>0.333333</td>
-    </tr>
-    <tr>
-      <th>worker_6336109</th>
-      <td>4</td>
-      <td>[]</td>
-      <td>0.00</td>
-      <td>0.00</td>
-      <td>0.00</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0.000000</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
 
 Using the text-based LFs, we've expanded coverage on both our training set
 and dev set to 100%.
@@ -549,10 +217,6 @@ to denoise and combine them.
 print(f"Training set coverage: {LFAnalysis(L_train).label_coverage(): 0.3f}")
 print(f"Dev set coverage: {LFAnalysis(L_dev).label_coverage(): 0.3f}")
 ```
-
-    Training set coverage:  1.000
-    Dev set coverage:  1.000
-
 
 ## Train LabelModel And Generate Probabilistic Labels
 
@@ -576,9 +240,6 @@ Y_dev_preds = label_model.predict(L_dev)
 acc = metric_score(Y_dev, Y_dev_preds, probs=None, metric="accuracy")
 print(f"LabelModel Accuracy: {acc:.3f}")
 ```
-
-    LabelModel Accuracy: 0.920
-
 
 We see that we get very high accuracy on the development set.
 This is due to the abundance of high quality crowdworker labels.
@@ -633,23 +294,9 @@ sklearn_model.fit(train_vectors, Y_train_preds)
 ```
 
 
-
-
-    LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
-                       intercept_scaling=1, l1_ratio=None, max_iter=100,
-                       multi_class='warn', n_jobs=None, penalty='l2',
-                       random_state=None, solver='liblinear', tol=0.0001, verbose=0,
-                       warm_start=False)
-
-
-
-
 ```python
 print(f"Accuracy of trained model: {sklearn_model.score(test_vectors, Y_test)}")
 ```
-
-    Accuracy of trained model: 0.86
-
 
 We now have a trained model that can be applied to future examples without requiring crowdsourced labels, and with accuracy not much lower than the `LabelModel` that _does_ have access to crowdsourced labels!
 

@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Intro to Slicing Functions
+title: Introduction to Slicing Functions
 description: Monitoring models for spam classification
 excerpt: Monitoring models for spam classification
 order: 3
@@ -57,81 +57,6 @@ df_train, df_valid, df_test = load_spam_dataset(
 df_train.head()
 ```
 
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>author</th>
-      <th>date</th>
-      <th>text</th>
-      <th>label</th>
-      <th>video</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Alessandro leite</td>
-      <td>2014-11-05T22:21:36</td>
-      <td>pls http://www10.vakinha.com.br/VaquinhaE.aspx?e=313327 help me get vip gun  cross fire al﻿</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Salim Tayara</td>
-      <td>2014-11-02T14:33:30</td>
-      <td>if your like drones, plz subscribe to Kamal Tayara. He takes videos with  his drone that are absolutely beautiful.﻿</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Phuc Ly</td>
-      <td>2014-01-20T15:27:47</td>
-      <td>go here to check the views :3﻿</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>DropShotSk8r</td>
-      <td>2014-01-19T04:27:18</td>
-      <td>Came here to check the views, goodbye.﻿</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>css403</td>
-      <td>2014-11-07T14:25:48</td>
-      <td>i am 2,126,492,636 viewer :D﻿</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
 ## 1. Write slicing functions
 
 We leverage *slicing functions* (SFs) — an abstraction that shares syntax with *labeling functions*, which you should already be familiar with.
@@ -171,66 +96,6 @@ from snorkel.slicing import slice_dataframe
 short_link_df = slice_dataframe(df_valid, short_link)
 short_link_df[["text", "label"]]
 ```
-
-    100%|██████████| 120/120 [00:00<00:00, 17403.15it/s]
-
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>text</th>
-      <th>label</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>280</th>
-      <td>Being paid to respond to fast paid surveys from home has enabled me to give up working and make more than 4500 bucks monthly.  To read more go to this web site bit.ly\1bSefQe</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>192</th>
-      <td>Meet The Richest Online Marketer  NOW CLICK : bit.ly/make-money-without-adroid</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>301</th>
-      <td>coby this USL and past :&lt;br /&gt;&lt;a href="http://adf.ly"&gt;http://adf.ly&lt;/a&gt; /1HmVtX&lt;br /&gt;delete space after y﻿</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>350</th>
-      <td>adf.ly / KlD3Y</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>Earn money for being online with 0 efforts!    bit.ly\14gKvDo</td>
-      <td>1</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
 
 ## 2. Train a discriminative model
 
@@ -285,13 +150,6 @@ We can inspect our datasets to confirm that they have the appropriate fields.
 dl_valid.dataset
 ```
 
-
-
-
-    DictDataset(name=spam_dataset, X_keys=['bow_features'], Y_keys=['spam_task'])
-
-
-
 ### Define [`MultitaskClassifier`](https://snorkel.readthedocs.io/en/redux/packages/_autosummary/classification/snorkel.classification.MultitaskClassifier.html)
 
 We define a simple Multi-Layer Perceptron (MLP) architecture to learn from the `bow_features`.
@@ -318,86 +176,12 @@ trainer = Trainer(n_epochs=5, lr=1e-4, progress_bar=True)
 trainer.fit(model, [dl_train, dl_valid])
 ```
 
-    Epoch 0:: 100%|██████████| 50/50 [00:05<00:00,  8.15it/s, model/all/train/loss=0.61, model/all/train/lr=0.0001, spam_task/spam_dataset/valid/accuracy=0.9, spam_task/spam_dataset/valid/f1=0.898]
-    Epoch 1:: 100%|██████████| 50/50 [00:05<00:00,  8.37it/s, model/all/train/loss=0.416, model/all/train/lr=0.0001, spam_task/spam_dataset/valid/accuracy=0.942, spam_task/spam_dataset/valid/f1=0.933]
-    Epoch 2:: 100%|██████████| 50/50 [00:05<00:00,  8.57it/s, model/all/train/loss=0.242, model/all/train/lr=0.0001, spam_task/spam_dataset/valid/accuracy=0.933, spam_task/spam_dataset/valid/f1=0.923]
-    Epoch 3:: 100%|██████████| 50/50 [00:05<00:00,  8.68it/s, model/all/train/loss=0.144, model/all/train/lr=0.0001, spam_task/spam_dataset/valid/accuracy=0.925, spam_task/spam_dataset/valid/f1=0.913]
-    Epoch 4:: 100%|██████████| 50/50 [00:05<00:00,  8.31it/s, model/all/train/loss=0.0923, model/all/train/lr=0.0001, spam_task/spam_dataset/valid/accuracy=0.917, spam_task/spam_dataset/valid/f1=0.902]
-
-
 How well does our model do?
 
 
 ```python
 model.score([dl_train, dl_valid], as_dataframe=True)
 ```
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>label</th>
-      <th>dataset</th>
-      <th>split</th>
-      <th>metric</th>
-      <th>score</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>spam_task</td>
-      <td>spam_dataset</td>
-      <td>train</td>
-      <td>accuracy</td>
-      <td>0.990542</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>spam_task</td>
-      <td>spam_dataset</td>
-      <td>train</td>
-      <td>f1</td>
-      <td>0.990937</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>spam_task</td>
-      <td>spam_dataset</td>
-      <td>valid</td>
-      <td>accuracy</td>
-      <td>0.916667</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>spam_task</td>
-      <td>spam_dataset</td>
-      <td>valid</td>
-      <td>f1</td>
-      <td>0.901961</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
 
 ## 3. Perform error analysis
 
@@ -424,63 +208,6 @@ For application purposes, we might care especially about false negatives (i.e. t
 df_valid[["text", "label"]].iloc[error_buckets[(1, 0)]].head()
 ```
 
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>text</th>
-      <th>label</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>218</th>
-      <td>WOW muslims are really egoistic..... 23% of the World population and not in this video or donating 1 dollar to the poor ones in Africa :( shame on those terrorist muslims</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>157</th>
-      <td>Fuck it was the best ever 0687119038 nummber of patrik kluivert his son share !﻿</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>154</th>
-      <td>1 753 682 421 GANGNAM STYLE ^^</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>31</th>
-      <td>Part 5. Comforter of the afflicted, pray for us Help of Christians, pray for us Queen of Angels, pray for us Queen of Patriarchs, pray for us Queen of Prophets, pray for us Queen of Apostles, pray for us Queen of Martyrs, pray for us Queen of Confessors, pray for us Queen of Virgins, pray for us Queen of all Saints, pray for us Queen conceived without original sin, pray for us Queen of the most holy Rosary, pray for us Queen of the family, pray for us Queen of peace, pray for us</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>142</th>
-      <td>I WILL NEVER FORGET THIS SONG IN MY LIFE LIKE THIS COMMENT OF YOUR HEARING THIS SONG FOR LIKE A YEAR!!!!!</td>
-      <td>1</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
 In the next sections, we'll explore how we can programmatically monitor these error modes with built-in helpers from Snorkel.
 
 ## 4. Monitor slice performance
@@ -497,11 +224,6 @@ S_train = applier.apply(df_train)
 S_valid = applier.apply(df_valid)
 S_test = applier.apply(df_test)
 ```
-
-    100%|██████████| 1586/1586 [00:00<00:00, 42703.68it/s]
-    100%|██████████| 120/120 [00:00<00:00, 29570.32it/s]
-    100%|██████████| 250/250 [00:00<00:00, 35943.37it/s]
-
 
 Specifically, [`add_slice_labels`](https://snorkel.readthedocs.io/en/redux/packages/_autosummary/slicing/snorkel.slicing.add_slice_labels.html#snorkel.slicing.add_slice_labels) will add two sets of labels for each slice:
 * `spam_task_slice:{slice_name}_ind`: an indicator label, which corresponds to the outputs of the slicing functions.
@@ -523,13 +245,6 @@ add_slice_labels(dl_test, spam_task, S_test, slice_names)
 dl_valid.dataset
 ```
 
-
-
-
-    DictDataset(name=spam_dataset, X_keys=['bow_features'], Y_keys=['spam_task', 'spam_task_slice:short_link_ind', 'spam_task_slice:short_link_pred', 'spam_task_slice:base_ind', 'spam_task_slice:base_pred'])
-
-
-
 With our updated dataloader, we want to evaluate our model on the defined slice.
 In the  [`MultitaskClassifier`](https://snorkel.readthedocs.io/en/redux/packages/_autosummary/classification/snorkel.classification.MultitaskClassifier.html), we can call [`score`](https://snorkel.readthedocs.io/en/redux/packages/_autosummary/classification/snorkel.classification.MultitaskClassifier.html#snorkel.classification.MultitaskClassifier.score) with an additional argument, `remap_labels`, to specify that the slice's prediction labels, `spam_task_slice:short_link_pred`, should be mapped to the `spam_task` for evaluation.
 
@@ -541,109 +256,6 @@ model.score(
     as_dataframe=True,
 )
 ```
-
-    WARNING:root:Ignoring extra labels in dataloader (valid): {'spam_task_slice:base_pred', 'spam_task_slice:short_link_ind', 'spam_task_slice:base_ind'}
-    WARNING:root:Ignoring extra labels in dataloader (test): {'spam_task_slice:base_pred', 'spam_task_slice:short_link_ind', 'spam_task_slice:base_ind'}
-
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>label</th>
-      <th>dataset</th>
-      <th>split</th>
-      <th>metric</th>
-      <th>score</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>spam_task</td>
-      <td>spam_dataset</td>
-      <td>valid</td>
-      <td>accuracy</td>
-      <td>0.916667</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>spam_task</td>
-      <td>spam_dataset</td>
-      <td>valid</td>
-      <td>f1</td>
-      <td>0.901961</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>spam_task_slice:short_link_pred</td>
-      <td>spam_dataset</td>
-      <td>valid</td>
-      <td>accuracy</td>
-      <td>0.400000</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>spam_task_slice:short_link_pred</td>
-      <td>spam_dataset</td>
-      <td>valid</td>
-      <td>f1</td>
-      <td>0.571429</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>spam_task</td>
-      <td>spam_dataset</td>
-      <td>test</td>
-      <td>accuracy</td>
-      <td>0.928000</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>spam_task</td>
-      <td>spam_dataset</td>
-      <td>test</td>
-      <td>f1</td>
-      <td>0.918182</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>spam_task_slice:short_link_pred</td>
-      <td>spam_dataset</td>
-      <td>test</td>
-      <td>accuracy</td>
-      <td>0.333333</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>spam_task_slice:short_link_pred</td>
-      <td>spam_dataset</td>
-      <td>test</td>
-      <td>f1</td>
-      <td>0.500000</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
 
 ### Performance monitoring with [`SliceScorer`](https://snorkel.readthedocs.io/en/redux/packages/_autosummary/slicing/snorkel.slicing.SliceScorer.html#snorkel.slicing.SliceScorer)
 
@@ -659,13 +271,6 @@ sklearn_model = LogisticRegression(C=0.001, solver="liblinear")
 sklearn_model.fit(X=X_train, y=Y_train)
 sklearn_model.score(X_test, Y_test)
 ```
-
-
-
-
-    0.928
-
-
 
 Now, we initialize the [`SliceScorer`](https://snorkel.readthedocs.io/en/redux/packages/_autosummary/slicing/snorkel.slicing.SliceScorer.html#snorkel.slicing.SliceScorer) using 1) an existing [`Scorer`](https://snorkel.readthedocs.io/en/redux/packages/_autosummary/slicing/snorkel.slicing.SliceScorer.html) and 2) desired `slice_names` to see slice-specific performance.
 
@@ -688,48 +293,6 @@ slice_scorer.score(
     S=S_test, golds=Y_test, preds=preds_test, probs=probs_test, as_dataframe=True
 )
 ```
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>accuracy</th>
-      <th>f1</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>overall</th>
-      <td>0.928000</td>
-      <td>0.925</td>
-    </tr>
-    <tr>
-      <th>short_link</th>
-      <td>0.333333</td>
-      <td>0.500</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
 
 ### Write additional slicing functions (SFs)
 
@@ -796,66 +359,6 @@ polarity_df = slice_dataframe(df_valid, textblob_polarity)
 polarity_df[["text", "label"]].head()
 ```
 
-    100%|██████████| 120/120 [00:00<00:00, 835.22it/s]
-
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>text</th>
-      <th>label</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>16</th>
-      <td>Love this song !!!!!!</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>309</th>
-      <td>One of the best song of all the time﻿</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>164</th>
-      <td>She is perfect</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>310</th>
-      <td>Best world cup offical song﻿</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>352</th>
-      <td>I remember this :D</td>
-      <td>0</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
 Like we did above, we can evaluate model performance on _all SFs_ using the `SliceScorer`.
 
 
@@ -883,76 +386,6 @@ slice_scorer.score(
 )
 ```
 
-    100%|██████████| 250/250 [00:00<00:00, 1007.98it/s]
-
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>accuracy</th>
-      <th>f1</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>overall</th>
-      <td>0.928000</td>
-      <td>0.925000</td>
-    </tr>
-    <tr>
-      <th>short_link</th>
-      <td>0.333333</td>
-      <td>0.500000</td>
-    </tr>
-    <tr>
-      <th>keyword_subscribe</th>
-      <td>0.944444</td>
-      <td>0.971429</td>
-    </tr>
-    <tr>
-      <th>keyword_please</th>
-      <td>1.000000</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>regex_check_out</th>
-      <td>1.000000</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>short_comment</th>
-      <td>0.945652</td>
-      <td>0.666667</td>
-    </tr>
-    <tr>
-      <th>textblob_polarity</th>
-      <td>0.875000</td>
-      <td>0.727273</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
 ## 5. Improve slice performance
 
 In classification tasks, we might attempt to increase slice performance with techniques like _oversampling_ (i.e. with PyTorch's [`WeightedRandomSampler`](https://pytorch.org/docs/stable/data.html#torch.utils.data.WeightedRandomSampler)).
@@ -976,10 +409,6 @@ S_train = applier.apply(df_train)
 S_valid = applier.apply(df_valid)
 ```
 
-    100%|██████████| 1586/1586 [00:01<00:00, 991.99it/s] 
-    100%|██████████| 120/120 [00:00<00:00, 8173.77it/s]
-
-
 
 ```python
 slice_names = [sf.name for sf in sfs]
@@ -1001,27 +430,6 @@ slice_tasks
 ```
 
 
-
-
-    [Task(name=spam_task_slice:short_link_ind),
-     Task(name=spam_task_slice:keyword_subscribe_ind),
-     Task(name=spam_task_slice:keyword_please_ind),
-     Task(name=spam_task_slice:regex_check_out_ind),
-     Task(name=spam_task_slice:short_comment_ind),
-     Task(name=spam_task_slice:textblob_polarity_ind),
-     Task(name=spam_task_slice:base_ind),
-     Task(name=spam_task_slice:short_link_pred),
-     Task(name=spam_task_slice:keyword_subscribe_pred),
-     Task(name=spam_task_slice:keyword_please_pred),
-     Task(name=spam_task_slice:regex_check_out_pred),
-     Task(name=spam_task_slice:short_comment_pred),
-     Task(name=spam_task_slice:textblob_polarity_pred),
-     Task(name=spam_task_slice:base_pred),
-     Task(name=spam_task)]
-
-
-
-
 ```python
 slice_model = MultitaskClassifier(slice_tasks)
 ```
@@ -1037,11 +445,6 @@ We set `num_epochs=1` for demonstration purposes.*
 trainer = Trainer(n_epochs=1, lr=1e-4, progress_bar=True)
 trainer.fit(slice_model, [dl_train, dl_valid])
 ```
-
-    Epoch 0::  98%|█████████▊| 49/50 [00:44<00:00,  1.12it/s, model/all/train/loss=0.357, model/all/train/lr=0.0001]/home/ubuntu/snorkel-tutorials/.tox/spam/lib/python3.6/site-packages/sklearn/metrics/classification.py:1437: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 due to no predicted samples.
-      'precision', 'predicted', average, warn_for)
-    Epoch 0:: 100%|██████████| 50/50 [00:45<00:00,  1.06it/s, model/all/train/loss=0.356, model/all/train/lr=0.0001, spam_task/spam_dataset/valid/accuracy=0.942, spam_task/spam_dataset/valid/f1=0.935, spam_task_slice:short_link_ind/spam_dataset/valid/f1=0, spam_task_slice:short_link_pred/spam_dataset/valid/accuracy=1, spam_task_slice:short_link_pred/spam_dataset/valid/f1=1, spam_task_slice:base_ind/spam_dataset/valid/f1=1, spam_task_slice:base_pred/spam_dataset/valid/accuracy=0.933, spam_task_slice:base_pred/spam_dataset/valid/f1=0.926, spam_task_slice:keyword_subscribe_ind/spam_dataset/valid/f1=0, spam_task_slice:keyword_subscribe_pred/spam_dataset/valid/accuracy=1, spam_task_slice:keyword_subscribe_pred/spam_dataset/valid/f1=1, spam_task_slice:keyword_please_ind/spam_dataset/valid/f1=0, spam_task_slice:keyword_please_pred/spam_dataset/valid/accuracy=1, spam_task_slice:keyword_please_pred/spam_dataset/valid/f1=1, spam_task_slice:regex_check_out_ind/spam_dataset/valid/f1=0.762, spam_task_slice:regex_check_out_pred/spam_dataset/valid/accuracy=1, spam_task_slice:regex_check_out_pred/spam_dataset/valid/f1=1, spam_task_slice:short_comment_ind/spam_dataset/valid/f1=0, spam_task_slice:short_comment_pred/spam_dataset/valid/accuracy=0.947, spam_task_slice:short_comment_pred/spam_dataset/valid/f1=0.5, spam_task_slice:textblob_polarity_ind/spam_dataset/valid/f1=0, spam_task_slice:textblob_polarity_pred/spam_dataset/valid/accuracy=1, spam_task_slice:textblob_polarity_pred/spam_dataset/valid/f1=1]
-
 
 At inference time, the primary task head (`spam_task`) will make all final predictions.
 We'd like to evaluate all the slice heads on the original task head.
@@ -1062,301 +465,6 @@ For a demonstration of data slicing deployed in state-of-the-art models, please 
 ```python
 slice_model.score([dl_valid, dl_test], remap_labels=eval_mapping, as_dataframe=True)
 ```
-
-    WARNING:root:Ignoring extra labels in dataloader (valid): {'spam_task_slice:short_comment_ind', 'spam_task_slice:keyword_please_ind', 'spam_task_slice:base_ind', 'spam_task_slice:textblob_polarity_ind', 'spam_task_slice:short_link_ind', 'spam_task_slice:regex_check_out_ind', 'spam_task_slice:keyword_subscribe_ind'}
-    WARNING:root:Ignoring extra labels in dataloader (test): {'spam_task_slice:short_comment_ind', 'spam_task_slice:keyword_please_ind', 'spam_task_slice:base_ind', 'spam_task_slice:textblob_polarity_ind', 'spam_task_slice:short_link_ind', 'spam_task_slice:regex_check_out_ind', 'spam_task_slice:keyword_subscribe_ind'}
-
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>label</th>
-      <th>dataset</th>
-      <th>split</th>
-      <th>metric</th>
-      <th>score</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>spam_task</td>
-      <td>spam_dataset</td>
-      <td>valid</td>
-      <td>accuracy</td>
-      <td>0.941667</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>spam_task</td>
-      <td>spam_dataset</td>
-      <td>valid</td>
-      <td>f1</td>
-      <td>0.934579</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>spam_task_slice:short_link_pred</td>
-      <td>spam_dataset</td>
-      <td>valid</td>
-      <td>accuracy</td>
-      <td>0.800000</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>spam_task_slice:short_link_pred</td>
-      <td>spam_dataset</td>
-      <td>valid</td>
-      <td>f1</td>
-      <td>0.888889</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>spam_task_slice:base_pred</td>
-      <td>spam_dataset</td>
-      <td>valid</td>
-      <td>accuracy</td>
-      <td>0.941667</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>spam_task_slice:base_pred</td>
-      <td>spam_dataset</td>
-      <td>valid</td>
-      <td>f1</td>
-      <td>0.934579</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>spam_task_slice:keyword_subscribe_pred</td>
-      <td>spam_dataset</td>
-      <td>valid</td>
-      <td>accuracy</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>spam_task_slice:keyword_subscribe_pred</td>
-      <td>spam_dataset</td>
-      <td>valid</td>
-      <td>f1</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>spam_task_slice:keyword_please_pred</td>
-      <td>spam_dataset</td>
-      <td>valid</td>
-      <td>accuracy</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>spam_task_slice:keyword_please_pred</td>
-      <td>spam_dataset</td>
-      <td>valid</td>
-      <td>f1</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>spam_task_slice:regex_check_out_pred</td>
-      <td>spam_dataset</td>
-      <td>valid</td>
-      <td>accuracy</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>spam_task_slice:regex_check_out_pred</td>
-      <td>spam_dataset</td>
-      <td>valid</td>
-      <td>f1</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>spam_task_slice:short_comment_pred</td>
-      <td>spam_dataset</td>
-      <td>valid</td>
-      <td>accuracy</td>
-      <td>0.947368</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>spam_task_slice:short_comment_pred</td>
-      <td>spam_dataset</td>
-      <td>valid</td>
-      <td>f1</td>
-      <td>0.500000</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>spam_task_slice:textblob_polarity_pred</td>
-      <td>spam_dataset</td>
-      <td>valid</td>
-      <td>accuracy</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>spam_task_slice:textblob_polarity_pred</td>
-      <td>spam_dataset</td>
-      <td>valid</td>
-      <td>f1</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>spam_task</td>
-      <td>spam_dataset</td>
-      <td>test</td>
-      <td>accuracy</td>
-      <td>0.936000</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>spam_task</td>
-      <td>spam_dataset</td>
-      <td>test</td>
-      <td>f1</td>
-      <td>0.927928</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>spam_task_slice:short_link_pred</td>
-      <td>spam_dataset</td>
-      <td>test</td>
-      <td>accuracy</td>
-      <td>0.333333</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>spam_task_slice:short_link_pred</td>
-      <td>spam_dataset</td>
-      <td>test</td>
-      <td>f1</td>
-      <td>0.500000</td>
-    </tr>
-    <tr>
-      <th>20</th>
-      <td>spam_task_slice:base_pred</td>
-      <td>spam_dataset</td>
-      <td>test</td>
-      <td>accuracy</td>
-      <td>0.936000</td>
-    </tr>
-    <tr>
-      <th>21</th>
-      <td>spam_task_slice:base_pred</td>
-      <td>spam_dataset</td>
-      <td>test</td>
-      <td>f1</td>
-      <td>0.927928</td>
-    </tr>
-    <tr>
-      <th>22</th>
-      <td>spam_task_slice:keyword_subscribe_pred</td>
-      <td>spam_dataset</td>
-      <td>test</td>
-      <td>accuracy</td>
-      <td>0.861111</td>
-    </tr>
-    <tr>
-      <th>23</th>
-      <td>spam_task_slice:keyword_subscribe_pred</td>
-      <td>spam_dataset</td>
-      <td>test</td>
-      <td>f1</td>
-      <td>0.925373</td>
-    </tr>
-    <tr>
-      <th>24</th>
-      <td>spam_task_slice:keyword_please_pred</td>
-      <td>spam_dataset</td>
-      <td>test</td>
-      <td>accuracy</td>
-      <td>0.956522</td>
-    </tr>
-    <tr>
-      <th>25</th>
-      <td>spam_task_slice:keyword_please_pred</td>
-      <td>spam_dataset</td>
-      <td>test</td>
-      <td>f1</td>
-      <td>0.977778</td>
-    </tr>
-    <tr>
-      <th>26</th>
-      <td>spam_task_slice:regex_check_out_pred</td>
-      <td>spam_dataset</td>
-      <td>test</td>
-      <td>accuracy</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>27</th>
-      <td>spam_task_slice:regex_check_out_pred</td>
-      <td>spam_dataset</td>
-      <td>test</td>
-      <td>f1</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>28</th>
-      <td>spam_task_slice:short_comment_pred</td>
-      <td>spam_dataset</td>
-      <td>test</td>
-      <td>accuracy</td>
-      <td>0.956522</td>
-    </tr>
-    <tr>
-      <th>29</th>
-      <td>spam_task_slice:short_comment_pred</td>
-      <td>spam_dataset</td>
-      <td>test</td>
-      <td>f1</td>
-      <td>0.714286</td>
-    </tr>
-    <tr>
-      <th>30</th>
-      <td>spam_task_slice:textblob_polarity_pred</td>
-      <td>spam_dataset</td>
-      <td>test</td>
-      <td>accuracy</td>
-      <td>0.916667</td>
-    </tr>
-    <tr>
-      <th>31</th>
-      <td>spam_task_slice:textblob_polarity_pred</td>
-      <td>spam_dataset</td>
-      <td>test</td>
-      <td>f1</td>
-      <td>0.800000</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
 
 ## Recap
 

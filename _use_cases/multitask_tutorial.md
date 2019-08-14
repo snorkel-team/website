@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Intro to Snorkel's Multitask Learning System
+title: Introduction to Snorkel's Multitask Learning System
 description: State-of-the-art pretraining and task flows
 excerpt: State-of-the-art pretraining and task flows
 order: 8
@@ -82,10 +82,6 @@ print(f"Training data shape: {circle_X_train.shape}")
 print(f"Label space: {set(circle_Y_train)}")
 ```
 
-    Training data shape: (800, 2)
-    Label space: {0, 1}
-
-
 And we can view the ground truth labels of our tasks visually to confirm our intuition on what the decision boundaries look like.
 In the plots below, the purple points represent class 0 and the yellow points represent class 1.
 
@@ -107,10 +103,6 @@ axs[1].legend(*scatter.legend_elements(), loc="upper right", title="Labels")
 
 plt.show()
 ```
-
-
-![png](multitask_tutorial_12_0.png)
-
 
 ## Make DataLoaders
 
@@ -160,11 +152,10 @@ We'll instantiate it from a list of `Tasks`.
 
 A `Task` represents a path through a neural network. In `MultitaskClassifier`, this path corresponds to a particular sequence of PyTorch modules through which each example will make a forward pass.
 
-To specify this sequence of modules, each `Task` defines a **module pool** (a set of modules that it relies on) and a **task flow**—a sequence of `Operation`s.
-Each `Operation` specifies a module and the inputs to feed to that module.
-These inputs can come from a previous operation or the original input data.
-The inputs are defined by a list of tuples, where each tuple has the name of a previous operation (or the keyword `_input_` to denote the original input) and either the name of a field (e.g., if the output of that operation is a `dict`) or an index (e.g., if the output of that operation is a single `tensor`, a `list` or a `tuple`).
-Most PyTorch modules output a single tensor, so most of the time, the second element of this tuple is 0.
+To specify this sequence of modules, each `Task` includes a **module pool** (a set of modules that it relies on) and an **operation sequence**.
+Each [Operation](https://snorkel.readthedocs.io/en/redux/packages/_autosummary/classification/snorkel.classification.Operation.html#snorkel.classification.Operation) specifies a module and the inputs that module expects.
+These inputs will come from previously executed operations or the original input (denoted with the special keyword "_input_").
+For inputs that are a dict instead of a Tensor (such as "_input_"), we include with the op name the name of a key to index with.
 
 As an example, below we verbosely define the module pool and task flow for the circle task:
 
@@ -185,20 +176,15 @@ op1 = Operation(
     name="base_mlp", module_name="base_mlp", inputs=[("_input_", "circle_data")]
 )
 
-# "From the output of op1 (the input op), pull out the 0th indexed output
-# (i.e., the only output) and send it through the head_module"
+# "Pass the output of op1 (the MLP module) as input to the head_module"
 op2 = Operation(
-    name="circle_head", module_name="circle_head_module", inputs=[("base_mlp", 0)]
+    name="circle_head", module_name="circle_head_module", inputs=["base_mlp"]
 )
 
-task_flow = [op1, op2]
+op_sequence = [op1, op2]
 ```
 
-A dictionary containing the outputs of all operations will then go into a loss function to calculate the loss (e.g., cross-entropy) during training or an output function (e.g., softmax) to convert the logits into a prediction.
-Both of these functions ([cross_entropy_from_outputs](https://snorkel.readthedocs.io/en/redux/packages/_autosummary/classification/snorkel.classification.cross_entropy_from_outputs.html#snorkel.classification.cross_entropy_from_outputs) and [softmax_from_outputs](https://snorkel.readthedocs.io/en/redux/packages/_autosummary/classification/snorkel.classification.cross_entropy_with_probs_from_outputs.html#snorkel.classification.cross_entropy_with_probs_from_outputs)) accept as an argument the name of the operation whose output they should use to calculate their respective values.
-In this case, that will be the `circle_head` operation.
-We indicate that here with the `partial` helper method, which can set the value of that keyword argument before the function is actually called.
-(As you'll see below, for common classification tasks, the default values for these arguments often suffice).
+The output of the final operation will then go into a loss function to calculate the loss (e.g., cross-entropy) during training or an output function (e.g., softmax) to convert the logits into a prediction.
 
 Each `Task` also specifies which metrics it supports, which are bundled together in a `Scorer` object. For this tutorial, we'll just look at accuracy.
 
@@ -208,19 +194,17 @@ Putting this all together, we define the circle task:
 ```python
 from functools import partial
 
+import torch.nn.functional as F
+
 from snorkel.analysis import Scorer
-from snorkel.classification import (
-    Task,
-    cross_entropy_from_outputs,
-    softmax_from_outputs,
-)
+from snorkel.classification import Task
 
 circle_task = Task(
     name="circle_task",
     module_pool=module_pool,
-    task_flow=task_flow,
-    loss_func=partial(cross_entropy_from_outputs, "circle_head"),
-    output_func=partial(softmax_from_outputs, "circle_head"),
+    op_sequence=op_sequence,
+    loss_func=F.cross_entropy,
+    output_func=partial(F.softmax, dim=1),
     scorer=Scorer(metrics=["accuracy"]),
 )
 ```
@@ -240,9 +224,9 @@ Finally, the most common task definitions we see in practice are classification 
 square_task = Task(
     name="square_task",
     module_pool=nn.ModuleDict({"base_mlp": base_mlp, "square_head": nn.Linear(4, 2)}),
-    task_flow=[
+    op_sequence=[
         Operation("base_mlp", [("_input_", "square_data")]),
-        Operation("square_head", [("base_mlp", 0)]),
+        Operation("square_head", ["base_mlp"]),
     ],
 )
 ```
@@ -283,18 +267,6 @@ After training, we can call the model.score() method to see the final performanc
 ```python
 model.score(dataloaders)
 ```
-
-
-
-
-    {'circle_task/CircleDataset/train/accuracy': 0.91875,
-     'circle_task/CircleDataset/valid/accuracy': 0.93,
-     'circle_task/CircleDataset/test/accuracy': 0.93,
-     'square_task/SquareDataset/train/accuracy': 0.9525,
-     'square_task/SquareDataset/valid/accuracy': 0.97,
-     'square_task/SquareDataset/test/accuracy': 0.96}
-
-
 
 Task-specific metrics are recorded in the form `task/dataset/split/metric` corresponding to the task the made the predictions, the dataset the predictions were made on, the split being evaluated, and the metric being calculated.
 
@@ -352,10 +324,6 @@ axs[2].legend(*scatter.legend_elements(), loc="upper right", title="Labels")
 plt.show()
 ```
 
-
-![png](multitask_tutorial_files/multitask_tutorial_43_0.png)
-
-
 ### Create the DictDataLoader
 
 Create the `DictDataLoader` for this new dataset.
@@ -387,7 +355,7 @@ Using the `square_task` definition as a template, fill in the arguments for an `
 # inv_circle_task = Task(
 #     name="",  # Filled in by you
 #     module_pool=nn.ModuleDict({}),  # Filled in by you
-#     task_flow=[],  # Filled in by you
+#     op_sequence=[],  # Filled in by you
 # )
 ```
 
@@ -410,18 +378,6 @@ We can use the same trainer and training settings as before.
 trainer.fit(model, all_dataloaders)
 model.score(all_dataloaders)
 ```
-
-
-
-
-    {'circle_task/CircleDataset/train/accuracy': 0.93875,
-     'circle_task/CircleDataset/valid/accuracy': 0.95,
-     'circle_task/CircleDataset/test/accuracy': 0.94,
-     'square_task/SquareDataset/train/accuracy': 0.95625,
-     'square_task/SquareDataset/valid/accuracy': 0.97,
-     'square_task/SquareDataset/test/accuracy': 0.96}
-
-
 
 ### Validation
 

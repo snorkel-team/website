@@ -153,9 +153,9 @@ layout: homepage
   </div>
   <div class="container">
     <div class="row mobile-padding">
-      <div class="col-sm-2 col-sm-offset-5">
-        <p>USERS & SPONSORS</p>
-      </div>
+      <!-- <div class="col-sm-2 col-sm-offset-5"> -->
+        <h3>USERS & SPONSORS</h3>
+      <!-- </div> -->
     </div>
     <div class="row row-spacing hidden-xs mobile-padding">
       <div>
@@ -181,10 +181,10 @@ layout: homepage
       <a class="card" href="{{ post.url }}">
         <p class="purple-numbers">{{ forloop.index | prepend: '00' | slice: -2, 2 }}</p>
         <h4>{{ post.title }}</h4>
+        <p class="blog-excerpt">{{ post.excerpt }}</p>
         <span class="dark-card-cta">
           READ MORE <i class="icon icon--arrow-right"></i>
         </span>
-        <p class="blog-excerpt">{{ post.excerpt }}</p>
       </a>
       {% endfor %}
     </div>

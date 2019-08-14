@@ -18,7 +18,7 @@ doks:
       - item_name: Resources
         item_url: /resources/
       - item_name: Docs
-        item_url: https://snorkel.readthedocs.io/en/redux/
+        item_url: https://snorkel.readthedocs.io/
   footer:
     content:
       logo:

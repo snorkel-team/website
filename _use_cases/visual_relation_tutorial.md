@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Visual Relation Detection in Snorkel
-description: Labeling visual relationships in images
-excerpt: Labeling visual relationships in images
+description: Multi-class labeling for visual relationships in images
+excerpt: Multi-class labeling for visual relationships in images
 order: 6
 ---
 

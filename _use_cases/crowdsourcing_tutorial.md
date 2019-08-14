@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Hybrid Crowd Labeling Workflows in Snorkel
-description: Programmatic and crowdworker labels for sentiment analysis
-excerpt: Programmatic and crowdworker labels for sentiment analysis
+description: Mixing programmatic and crowdworker labels for sentiment analysis
+excerpt: Mixing programmatic and crowdworker labels for sentiment analysis
 order: 4
 ---
 

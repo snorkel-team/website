@@ -1,8 +1,8 @@
 ---
 layout: default
-title: Introduction to Slicing Functions
-description: Monitoring models for spam classification
-excerpt: Monitoring models for spam classification
+title: Intro to Slicing Functions
+description: Monitoring critical data subsets for spam classification
+excerpt: Monitoring critical data subsets for spam classification
 order: 3
 ---
 

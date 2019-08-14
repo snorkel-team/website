@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Information Extraction in Snorkel
-description: Labeling spouse mentions in sentences
-excerpt: Labeling spouse mentions in sentences
+description: Labeling spouse mentions in documents
+excerpt: Labeling spouse mentions in documents
 order: 7
 ---
 

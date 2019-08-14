@@ -1,8 +1,8 @@
 ---
 layout: default
-title: Introduction to Snorkel's Multitask Learning System
-description: State-of-the-art pretraining and task flows
-excerpt: State-of-the-art pretraining and task flows
+title: Intro to Snorkel's Multitask Learning System
+description: State-of-the-art framework for pretraining & parameter sharing
+excerpt: State-of-the-art framework for pretraining & parameter sharing
 order: 8
 ---
 

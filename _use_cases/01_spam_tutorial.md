@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Snorkel Intro Tutorial
+title: Intro to Labeling Functions
 description: Labeling data for spam classification
 excerpt: Labeling data for spam classification
 order: 1

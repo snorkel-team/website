@@ -57,9 +57,6 @@ exclude: ["README.md", "Gemfile"]
 collections:
   docs:
     output: true
-  tutorials:
-    output: true
-    permalink: /ecosystem/:name
   use_cases:
     output: true
     permalink: /use-cases/:name

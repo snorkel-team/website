@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Software 2.0 and Programming ML Systems
-description: Paradigm shift in how developers build and program ML-driven software.
-excerpt: Paradigm shift in how developers build and program ML-driven software.
+description: How developers build and program ML-driven software.
+excerpt: How developers build and program ML-driven software.
 ---
 <head>
   <link rel="stylesheet" href="blog.css">

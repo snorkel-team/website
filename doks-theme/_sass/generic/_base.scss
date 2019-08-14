@@ -402,6 +402,10 @@ button {
   color: #65baf6;
 }
 
+.dark-card-cta {
+  color: #ffffff;
+}
+
 .cta-row {
   background-color: $color-light-blue;
   padding: 40px 160px;
@@ -474,7 +478,7 @@ button {
   }
 }
 
-.list-test {
+.list-links {
   a {
     color: $color-nav-hover;
   }

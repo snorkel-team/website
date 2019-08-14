@@ -321,7 +321,7 @@ button {
 
 .blog-card {
   @extend .card;
-  width: 250px;
+  width: 310px;
   height: 350px;
   margin: 0 20px 50px 0;
 }
@@ -478,4 +478,10 @@ button {
   a {
     color: $color-nav-hover;
   }
+}
+
+.all-tweets {
+  color: $color-nav-hover;
+  text-align: right;
+  margin-top: 40px;
 }

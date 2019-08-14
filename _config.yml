@@ -10,7 +10,7 @@ doks:
       - item_name: Get Started
         item_url: /get-started/
       - item_name: Tutorials
-        item_url: /tutorials/
+        item_url: /use-cases/
       - item_name: Features
         item_url: /features/
       - item_name: Blog
@@ -29,7 +29,7 @@ doks:
       - item_name: Get Started
         item_url: /get-started/
       - item_name: Tutorials
-        item_url: /tutorials/
+        item_url: /use-cases/
       - item_name: Features
         item_url: /features/
       - item_name: Blog

@@ -5,8 +5,6 @@ description: Snorkel achieves state-of-the-art result on the SuperGLUE NLP bench
 excerpt: Snorkel achieves state-of-the-art result on the SuperGLUE NLP benchmark.
 ---
 
-# SuperGLUE with Snorkel: Achieving SOTA Results!
-
 > Using standard models (i.e. pretrained BERT) and minimal tuning, we leverage key abstractions for _programmatically building and managing training data_ to achieve a <mark>state-of-the-art result on SuperGLUE</mark>—a a newly curated benchmark with six tasks for evaluating “general-purpose language understanding technologies.”[^superglue]
 We also give updates on Snorkel's use in the real world with even more applications—from industrial scale at [Google in Snorkel Drybell](https://ai.googleblog.com/2019/03/harnessing-organizational-knowledge-for.html) to scientific work in [MRI classification](https://nature-research-under-consideration.nature.com/users/37265-nature-communications/posts/38921-weakly-supervised-classification-of-rare-aortic-valve-malformations-using-unlabeled-cardiac-mri-sequences) and [automated Genome-wide association study (GWAS) curation](https://ai.stanford.edu/~kuleshov/papers/gwaskb-manuscript.pdf) (both accepted in [Nature Comms](https://www.nature.com/ncomms/))!
 

@@ -13,7 +13,7 @@
   }
 
   .btn:not(:last-child) {
-    margin-right: 0.7375rem;
+    margin-right: 0.9375rem;
   }
 
   .btn--github,
@@ -30,16 +30,9 @@
   }
 }
 
-.features-subheader {
+.blue-hero-subheader {
   @extend .hero-subheader;
-
-  .site-header + & {
-    padding: 9.375rem 0 (4.6875rem - 1.25rem) 0;
-
-    @media (min-width: $screen-sm-min) {
-      padding: 9rem 0 (10.3125rem - 1.25rem) 0;
-    }
-  }
+  background-color: $color-light-blue;
 }
 
 .hero-subheader--before-out {

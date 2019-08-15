@@ -153,5 +153,8 @@ This is a great way to contribute...!  Link to spectrum for voting!
 
 ## Moving Forwards
 
-**TODO: AJR**
-TODO: Commitment to proper maintenance, new tutorials, new integrations, community forum and mailing list
+Moving forwards, we're excited to build off of this new release and maintain a regular cadence of new features, tutorials, and integrations.
+Examples of upcoming additions that we're excited about include further integrations with modern ML platforms, including [TFX](https://www.tensorflow.org/tfx) and [Ludwig](https://uber.github.io/ludwig/); various new tutorials, including on _cross-modal weak supervision_ based on some of our [recent work in the medical imaging and monitoring domain](https://arxiv.org/abs/1903.11101); further data augmentation features around automated policy learning (porting from our [NeurIPS 2017 codebase](https://github.com/HazyResearch/tanda)) and new augmentation deployment form factors; and much more!
+
+Much of the above will be guided by community feedback, so please check out our [community forum](https://spectrum.chat/snorkel?tab=posts), [mailing list](https://groups.google.com/forum/#!forum/snorkel-ml), and [Github Issues page](https://github.com/snorkel-team/snorkel/issues) to give us feedback on what you'd be most excited to see next!
+We're looking forward to continuing and deepening our collaboration with the Snorkel community as we further develop and extend this new paradigm for interacting with machine learning through training data, and thank everyone in advance for your feedback and support!

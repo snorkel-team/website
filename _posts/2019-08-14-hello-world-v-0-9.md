@@ -101,11 +101,18 @@ Handling noisy training labels, e.g. produced by labeling functions, remains one
 ### New Matrix Completion-Style Modeling Approach
 
 One of the core challenges in any type of programmatic or _weak_ supervision is handling noisy sources of labels (e.g. LFs) that may have varying accuracies, correlations, and broadly overlap and conflict with each other.
-Starting with work in [NeurIPS 2016](#), [ICML 2017](#), and [VLDB 2018](#), Snorkel has handled 
+Starting with work in [NeurIPS 2016](https://arxiv.org/abs/1605.07723), [ICML 2017](https://arxiv.org/abs/1703.00854), and [VLDB 2018](https://arxiv.org/abs/1711.10160), Snorkel has handled this challenge using a theoretically-grounded unsupervised generative modeling technique, implemented as a Gibbs-sampling and SGD-based approach.
 
 <figure align="center">
         <img style="width: 100%; max-width: 580px;" src="/doks-theme/assets/images/2019-08-14-hello-world-v-0-9/matrix_completion.png"/>
 </figure>
+
+In v0.9, we switch to a new matrix completion-style approach based on our work in [AAAI 2019](https://arxiv.org/abs/1810.02840).
+This new approach leverages the graph-structured sparsity of the inverse generalized covariance matrix of the labeling functions' outputs to reduce learning their accuracies and correlation strengths to a matrix completion-style problem.
+This formulation is **far more scalable (scaling with the number of labeling functions rather than dataset size!), cleaner to implement more complex models of the labeling process in, and comes with sharper theoretical guarantees.**
+
+This approach also enables new techniques for learning the structure of correlations between labeling functions, based on our recent work in [ICML 2019](https://arxiv.org/abs/1903.05844).
+For more, check out the [resources page](https://www.snorkel.org/resources/).
 
 ### Big Data Operators
 

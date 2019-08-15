@@ -18,14 +18,6 @@ In the examples of the relationships shown above, the red box represents the _su
 
 For the purpose of this tutorial, we operate over the [Visual Relationship Detection (VRD) dataset](https://cs.stanford.edu/people/ranjaykrishna/vrd/) and focus on action relationships. We define our classification task as **identifying which of three relationships holds between the objects represented by a pair of bounding boxes.**
 
-
-```python
-import os
-
-if os.path.basename(os.getcwd()) == "snorkel-tutorials":
-    os.chdir("visual_relation")
-```
-
 ### 1. Load Dataset
 We load the VRD dataset and filter images with at least one action predicate in it, since these are more difficult to classify than geometric relationships like `above` or `next to`. We load the train, valid, and test sets as Pandas `DataFrame` objects with the following fields:
 - `label`: The relationship between the objects. 0: `RIDE`, 1: `CARRY`, 2: `OTHER` action predicates
@@ -37,7 +29,8 @@ We load the VRD dataset and filter images with at least one action predicate in 
 
 If you are running this notebook for the first time, it will take ~15 mins to download all the required sample data.
 
-The sampled version of the dataset **uses the same 26 examples across the train, dev, and test sets. This setting is meant to demonstrate how Snorkel works with this task, not to demonstrate performance.**
+The sampled version of the dataset **uses the same 26 data points across the train, dev, and test sets.
+This setting is meant to demonstrate quickly how Snorkel works with this task, not to demonstrate performance.**
 
 
 ```python
@@ -180,10 +173,6 @@ applier = PandasLFApplier(lfs)
 L_train = applier.apply(df_train)
 L_valid = applier.apply(df_valid)
 ```
-
-    100%|██████████| 26/26 [00:00<00:00, 3083.18it/s]
-    100%|██████████| 26/26 [00:00<00:00, 4456.92it/s]
-
 
 
 ```python
@@ -388,11 +377,6 @@ trainer = Trainer(
 )
 trainer.fit(model, [dl_train])
 ```
-
-    Epoch 0::   0%|          | 0/2 [00:00<?, ?it/s]/home/ubuntu/snorkel-tutorials/visual_relation/model.py:135: FutureWarning: Method .as_matrix will be removed in a future version. Use .values instead.
-      return self.word_embs.loc[word].as_matrix()
-    Epoch 0:: 100%|██████████| 2/2 [00:02<00:00,  1.18s/it, model/all/train/loss=1.07, model/all/train/lr=0.001]
-
 
 
 ```python

@@ -183,7 +183,7 @@ def lf_other_relationship(x, other):
 
 ### Distant Supervision Labeling Functions
 
-In addition to using factories that encode pattern matching heuristics, we can also write labeling functions that _distantly supervise_ examples. Here, we'll load in a list of known spouse pairs and check to see if the pair of persons in a candidate matches one of these.
+In addition to using factories that encode pattern matching heuristics, we can also write labeling functions that _distantly supervise_ data points. Here, we'll load in a list of known spouse pairs and check to see if the pair of persons in a candidate matches one of these.
 
 [**DBpedia**](http://wiki.dbpedia.org/): Our database of known spouses comes from DBpedia, which is a community-driven resource similar to Wikipedia but for curating structured data. We'll use a preprocessed snapshot as our knowledge base for all labeling function development.
 
@@ -202,11 +202,11 @@ list(known_spouses)[0:5]
 
 
 
-    [('Margaret of Geneva', 'Thomas I Count of Savoy'),
-     ('Pavlína Pořízková', 'Ric Ocasek'),
-     ('Joan Burton', 'Roland Burton'),
-     ('Judith of Bavaria', 'Louis I the Pious'),
-     ('Antoine', 'Jeanne III')]
+    [('Janet Brown', 'Peter Butterworth'),
+     ('Kaitlin Olson', 'Rob McElhenney'),
+     ('Jacques Coetzer', 'Leán Coetzer'),
+     ('Evelyn Brent', 'Harry Fox'),
+     ('Anastasio Somoza Debayle', 'Hope Portocarrero')]
 
 
 
@@ -454,7 +454,7 @@ print(
 
 ### Part 4: Training our End Extraction Model
 
-In this final section of the tutorial, we'll use our noisy training labels to train our end machine learning model. We start by filtering out training examples which did not recieve a label from any LF, as these examples contain no signal.
+In this final section of the tutorial, we'll use our noisy training labels to train our end machine learning model. We start by filtering out training data points which did not recieve a label from any LF, as these data points contain no signal.
 
 
 
@@ -495,9 +495,9 @@ print(
 )
 ```
 
-    Test F1 when trained with soft labels: 0.30246189917936694
-    Test ROC-AUC when trained with soft labels: 0.7153284536684316
+    Test F1 when trained with soft labels: 0.28634361233480177
+    Test ROC-AUC when trained with soft labels: 0.7258606228777706
 
 
 ## Summary
-In this tutorial, we showed how Snorkel can be used for Information Extraction. We demonstrated how to create LFs that leverage keywords and external knowledge bases (distant supervision). Finally, we showed how a model trained using the probabilistic outputs of the Label Model can achieve comparable performance while generalizing to all examples.
+In this tutorial, we showed how Snorkel can be used for Information Extraction. We demonstrated how to create LFs that leverage keywords and external knowledge bases (distant supervision). Finally, we showed how a model trained using the probabilistic outputs of the Label Model can achieve comparable performance while generalizing to all data points.

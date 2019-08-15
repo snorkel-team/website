@@ -285,7 +285,7 @@ reading in the below comments section!
 
 * Becker, Suzanna, and Geoffrey E Hinton. 1992. “Self-Organizing Neural Network That Discovers Surfaces in Random-Dot Stereograms.” **Nature** 355 (6356). Nature Publishing Group: 161.
 
-* Berend, Daniel, and Aryeh Kontorovich. 2014. “Consistency of Weighted Majority Votes.” In **NIPS 2014**.
+* Berend, Daniel, and Aryeh Kontorovich. 2014. “Consistency of Weighted Majority Votes.” In **NeurIPS 2014**.
 
 * Blum, Avrim, and Tom Mitchell. 1998. “Combining Labeled and Unlabeled Data with Co-Training.” In **Proceedings of the Eleventh Annual Conference on Computational Learning Theory**, 92–100. ACM.
 
@@ -355,4 +355,4 @@ reading in the below comments section!
 
 * Zaidan, Omar F, and Jason Eisner. 2008. “Modeling Annotators: A Generative Approach to Learning from Annotator Rationales.” In **Proceedings of the Conference on Empirical Methods in Natural Language Processing**, 31–40. Association for Computational Linguistics.
 
-* Zhang, Yuchen, Xi Chen, Denny Zhou, and Michael I Jordan. 2014. “Spectral Methods Meet Em: A Provably Optimal Algorithm for Crowdsourcing.” In **Advances in Neural Information Processing Systems 27**, 1260–8. <a href="http://papers.nips.cc/paper/5431-spectral-methods-meet-em-a-provably-optimal-algorithm-for-crowdsourcing.pdf" class="uri">http://papers.nips.cc/paper/5431-spectral-methods-meet-em-a-provably-optimal-algorithm-for-crowdsourcing.pdf</a>.
+* Zhang, Yuchen, Xi Chen, Denny Zhou, and Michael I Jordan. 2014. “Spectral Methods Meet Em: A Provably Optimal Algorithm for Crowdsourcing.” In **Advances in Neural Information Processing Systems 27**, 1260–8. <a href="http://papers.neurips.cc/paper/5431-spectral-methods-meet-em-a-provably-optimal-algorithm-for-crowdsourcing.pdf" class="uri">http://papers.neurips.cc/paper/5431-spectral-methods-meet-em-a-provably-optimal-algorithm-for-crowdsourcing.pdf</a>.

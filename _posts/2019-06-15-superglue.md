@@ -112,11 +112,11 @@ The authors would like to thank Feng Niu and Charles Srisuwananukorn for many he
 ## References
 [^superglue]: Wang, Alex, et al. ["SuperGLUE: A Stickier Benchmark for General-Purpose Language Understanding Systems."](https://arxiv.org/abs/1905.00537). 2019. _SuperGLUE_ consists of 6 datasets: the Commitment Bank (CB, [De Marneffe et al., 2019](https://github.com/mcdm/CommitmentBank/)), Choice Of Plausible Alternatives (COPA, [Roemmele et al., 2011](https://www.aaai.org/ocs/index.php/SSS/SSS11/paper/viewPaper/2418)), the Multi-Sentence Reading Comprehension dataset (MultiRC, [Khashabi et al., 2018](https://www.aclweb.org/anthology/papers/N/N18/N18-1023/)), Recognizing Textual Entailment (merged from RTE1, [Dagan et al. 2006](https://link.springer.com/chapter/10.1007/11736790_9), RTE2, [Bar Haim et al., 2006](http://u.cs.biu.ac.il/~nlp/downloads/publications/RTE2-organizers.pdf), RTE3, [Giampiccolo et al., 2007](https://dl.acm.org/citation.cfm?id=1654538), and RTE5, [Bentivogli et al., 2009](http://www.cs.utexas.edu/users/pclark/papers/RTE6_overview.proceedings.pdf)), Word in Context (WiC, [Pilehvar and Camacho-Collados, 2019](https://www.aclweb.org/anthology/papers/N/N19/N19-1128/)), and the Winograd Schema Challenge (WSC, [Levesque et al., 2012](https://www.aaai.org/ocs/index.php/KR/KR12/paper/viewPaper/4492)).
 
-[^tanda]: Ratner, Alexander J., et al. ["Learning to compose domain-specific transformations for data augmentation."](http://papers.nips.cc/paper/6916-learning-to-compose-domain-specific-transformations-for-data-augmentation) 2017.
+[^tanda]: Ratner, Alexander J., et al. ["Learning to compose domain-specific transformations for data augmentation."](http://papers.neurips.cc/paper/6916-learning-to-compose-domain-specific-transformations-for-data-augmentation) 2017.
 
 [^autoaugment]: Cubuk, Ekin D., et al. ["Autoaugment: Learning augmentation policies from data."](https://arxiv.org/abs/1805.09501). 2018.
 
-[^dp]: Ratner, Alexander J., et al. ["Data programming: Creating large training sets, quickly."](http://papers.nips.cc/paper/6523-data-programming-creating-large-training-sets-quickly) 2016.
+[^dp]: Ratner, Alexander J., et al. ["Data programming: Creating large training sets, quickly."](http://papers.neurips.cc/paper/6523-data-programming-creating-large-training-sets-quickly) 2016.
 
 [^moe]: Robert A Jacobs, Michael I Jordan, Steven J Nowlan, and Geoffrey E Hinton. ["Adaptive mixtures of local experts."](http://www.csri.utoronto.ca/~hinton/absps/jjnh91.ps) 1991.
 

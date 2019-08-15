@@ -7,9 +7,9 @@ excerpt: Introducing the new Snorkel v0.9.
 show_title_author: True
 ---
 
-Snorkel began in 2016 at Stanford as a project that, as suggested by an advisor to his graduate student at the time, should probably take "an afternoon".
+Snorkel began in 2016 at Stanford as a project that, as suggested by an advisor to his graduate student at the time, "should probably take an afternoon".
 That afternoon ended up (happily) being a long one.
-Over the last few years Snorkel has been deployed in industry (e.g. [Google](#), [Intel](#), [IBM](#)), medicine (e.g. [Stanford](#), [VA](#)), government, and science; has been the focus of over twenty four scientific publications, including six NeurIPS and ICML papers, two Nature Communications papers, and a "Best Of" VLDB paper; and most rewarding of all, has benefited from the feedback and support of a vibrant and generous user community.
+Over the last few years Snorkel has been deployed in industry (e.g. [Google](#), [Intel](#), [IBM](#)), medicine (e.g. [Stanford](#), [VA](#)), government, and science; has been the focus of over twenty four machine learning, scientific, and systems publications, including six NeurIPS and ICML papers, two Nature Communications papers, and a "Best Of" VLDB paper; and most rewarding of all, has benefited from the feedback and support of a vibrant and generous user community.
 
 And, it's far from over.
 Today we're excited to announce what we hope will end up being the most impactful step yet: the release of Snorkel v0.9, a **modern Python library for programmatically building and managing training datasets**.
@@ -20,7 +20,7 @@ In this release we:
 - Add a new set of revamped and expanded [tutorials](https://www.snorkel.org/use-cases/) that we plan to add to regularly
 - Attempt to atone for our past research code sins by adding the essential elements of a modern, well-maintained Python library: easy installation, extensive unit and integration testing, typing, documentation, and more.
 
-This is just the beginning — we're excited for the forthcoming feedback and engagement around this next step for Snorkel!
+This is just the beginning — we're excited for the continued feedback and engagement around this next step for Snorkel!
 
 
 ## New Ways to Build & Manage Training Data
@@ -40,7 +40,7 @@ We now give a brief preview of what these operations look like in the new Snorke
 
 ### Labeling Functions
 
-The core operator in Snorkel has long been the _labeling function (LF)_, which provides an abstracted way to represent various heuristic or noisy programmatic labeling strategies.  
+The core operator in the mainline Snorkel repo has been the _labeling function (LF)_, which provides an abstracted way to express various heuristic or noisy programmatic labeling strategies.  
 Snorkel then models and combines these noisy labels into clean confidence-weighted training labels.
 For example, in a spam classification problem, a labeling function could employ a regular expression:
 

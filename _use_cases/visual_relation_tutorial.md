@@ -22,8 +22,8 @@ For the purpose of this tutorial, we operate over the [Visual Relationship Detec
 ```python
 import os
 
-if os.path.basename(os.getcwd()) == "visual_relation":
-    os.chdir("..")
+if os.path.basename(os.getcwd()) == "snorkel-tutorials":
+    os.chdir("visual_relation")
 ```
 
 ### 1. Load Dataset
@@ -41,7 +41,7 @@ The sampled version of the dataset **uses the same 26 examples across the train,
 
 
 ```python
-from visual_relation.utils import load_vrd_data
+from utils import load_vrd_data
 
 # setting sample=False will take ~3 hours to run (downloads full VRD dataset)
 sample = True
@@ -181,8 +181,8 @@ L_train = applier.apply(df_train)
 L_valid = applier.apply(df_valid)
 ```
 
-    100%|██████████| 26/26 [00:00<00:00, 3258.00it/s]
-    100%|██████████| 26/26 [00:00<00:00, 4662.53it/s]
+    100%|██████████| 26/26 [00:00<00:00, 3083.18it/s]
+    100%|██████████| 26/26 [00:00<00:00, 4456.92it/s]
 
 
 
@@ -341,14 +341,14 @@ You can then use these training labels to train any standard discriminative mode
 
 ```python
 from snorkel.classification import DictDataLoader
-from visual_relation.model import SceneGraphDataset, create_model
+from model import SceneGraphDataset, create_model
 
 df_train["labels"] = label_model.predict(L_train)
 
 if sample:
-    TRAIN_DIR = "visual_relation/data/VRD/sg_dataset/samples"
+    TRAIN_DIR = "data/VRD/sg_dataset/samples"
 else:
-    TRAIN_DIR = "visual_relation/data/VRD/sg_dataset/sg_train_images"
+    TRAIN_DIR = "data/VRD/sg_dataset/sg_train_images"
 
 dl_train = DictDataLoader(
     SceneGraphDataset("train_dataset", "train", TRAIN_DIR, df_train),

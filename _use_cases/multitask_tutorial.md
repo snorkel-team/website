@@ -25,18 +25,6 @@ We assume that you have prior experience with MTL, so we don't motivate or expla
 In this notebook, we will start by looking at a simple MTL model with only two tasks, each having distinct data and only one set of ground truth labels ("gold" labels). We'll also use a simple dataset where the raw data is directly usable as features, for simplicity (i.e., unlike text data, where we would first need to tokenize and transform the data into token ids).
 At the end, you'll fill in the missing details to add a third task to the model.
 
-## Environment Setup
-
-
-```python
-%matplotlib inline
-
-from snorkel.utils import set_seed
-
-SEED = 123
-set_seed(SEED)
-```
-
 ## Create Toy Data
 
 We'll now create a toy dataset to work with.
@@ -46,18 +34,7 @@ Our tasks will be classifying whether these points are:
 1. Inside a **unit circle** centered on the origin (label 0 = `False`, label 1 = `True`)
 2. Inside a **unit square** centered on the origin (label 0 = `False`, label 1 = `True`)
 
-We'll visualize these decision boundaries in a few cells.
-
 _Note: We don't expect these specific toy tasks to necessarily improve one another, but this is often a benefit of joint training in MTL settings when a model is trained on similar tasks._
-
-
-```python
-import os
-
-# Make sure we're running from the multitask/ directory
-if os.path.basename(os.getcwd()) == "snorkel-tutorials":
-    os.chdir("multitask")
-```
 
 
 ```python
@@ -88,36 +65,6 @@ print(f"Label space: {set(Y_train['circle'])}")
 
     Training data shape: (800, 2)
     Label space: {0, 1}
-
-
-And we can view the ground truth labels of our tasks visually to confirm our intuition on what the decision boundaries look like.
-In the plots below, the purple points represent class 0 and the yellow points represent class 1.
-
-
-```python
-import matplotlib.pyplot as plt
-
-fig, axs = plt.subplots(1, 2)
-
-scatter = axs[0].scatter(
-    X_train["circle"][:, 0], X_train["circle"][:, 1], c=Y_train["circle"]
-)
-axs[0].set_aspect("equal", "box")
-axs[0].set_title("Circle Dataset", fontsize=10)
-axs[0].legend(*scatter.legend_elements(), loc="upper right", title="Labels")
-
-scatter = axs[1].scatter(
-    X_train["square"][:, 0], X_train["square"][:, 1], c=Y_train["square"]
-)
-axs[1].set_aspect("equal", "box")
-axs[1].set_title("Square Dataset", fontsize=10)
-axs[1].legend(*scatter.legend_elements(), loc="upper right", title="Labels")
-
-plt.show()
-```
-
-
-![png](multitask_tutorial_files/multitask_tutorial_12_0.png)
 
 
 ## Make DataLoaders
@@ -315,41 +262,6 @@ inv_circle_train, inv_circle_valid, inv_circle_test = make_inv_circle_dataset(N,
 (X_test["inv_circle"], Y_test["inv_circle"]) = inv_circle_test
 ```
 
-
-```python
-import matplotlib.pyplot as plt
-
-fig, axs = plt.subplots(1, 3)
-
-scatter = axs[0].scatter(
-    X_train["inv_circle"][:, 0], X_train["inv_circle"][:, 1], c=Y_train["inv_circle"]
-)
-axs[0].set_aspect("equal", "box")
-axs[0].set_title("Inv Circle Dataset", fontsize=10)
-axs[0].legend(*scatter.legend_elements(), loc="upper right", title="Labels")
-
-scatter = axs[1].scatter(
-    X_train["circle"][:, 0], X_train["circle"][:, 1], c=Y_train["circle"]
-)
-axs[1].set_aspect("equal", "box")
-axs[1].set_title("Circle Dataset", fontsize=10)
-axs[1].legend(*scatter.legend_elements(), loc="upper right", title="Labels")
-
-scatter = axs[2].scatter(
-    X_train["square"][:, 0], X_train["square"][:, 1], c=Y_train["square"]
-)
-axs[2].set_aspect("equal", "box")
-axs[2].set_title("Square Dataset", fontsize=10)
-axs[2].legend(*scatter.legend_elements(), loc="upper right", title="Labels")
-
-
-plt.show()
-```
-
-
-![png](multitask_tutorial_files/multitask_tutorial_43_0.png)
-
-
 ### Create the DictDataLoader
 
 Create the `DictDataLoader` for this new dataset.
@@ -404,18 +316,6 @@ We can use the same trainer and training settings as before.
 trainer.fit(model, all_dataloaders)
 model.score(all_dataloaders)
 ```
-
-
-
-
-    {'circle_task/circleDataset/train/accuracy': 0.93875,
-     'circle_task/circleDataset/valid/accuracy': 0.95,
-     'circle_task/circleDataset/test/accuracy': 0.94,
-     'square_task/squareDataset/train/accuracy': 0.95625,
-     'square_task/squareDataset/valid/accuracy': 0.97,
-     'square_task/squareDataset/test/accuracy': 0.96}
-
-
 
 ### Validation
 

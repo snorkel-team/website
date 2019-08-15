@@ -51,7 +51,7 @@ SPAM = 1
 Labeling functions can be used to represent many heuristic and/or noisy strategies for labeling data, often referred to as [weak supervision](https://hazyresearch.github.io/snorkel/blog/ws_blog_post.html).
 The basic idea of labeling functions, and other programmatic operators in Snorkel, is to let users inject domain information into machine learning models in higher level, higher bandwidth ways than manually labeling thousands or millions of individual data points.
 **The key idea is that labeling functions do not need to be perfectly accurate**, and can in fact even be correlated with each other.
-Snorkel will automatically estimate their accuracies and correlations in a [provably consistent way](https://papers.neurips.cc/paper/6523-data-programming-creating-large-training-sets-quickly), and then reweight and combine their output labels, leading to high-quality training labels.
+Snorkel will automatically estimate their accuracies and correlations in a [provably consistent way](https://papers.nips.cc/paper/6523-data-programming-creating-large-training-sets-quickly), and then reweight and combine their output labels, leading to high-quality training labels.
 
 In our text data setting here, labeling functions use:
 

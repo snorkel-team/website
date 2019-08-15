@@ -4,6 +4,7 @@ title: An Overview of Weak Supervision
 author: Alex Ratner, Stephen Bach, Paroma Varma, Chris Ré
 description: Overcoming the training data bottleneck.
 excerpt: Overcoming the training data bottleneck.
+show_title_author: True
 ---
 
 Getting labeled training data has become _the_ key development bottleneck in

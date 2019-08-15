@@ -139,12 +139,24 @@ In our experience deploying Snorkel, end-to-end data management systems integrat
 
 ## Tutorials
 
-This is a great way to contribute...!  Link to spectrum for voting!
+One of the most important motivations for us in releasing and maintaining Snorkel as an open source project is to show how programmatic ways of building and managing training data can serve as an efficient, powerful, and accessible new paradigm for building machine learning applications.
+Given this, maintaining clean, readable, and helpful tutorials is expecially important to us.
+In this new release, we've added or re-worked a variety of tutorials on Snorkel:
+
+* **[Getting Started](https://www.snorkel.org/get-started/):** A new, quicker (but still end-to-end executable) tour of Snorkel
+* **[Intro Tutorial](https://www.snorkel.org/use-cases/01-spam-tutorial):** A new in-depth tutorial on building applications in Snorkel, focused on a canonical machine learning problem, detecting spam text comments, and split into three parts focusing respectively on [labeling functions](https://www.snorkel.org/use-cases/01-spam-tutorial), [transformation functions](https://www.snorkel.org/use-cases/02-spam-data-augmentation-tutorial), and [slicing functions](https://www.snorkel.org/use-cases/03-spam-data-slicing-tutorial)
+* **[Hybrid Crowd + Programmatic Labeling](https://www.snorkel.org/use-cases/crowdsourcing-tutorial):** A tour of how Snorkel can be used to combine and integrate both noisy human labels and programmatic labeling strategies
+* **[Multi-Task Learning](https://www.snorkel.org/use-cases/multitask-tutorial):** A tutorial on Snorkel's state-of-the-art multi-task learning framework
+* **[Recommender Systems](https://www.snorkel.org/use-cases/recsys-tutorial):** An example of how to build a simple weakly supervised recommender system with Snorkel
+* **[Information Extraction](https://www.snorkel.org/use-cases/spouse-demo):** A text relation extraction tutorial (previously the Snorkel intro tutorial)
+* **[Visual Relation Detection in Snorkel](https://www.snorkel.org/use-cases/visual-relation-tutorial):** A tutorial on classifying visual relationships between objects in an image with Snorkel
+
+We plan to add new tutorials at a regular cadence, and also to accept community-built ones.
+Please check out our [community forum](https://spectrum.chat/snorkel/tutorials?tab=posts) to give us feedback on what tutorials you'd like to see, and also consider submitting your own tutorials as PRs!
 
 ## Becoming a Modern Python Library
 
-It's now easier than ever to get started with, receive support, and contribute to,
-and maintain Snorkel.
+It's now easier than ever to get started with, receive support, and contribute to Snorkel.
 In particular, we've adopted best practices around installation, testing, and
 documentation from lots of well maintained Python libraries that we use and love.
 

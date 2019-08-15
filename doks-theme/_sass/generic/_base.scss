@@ -295,10 +295,10 @@ button {
 .light-row {
   @extend .dark-row;
   background-color: $color-light-blue;
-  padding: 130px 0 0 0;
+  padding: 80px 0 0 0;
 
   @media (max-width: 1350px) {
-    padding: 130px 20px 0 40px;
+    padding: 80px 20px 0 40px;
   }
 }
 
@@ -319,6 +319,13 @@ button {
   }
 }
 
+.blog-card {
+  @extend .card;
+  width: 310px;
+  height: 350px;
+  margin: 0 20px 50px 0;
+}
+
 .light-card {
   @extend .card;
   color: $color-black;
@@ -335,12 +342,13 @@ button {
 }
 
 .border-card {
+  width: 350px;
   display: flex;
   flex-direction: column;
   border: 3px solid rgba(#4a90e2, 0.2);
   background-color: $color-white;
   color: $color-black;
-  padding: 30px;
+  padding: 20px;
   margin: 0 20px;
 
   p {
@@ -351,8 +359,21 @@ button {
     flex: 1;
   }
 
+  @media (max-width: 1200px) {
+    width: 300px;
+  }
+
   @media (max-width: 992px) {
+    width: 500px;
     margin: 0 0 40px 0;
+  }
+
+  @media (max-width: 576px) {
+    width: 400px;
+  }
+
+  @media (max-width: 450px) {
+    width: 280px;
   }
 }
 
@@ -369,6 +390,14 @@ button {
   margin-bottom: 100px;
 }
 
+.half-row-spacing {
+  margin-bottom: 50px;
+}
+
+.double-row-spacing {
+  margin-bottom: 200px;
+}
+
 .card-cta {
   color: #65baf6;
 }
@@ -379,12 +408,12 @@ button {
 
 .cta-row {
   background-color: $color-light-blue;
-  padding: 65px 160px;
+  padding: 40px 160px;
   display: flex;
   justify-content: flex-end;
 
   @media (max-width: 768px) {
-    padding: 65px 40px;
+    padding: 40px 40px;
   }
 }
 
@@ -449,8 +478,14 @@ button {
   }
 }
 
-.list-links {
+.list-test {
   a {
     color: $color-nav-hover;
   }
+}
+
+.all-tweets {
+  color: $color-nav-hover;
+  text-align: right;
+  margin-top: 40px;
 }

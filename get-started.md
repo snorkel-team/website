@@ -2,9 +2,10 @@
 layout: homepage
 title: Get Started
 ---
+
 <div class="hero-subheader">
   <div class="container">
-    <div class="row row-spacing vertical-align mobile-padding">
+    <div class="row double-row-spacing vertical-align mobile-padding">
       <div class="col-sm-5 mobile-margin">
         <p class="subheadline">INSTALL NOW</p>
         <h1>Get Started</h1>
@@ -46,5 +47,6 @@ title: Get Started
         {% endfor %}
       </div>
     </div>
+
   </div>
 </div>

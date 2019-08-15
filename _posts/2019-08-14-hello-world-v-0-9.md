@@ -25,8 +25,8 @@ This is just the beginning — we're excited for the continued feedback and enga
 
 ## New Ways to Build & Manage Training Data
 
-Snorkel is motivated by the observation that as modern machine learning models have become increasingly performant and easy-to-use---but also massively data-hungry---building and managing _training datasets_ has increasingly become the key development bottleneck and limiting factor for actually building real-world ML applications.
-The goal of Snorkel is to take the operations that practitioners employ over the training data, which are often _most_ critical to ML model success, but also most often relegated to ad hoc and manual processes---e.g. labeling, augmenting, and managing training data---and make them the first-class citizens of a programmatic _development_ process.
+Snorkel is motivated by the observation that as modern machine learning models have become increasingly performant and easy-to-use—but also massively data-hungry—building and managing _training datasets_ has increasingly become the key development bottleneck and limiting factor for actually building real-world ML applications.
+The goal of Snorkel is to take the operations that practitioners employ over the training data, which are often _most_ critical to ML model success, but also most often relegated to ad hoc and manual processes—e.g. labeling, augmenting, and managing training data—and make them the first-class citizens of a programmatic _development_ process.
 
 <figure align="center">
         <img style="width: 100%; max-width: 580px;" src="/doks-theme/assets/images/layout/Overview.png"/>
@@ -87,7 +87,7 @@ The syntax for a slicing function is similar to that of a labeling function; for
 @slicing_function()
 def short_link(x):
     """Return whether text matches common pattern for shortened ".ly" links."""
-    return SHORT_LINK_SLICE if re.search(r"\w+\.ly", x.text) else ABSTAIN
+    return SHORT_LINK if re.search(r"\w+\.ly", x.text) else NOT_SHORT_LINK
 ```
 
 For more on SFs, see the [Getting Started](https://snorkel.org/get-started/) guide, and the follow-up [Introduction to SFs](https://www.snorkel.org/use-cases/03-spam-data-slicing-tutorial) tutorial.

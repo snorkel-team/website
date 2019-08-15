@@ -120,7 +120,11 @@ For more, check out the [resources page](https://www.snorkel.org/resources/).
 
 ## Moving to a Modular, General Purpose Snorkel
 
-**TODO: AJR**
+Snorkel [started out focused on information extraction from text](https://ajratner.github.io/assets/papers/ratner-cidr17.pdf), a use case we continue to support (for example, see the [relation extraction tutorial](https://www.snorkel.org/use-cases/spouse-demo)).
+However, through interactions with users and use cases across many domains, it has become clear that the best way to support the wide range of potential problems and data modalities Snorkel can be applied to–from image and text to video and time series–is to make Snorkel much more modular and data agnostic.
+
+Therefore, one of the changes that will be most noticeable to prior users of Snorkel is that the end-to-end relational data management system for information extraction has now moved to the [`snorkel-extraction` repo](https://github.com/snorkel-team/snorkel-extraction), and the new version accepts more generic data objects, e.g. numpy arrays, Pandas and Dask DataFrames, Spark RDDs, etc.
+In our experience deploying Snorkel, end-to-end data management systems integrated with Snorkel are still the best way to deploy production applications- but we now leave this as an infrastructure component external to the core Snorkel repo.
 
 ## Tutorials
 

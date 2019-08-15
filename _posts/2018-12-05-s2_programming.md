@@ -4,6 +4,7 @@ title: Software 2.0 and Programming ML Systems
 author: Alex Ratner and Chris Ré
 description: How developers build and program ML-driven software.
 excerpt: How developers build and program ML-driven software.
+show_title_author: True
 ---
 
 <head>

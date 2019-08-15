@@ -13,7 +13,7 @@ github_link: https://github.com/snorkel-team/snorkel-tutorials/blob/master/multi
 Multi-task learning, or training a single model on multiple tasks, is becoming a standard tool for the modern ML practioner (see Ruder's [survey](http://ruder.io/multi-task/) from 2017 for a nice overview).
 It often leads to computational gains (one model performing many tasks takes up less memory and storage) as well as performance gains (learning to do well on a related _auxiliary_ task can improve the model's ability on the _primary_ task).
 
-While the primary purpose of the Snorkel project is to support training data creation and management, it also comes with a PyTorch-based modeling framework intended to support flexible multi-task learning (e.g. slice-aware models).
+While the primary purpose of the Snorkel project is to support training data creation and management, it also comes with a PyTorch-based modeling framework intended to support flexible multi-task learning (e.g. [slice-aware models]https://snorkel.org/use-cases/03-spam-data-slicing-tutorial).
 Using this particular framework (as opposed to other excellent third party libraries) is entirely optional, but we have found it helpful in our own work and so provide it here.
 In particular, because MTL in general often requires easily *adding new datasets, tasks, and metrics* (and just as easily removing them), each of these concepts has been decoupled in the snorkel MTL classifier.
 
@@ -25,18 +25,6 @@ We assume that you have prior experience with MTL, so we don't motivate or expla
 In this notebook, we will start by looking at a simple MTL model with only two tasks, each having distinct data and only one set of ground truth labels ("gold" labels). We'll also use a simple dataset where the raw data is directly usable as features, for simplicity (i.e., unlike text data, where we would first need to tokenize and transform the data into token ids).
 At the end, you'll fill in the missing details to add a third task to the model.
 
-## Environment Setup
-
-
-```python
-%matplotlib inline
-
-from snorkel.utils import set_seed
-
-SEED = 123
-set_seed(SEED)
-```
-
 ## Create Toy Data
 
 We'll now create a toy dataset to work with.
@@ -46,18 +34,7 @@ Our tasks will be classifying whether these points are:
 1. Inside a **unit circle** centered on the origin (label 0 = `False`, label 1 = `True`)
 2. Inside a **unit square** centered on the origin (label 0 = `False`, label 1 = `True`)
 
-We'll visualize these decision boundaries in a few cells.
-
 _Note: We don't expect these specific toy tasks to necessarily improve one another, but this is often a benefit of joint training in MTL settings when a model is trained on similar tasks._
-
-
-```python
-import os
-
-# Make sure we're running from the multitask/ directory
-if os.path.basename(os.getcwd()) == "snorkel-tutorials":
-    os.chdir("multitask")
-```
 
 
 ```python
@@ -88,36 +65,6 @@ print(f"Label space: {set(Y_train['circle'])}")
 
     Training data shape: (800, 2)
     Label space: {0, 1}
-
-
-And we can view the ground truth labels of our tasks visually to confirm our intuition on what the decision boundaries look like.
-In the plots below, the purple points represent class 0 and the yellow points represent class 1.
-
-
-```python
-import matplotlib.pyplot as plt
-
-fig, axs = plt.subplots(1, 2)
-
-scatter = axs[0].scatter(
-    X_train["circle"][:, 0], X_train["circle"][:, 1], c=Y_train["circle"]
-)
-axs[0].set_aspect("equal", "box")
-axs[0].set_title("Circle Dataset", fontsize=10)
-axs[0].legend(*scatter.legend_elements(), loc="upper right", title="Labels")
-
-scatter = axs[1].scatter(
-    X_train["square"][:, 0], X_train["square"][:, 1], c=Y_train["square"]
-)
-axs[1].set_aspect("equal", "box")
-axs[1].set_title("Square Dataset", fontsize=10)
-axs[1].legend(*scatter.legend_elements(), loc="upper right", title="Labels")
-
-plt.show()
-```
-
-
-![png](multitask_tutorial_files/multitask_tutorial_12_0.png)
 
 
 ## Make DataLoaders
@@ -156,7 +103,7 @@ We'll instantiate it from a list of `Tasks`.
 
 ### Tasks
 
-A `Task` represents a path through a neural network. In `MultitaskClassifier`, this path corresponds to a particular sequence of PyTorch modules through which each example will make a forward pass.
+A `Task` represents a path through a neural network. In `MultitaskClassifier`, this path corresponds to a particular sequence of PyTorch modules through which each data point will make a forward pass.
 
 To specify this sequence of modules, each `Task` includes a **module pool** (a set of modules that it relies on) and an **operation sequence**.
 Each [Operation](https://snorkel.readthedocs.io/en/master/packages/_autosummary/classification/snorkel.classification.Operation.html#snorkel.classification.Operation) specifies a module and the inputs that module expects.
@@ -253,7 +200,7 @@ model = MultitaskClassifier([circle_task, square_task])
 
 ### Train Model
 
-Once the model is constructed, we can train it as we would a single-task model, using the `fit` method of a `Trainer` object. The `Trainer` supports multiple schedules or patterns for sampling from different dataloaders; the default is to randomly sample from them proportional to their number of batches, such that all examples  will be seen exactly once before any are seen twice.
+Once the model is constructed, we can train it as we would a single-task model, using the `fit` method of a `Trainer` object. The `Trainer` supports multiple schedules or patterns for sampling from different dataloaders; the default is to randomly sample from them proportional to their number of batches, such that all data points  will be seen exactly once before any are seen twice.
 
 
 ```python
@@ -315,41 +262,6 @@ inv_circle_train, inv_circle_valid, inv_circle_test = make_inv_circle_dataset(N,
 (X_test["inv_circle"], Y_test["inv_circle"]) = inv_circle_test
 ```
 
-
-```python
-import matplotlib.pyplot as plt
-
-fig, axs = plt.subplots(1, 3)
-
-scatter = axs[0].scatter(
-    X_train["inv_circle"][:, 0], X_train["inv_circle"][:, 1], c=Y_train["inv_circle"]
-)
-axs[0].set_aspect("equal", "box")
-axs[0].set_title("Inv Circle Dataset", fontsize=10)
-axs[0].legend(*scatter.legend_elements(), loc="upper right", title="Labels")
-
-scatter = axs[1].scatter(
-    X_train["circle"][:, 0], X_train["circle"][:, 1], c=Y_train["circle"]
-)
-axs[1].set_aspect("equal", "box")
-axs[1].set_title("Circle Dataset", fontsize=10)
-axs[1].legend(*scatter.legend_elements(), loc="upper right", title="Labels")
-
-scatter = axs[2].scatter(
-    X_train["square"][:, 0], X_train["square"][:, 1], c=Y_train["square"]
-)
-axs[2].set_aspect("equal", "box")
-axs[2].set_title("Square Dataset", fontsize=10)
-axs[2].legend(*scatter.legend_elements(), loc="upper right", title="Labels")
-
-
-plt.show()
-```
-
-
-![png](multitask_tutorial_files/multitask_tutorial_43_0.png)
-
-
 ### Create the DictDataLoader
 
 Create the `DictDataLoader` for this new dataset.
@@ -405,18 +317,6 @@ trainer.fit(model, all_dataloaders)
 model.score(all_dataloaders)
 ```
 
-
-
-
-    {'circle_task/circleDataset/train/accuracy': 0.93875,
-     'circle_task/circleDataset/valid/accuracy': 0.95,
-     'circle_task/circleDataset/test/accuracy': 0.94,
-     'square_task/squareDataset/train/accuracy': 0.95625,
-     'square_task/squareDataset/valid/accuracy': 0.97,
-     'square_task/squareDataset/test/accuracy': 0.96}
-
-
-
 ### Validation
 
 If you successfully added the appropriate task, the previous command should have succesfully trained and reported scores in the mid to high 90s for all datasets and splits, including for the splits belonging to the new `inv_circle_task`.
@@ -430,4 +330,6 @@ The following assert statements should also pass if you uncomment and run it.
 
 ## Summary
 
-In this tutorial, we demonstrated how to specify arbitrary flows through a network with  multiple datasets, providing the flexiblity to easily implement design patterns such as multi-task learning. On this toy task with only two simple datasets and very simple hard parameter sharing (a shared trunk with different heads), the utility of this design may be less apparent. However, for more complicated network structures (e.g., slicing) or scenarios with frequent changing of the structure (e.g., due to popping new tasks on/off a massive MTL model), the flexibility of this design starts to shine. If there's an MTL network you'd like to build but can't figure out how to represent, post an issue and let us know!
+In this tutorial, we demonstrated how to specify arbitrary flows through a network with multiple datasets, providing the flexiblity to easily implement design patterns such as multi-task learning. On this toy task with only two simple datasets and very simple hard parameter sharing (a shared trunk with different heads), the utility of this design may be less apparent.
+However, for more complicated network structures (e.g., slicing) or scenarios with frequent changing of the structure (e.g., due to popping new tasks on/off a massive MTL model), the flexibility of this design starts to shine.
+If there's an MTL network you'd like to build but can't figure out how to represent, post an issue and let us know!

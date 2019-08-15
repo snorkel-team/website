@@ -9,7 +9,7 @@ show_title_author: True
 
 Snorkel began in 2016 at Stanford as a project that, as suggested by an advisor to his graduate student at the time, "should probably take an afternoon".
 That afternoon ended up (happily) being a long one.
-Over the last few years Snorkel has been deployed in industry (e.g. [Google](#), [Intel](#), [IBM](#)), medicine (e.g. [Stanford](#), [VA](#)), government, and science; has been the focus of over twenty four machine learning, scientific, and systems publications, including six NeurIPS and ICML papers, two Nature Communications papers, and a "Best Of" VLDB paper; and most rewarding of all, has benefited from the feedback and support of a vibrant and generous user community.
+Over the last few years Snorkel has been deployed in industry (e.g. [Google](https://ai.googleblog.com/2019/03/harnessing-organizational-knowledge-for.html), [Intel](https://ajratner.github.io/assets/papers/Osprey_DEEM.pdf), [IBM](https://arxiv.org/pdf/1812.06176.pdf)), medicine (e.g. [Stanford](https://www.nature.com/articles/s41467-019-11012-3), [VA](https://arxiv.org/abs/1904.07640)), government, and science; has been the focus of over twenty four machine learning, scientific, and systems publications, including six NeurIPS and ICML papers, two Nature Communications papers, and a "Best Of" VLDB paper; and most rewarding of all, has benefited from the feedback and support of a vibrant and generous user community.
 
 And, it's far from over.
 Today we're excited to announce what we hope will end up being the most impactful step yet: the release of Snorkel v0.9, a **modern Python library for programmatically building and managing training datasets**.
@@ -191,9 +191,9 @@ The documentation is now much more complete (thanks to the tooling listed above 
 several documentation sprints) and rebuilds automatically on pushes to `master`,
 so you'll always be able to find information on the latest features.
 
-## Moving Forwards
+## Looking Ahead
 
-Moving forward, we're excited to build off of this new release and maintain a regular cadence of new features, tutorials, and integrations.
+We're excited to build on this new release and maintain a regular cadence of new features, tutorials, and integrations.
 Examples of upcoming additions that we're excited about include further integrations with modern ML platforms, including [TFX](https://www.tensorflow.org/tfx) and [Ludwig](https://uber.github.io/ludwig/); various new tutorials, including on _cross-modal weak supervision_ based on some of our [recent work in the medical imaging and monitoring domain](https://arxiv.org/abs/1903.11101); further data augmentation features around automated policy learning (porting from our [NeurIPS 2017 codebase](https://github.com/HazyResearch/tanda)) and new augmentation deployment form factors; and much more!
 
 Much of the above will be guided by community feedback, so please check out our [community forum](https://spectrum.chat/snorkel?tab=posts), [mailing list](https://groups.google.com/forum/#!forum/snorkel-ml), and [Github Issues page](https://github.com/snorkel-team/snorkel/issues) to give us feedback on what you'd be most excited to see next!

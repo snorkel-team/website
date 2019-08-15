@@ -44,41 +44,11 @@ In a real setting, we would expect to have access to many more unlabeled tweets,
 
 
 ```python
-import os
-
-# Make sure we're in the right directory
-if os.path.basename(os.getcwd()) == "snorkel-tutorials":
-    os.chdir("crowdsourcing")
-```
-
-
-```python
 from data import load_data
 
 crowd_labels, df_train, df_dev, df_test = load_data()
 Y_dev = df_dev.sentiment.values
 Y_test = df_test.sentiment.values
-```
-
-First, let's take a look at our development set to get a sense of what the tweets look like.
-We use the following label convention: 0 = Negative, 1 = Positive.
-
-
-```python
-import pandas as pd
-
-# Don't truncate text fields in the display
-pd.set_option("display.max_colwidth", 0)
-
-df_dev.head()
-```
-
-Now let's take a look at the crowd labels.
-We'll convert these into labeling functions.
-
-
-```python
-crowd_labels.head()
 ```
 
 ## Writing Labeling Functions
@@ -101,6 +71,9 @@ for worker_id in labels_by_annotator.groups:
 
 print("Number of workers:", len(worker_dicts))
 ```
+
+    Number of workers: 100
+
 
 
 ```python
@@ -143,14 +116,111 @@ from snorkel.labeling import LFAnalysis
 LFAnalysis(L_dev, worker_lfs).lf_summary(Y_dev).sample(5)
 ```
 
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>j</th>
+      <th>Polarity</th>
+      <th>Coverage</th>
+      <th>Overlaps</th>
+      <th>Conflicts</th>
+      <th>Correct</th>
+      <th>Incorrect</th>
+      <th>Emp. Acc.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>worker_7860247</th>
+      <td>19</td>
+      <td>[0, 1]</td>
+      <td>0.24</td>
+      <td>0.24</td>
+      <td>0.20</td>
+      <td>12</td>
+      <td>0</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>worker_13763729</th>
+      <td>40</td>
+      <td>[0, 1]</td>
+      <td>0.10</td>
+      <td>0.10</td>
+      <td>0.08</td>
+      <td>5</td>
+      <td>0</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>worker_11919161</th>
+      <td>36</td>
+      <td>[0, 1]</td>
+      <td>0.06</td>
+      <td>0.06</td>
+      <td>0.06</td>
+      <td>3</td>
+      <td>0</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>worker_18034918</th>
+      <td>73</td>
+      <td>[0, 1]</td>
+      <td>0.18</td>
+      <td>0.18</td>
+      <td>0.14</td>
+      <td>8</td>
+      <td>1</td>
+      <td>0.888889</td>
+    </tr>
+    <tr>
+      <th>worker_15124755</th>
+      <td>53</td>
+      <td>[0, 1]</td>
+      <td>0.06</td>
+      <td>0.06</td>
+      <td>0.06</td>
+      <td>3</td>
+      <td>0</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
 So the crowd labels in general are quite good! But how much of our dev and training
 sets do they cover?
 
 
 ```python
-print(f"Training set coverage: {LFAnalysis(L_train).label_coverage(): 0.3f}")
-print(f"Dev set coverage: {LFAnalysis(L_dev).label_coverage(): 0.3f}")
+print(f"Training set coverage: {100 * LFAnalysis(L_train).label_coverage(): 0.1f}%")
+print(f"Dev set coverage: {100 * LFAnalysis(L_dev).label_coverage(): 0.1f}%")
 ```
+
+    Training set coverage:  50.3%
+    Dev set coverage:  50.0%
+
 
 ### Additional labeling functions
 
@@ -207,6 +277,99 @@ L_dev = applier.apply(df_dev)
 LFAnalysis(L_dev, lfs).lf_summary(Y_dev).head()
 ```
 
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>j</th>
+      <th>Polarity</th>
+      <th>Coverage</th>
+      <th>Overlaps</th>
+      <th>Conflicts</th>
+      <th>Correct</th>
+      <th>Incorrect</th>
+      <th>Emp. Acc.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>polarity_positive</th>
+      <td>0</td>
+      <td>[1]</td>
+      <td>0.30</td>
+      <td>0.16</td>
+      <td>0.12</td>
+      <td>15</td>
+      <td>0</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>polarity_negative</th>
+      <td>1</td>
+      <td>[0]</td>
+      <td>0.10</td>
+      <td>0.10</td>
+      <td>0.04</td>
+      <td>5</td>
+      <td>0</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>polarity_negative_2</th>
+      <td>2</td>
+      <td>[0]</td>
+      <td>0.70</td>
+      <td>0.40</td>
+      <td>0.32</td>
+      <td>26</td>
+      <td>9</td>
+      <td>0.742857</td>
+    </tr>
+    <tr>
+      <th>worker_6332651</th>
+      <td>3</td>
+      <td>[0, 1]</td>
+      <td>0.06</td>
+      <td>0.06</td>
+      <td>0.06</td>
+      <td>1</td>
+      <td>2</td>
+      <td>0.333333</td>
+    </tr>
+    <tr>
+      <th>worker_6336109</th>
+      <td>4</td>
+      <td>[]</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
 Using the text-based LFs, we've expanded coverage on both our training set
 and dev set to 100%.
 We'll now take these noisy and conflicting labels, and use the LabelModel
@@ -214,9 +377,13 @@ to denoise and combine them.
 
 
 ```python
-print(f"Training set coverage: {LFAnalysis(L_train).label_coverage(): 0.3f}")
-print(f"Dev set coverage: {LFAnalysis(L_dev).label_coverage(): 0.3f}")
+print(f"Training set coverage: {100 * LFAnalysis(L_train).label_coverage(): 0.1f}%")
+print(f"Dev set coverage: {100 * LFAnalysis(L_dev).label_coverage(): 0.1f}%")
 ```
+
+    Training set coverage:  100.0%
+    Dev set coverage:  100.0%
+
 
 ## Train LabelModel And Generate Probabilistic Labels
 
@@ -240,6 +407,9 @@ preds_dev = label_model.predict(L_dev)
 acc = metric_score(Y_dev, preds_dev, probs=None, metric="accuracy")
 print(f"LabelModel Accuracy: {acc:.3f}")
 ```
+
+    LabelModel Accuracy: 0.920
+
 
 We see that we get very high accuracy on the development set.
 This is due to the abundance of high quality crowdworker labels.
@@ -281,7 +451,7 @@ X_train = np.array(list(df_train.tweet_text.apply(encode_text).values))
 X_test = np.array(list(df_test.tweet_text.apply(encode_text).values))
 ```
 
-### Model on soft labels
+### Model on probabilistic labels
 Now, we train a simple logistic regression model on the BERT features, using labels
 obtained from our LabelModel.
 
@@ -297,6 +467,9 @@ sklearn_model.fit(X_train, preds_train)
 ```python
 print(f"Accuracy of trained model: {sklearn_model.score(X_test, Y_test)}")
 ```
+
+    Accuracy of trained model: 0.86
+
 
 We now have a trained model that can be applied to future examples without requiring crowdsourced labels, and with accuracy not much lower than the `LabelModel` that _does_ have access to crowdsourced labels!
 

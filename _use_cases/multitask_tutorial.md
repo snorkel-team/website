@@ -85,6 +85,10 @@ print(f"Training data shape: {X_train['circle'].shape}")
 print(f"Label space: {set(Y_train['circle'])}")
 ```
 
+    Training data shape: (800, 2)
+    Label space: {0, 1}
+
+
 And we can view the ground truth labels of our tasks visually to confirm our intuition on what the decision boundaries look like.
 In the plots below, the purple points represent class 0 and the yellow points represent class 1.
 
@@ -110,6 +114,10 @@ axs[1].legend(*scatter.legend_elements(), loc="upper right", title="Labels")
 
 plt.show()
 ```
+
+
+![png](multitask_tutorial_files/multitask_tutorial_12_0.png)
+
 
 ## Make DataLoaders
 
@@ -265,6 +273,18 @@ After training, we can call the model.score() method to see the final performanc
 model.score(dataloaders)
 ```
 
+
+
+
+    {'circle_task/circleDataset/train/accuracy': 0.91875,
+     'circle_task/circleDataset/valid/accuracy': 0.93,
+     'circle_task/circleDataset/test/accuracy': 0.93,
+     'square_task/squareDataset/train/accuracy': 0.9525,
+     'square_task/squareDataset/valid/accuracy': 0.97,
+     'square_task/squareDataset/test/accuracy': 0.96}
+
+
+
 Task-specific metrics are recorded in the form `task/dataset/split/metric` corresponding to the task the made the predictions, the dataset the predictions were made on, the split being evaluated, and the metric being calculated.
 
 For model-wide metrics (such as the total loss over all tasks or the learning rate), the default task name is `model` and the dataset name is `all` (e.g. `model/all/train/loss`).
@@ -325,6 +345,10 @@ axs[2].legend(*scatter.legend_elements(), loc="upper right", title="Labels")
 plt.show()
 ```
 
+
+![png](multitask_tutorial_files/multitask_tutorial_43_0.png)
+
+
 ### Create the DictDataLoader
 
 Create the `DictDataLoader` for this new dataset.
@@ -379,6 +403,18 @@ We can use the same trainer and training settings as before.
 trainer.fit(model, all_dataloaders)
 model.score(all_dataloaders)
 ```
+
+
+
+
+    {'circle_task/circleDataset/train/accuracy': 0.93875,
+     'circle_task/circleDataset/valid/accuracy': 0.95,
+     'circle_task/circleDataset/test/accuracy': 0.94,
+     'square_task/squareDataset/train/accuracy': 0.95625,
+     'square_task/squareDataset/valid/accuracy': 0.97,
+     'square_task/squareDataset/test/accuracy': 0.96}
+
+
 
 ### Validation
 

@@ -73,6 +73,81 @@ Y_test = df_test["label"].values
 df_train.head()
 ```
 
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>author</th>
+      <th>date</th>
+      <th>text</th>
+      <th>label</th>
+      <th>video</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Alessandro leite</td>
+      <td>2014-11-05T22:21:36</td>
+      <td>pls http://www10.vakinha.com.br/VaquinhaE.aspx...</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Salim Tayara</td>
+      <td>2014-11-02T14:33:30</td>
+      <td>if your like drones, plz subscribe to Kamal Ta...</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Phuc Ly</td>
+      <td>2014-01-20T15:27:47</td>
+      <td>go here to check the views :3﻿</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>DropShotSk8r</td>
+      <td>2014-01-19T04:27:18</td>
+      <td>Came here to check the views, goodbye.﻿</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>css403</td>
+      <td>2014-11-07T14:25:48</td>
+      <td>i am 2,126,492,636 viewer :D﻿</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
 ## 2. Writing Transformation Functions
 
 Transformation Functions are functions that can be applied to a training example to create another valid training example. For example, for image classification problems, it is common to rotate or crop images in the training data to create new training inputs. Transformation functions should be atomic e.g. a small rotation of an image, or changing a single word in a sentence. We then compose multiple transformation functions when applying them to training examples.
@@ -97,6 +172,13 @@ For more info, see the [`SpacyPreprocessor` documentation](https://snorkel.readt
 # If you see an error in the next cell, restart the kernel
 ! python -m spacy download en_core_web_sm
 ```
+
+    Requirement already satisfied: en_core_web_sm==2.1.0 from https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.1.0/en_core_web_sm-2.1.0.tar.gz#egg=en_core_web_sm==2.1.0 in /home/ubuntu/snorkel-tutorials/.tox/spam/lib/python3.6/site-packages (2.1.0)
+    [33mWARNING: You are using pip version 19.2.1, however version 19.2.2 is available.
+    You should consider upgrading via the 'pip install --upgrade pip' command.[0m
+    [38;5;2m✔ Download and installation successful[0m
+    You can now load the model via spacy.load('en_core_web_sm')
+
 
 
 ```python
@@ -214,6 +296,10 @@ def replace_adjective_with_synonym(x):
             return x
 ```
 
+    [nltk_data] Downloading package wordnet to /home/ubuntu/nltk_data...
+    [nltk_data]   Package wordnet is already up-to-date!
+
+
 We can try running the TFs on our training data to demonstrate their effect.
 
 
@@ -250,6 +336,69 @@ for tf in tfs:
 pd.DataFrame(transformed_examples)
 ```
 
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>TF Name</th>
+      <th>Original Text</th>
+      <th>Transformed Text</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>change_person</td>
+      <td>Check out Berzerk video on my channel ! :D</td>
+      <td>Check out Jennifer Selby video on my channel ! :D</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>swap_adjectives</td>
+      <td>hey guys look im aware im spamming and it pisses people off but please take a moment to check out my music.  im a young rapper and i love to do it and i just wanna share my music with more people  just click my picture and then see if you like my stuff</td>
+      <td>hey guys look im aware im spamming and it pisses people off but please take a moment to check out my music.  im a more rapper and i love to do it and i just wanna share my music with young people  just click my picture and then see if you like my stuff</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>replace_verb_with_synonym</td>
+      <td>"eye of the tiger" "i am the champion" seems like katy perry is using  titles of old rock songs for lyrics..﻿</td>
+      <td>"eye of the tiger" "i be the champion" seems like katy perry is using  titles of old rock songs for lyrics..﻿</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>replace_noun_with_synonym</td>
+      <td>Hey, check out my new website!! This site is about kids stuff. kidsmediausa  . com</td>
+      <td>Hey, check out my new web site !! This site is about kids stuff. kidsmediausa  . com</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>replace_adjective_with_synonym</td>
+      <td>I started hating Katy Perry after finding out that she stole all of the  ideas on her videos  from an old comic book. Yet, her music is catchy. ﻿</td>
+      <td>I started hating Katy Perry after finding out that she stole all of the  ideas on her videos  from an old amusing book. Yet, her music is catchy. ﻿</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
 We notice a couple of things about the TFs.
 * Sometimes they make trivial changes (_website_ -> _web site_ for replace_noun_with_synonym). This can still be helpful for training our model, because it teaches the model that these variations have similar meanings.
 * Sometimes they make the sentence less meaningful (e.g. swapping _young_ and _more_ for swap_adjectives).
@@ -277,11 +426,18 @@ df_train_augmented = tf_applier.apply(df_train)
 Y_train_augmented = df_train_augmented["label"].values
 ```
 
+    100%|██████████| 1586/1586 [00:26<00:00, 60.99it/s]
+
+
 
 ```python
 print(f"Original training set size: {len(df_train)}")
 print(f"Augmented training set size: {len(df_train_augmented)}")
 ```
+
+    Original training set size: 1586
+    Augmented training set size: 2486
+
 
 We have almost doubled our dataset using TFs! Note that despite `n_per_original` being set to 2, our dataset may not exactly triple in size, because sometimes TFs return `None` instead of a new example (e.g. `change_person` when applied to a sentence with no persons).
 
@@ -361,3 +517,26 @@ test_accuracy_original = train_and_test(df_train, Y_train)
 print(f"Test Accuracy when training on original dataset: {test_accuracy_original}")
 print(f"Test Accuracy when training on augmented dataset: {test_accuracy_augmented}")
 ```
+
+    WARNING: Logging before flag parsing goes to stderr.
+    W0814 23:05:03.335964 140205731931968 deprecation.py:506] From /home/ubuntu/snorkel-tutorials/.tox/spam/lib/python3.6/site-packages/tensorflow/python/keras/initializers.py:119: calling RandomUniform.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+    Instructions for updating:
+    Call initializer instance with the dtype argument instead of passing it to the constructor
+    W0814 23:05:03.352319 140205731931968 deprecation.py:506] From /home/ubuntu/snorkel-tutorials/.tox/spam/lib/python3.6/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+    Instructions for updating:
+    Call initializer instance with the dtype argument instead of passing it to the constructor
+    W0814 23:05:03.543370 140205731931968 deprecation.py:323] From /home/ubuntu/snorkel-tutorials/.tox/spam/lib/python3.6/site-packages/tensorflow/python/ops/nn_impl.py:180: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+    Instructions for updating:
+    Use tf.where in 2.0, which has the same broadcast rule as np.where
+    W0814 23:05:04.026029 140205731931968 deprecation.py:506] From /home/ubuntu/snorkel-tutorials/.tox/spam/lib/python3.6/site-packages/tensorflow/python/keras/optimizer_v2/adagrad.py:105: calling Constant.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+    Instructions for updating:
+    Call initializer instance with the dtype argument instead of passing it to the constructor
+
+
+    Restoring model weights from the end of the best epoch.
+    Epoch 00012: early stopping
+    Restoring model weights from the end of the best epoch.
+    Epoch 00021: early stopping
+    Test Accuracy when training on original dataset: 0.92
+    Test Accuracy when training on augmented dataset: 0.928
+

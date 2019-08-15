@@ -55,13 +55,18 @@ from visual_relation.utils import load_vrd_data
 
 # setting sample=False will take ~3 hours to run (downloads full VRD dataset)
 sample = True
-is_travis = "TRAVIS" in os.environ
+is_travis = os.environ.get("TRAVIS") == "true"
 df_train, df_valid, df_test = load_vrd_data(sample, is_travis)
 
 print("Train Relationships: ", len(df_train))
 print("Dev Relationships: ", len(df_valid))
 print("Test Relationships: ", len(df_test))
 ```
+
+    Train Relationships:  26
+    Dev Relationships:  26
+    Test Relationships:  26
+
 
 Note that the training `DataFrame` will have a labels field with all -1s. This denotes the lack of labels for that particular dataset. In this tutorial, we will assign probabilistic labels to the training set by writing labeling functions over attributes of the subject and objects!
 
@@ -180,6 +185,10 @@ L_train = applier.apply(df_train)
 L_valid = applier.apply(df_valid)
 ```
 
+    100%|██████████| 26/26 [00:00<00:00, 2297.47it/s]
+    100%|██████████| 26/26 [00:00<00:00, 3016.98it/s]
+
+
 
 ```python
 from snorkel.labeling import LFAnalysis
@@ -187,6 +196,132 @@ from snorkel.labeling import LFAnalysis
 Y_valid = df_valid.label.values
 LFAnalysis(L_valid, lfs).lf_summary(Y_valid)
 ```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>j</th>
+      <th>Polarity</th>
+      <th>Coverage</th>
+      <th>Overlaps</th>
+      <th>Conflicts</th>
+      <th>Correct</th>
+      <th>Incorrect</th>
+      <th>Emp. Acc.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>lf_ride_object</th>
+      <td>0</td>
+      <td>[0]</td>
+      <td>0.230769</td>
+      <td>0.230769</td>
+      <td>0.230769</td>
+      <td>5</td>
+      <td>1</td>
+      <td>0.833333</td>
+    </tr>
+    <tr>
+      <th>lf_ride_rare_object</th>
+      <td>1</td>
+      <td>[]</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>lf_carry_object</th>
+      <td>2</td>
+      <td>[1]</td>
+      <td>0.076923</td>
+      <td>0.076923</td>
+      <td>0.076923</td>
+      <td>2</td>
+      <td>0</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>lf_carry_subject</th>
+      <td>3</td>
+      <td>[1]</td>
+      <td>0.038462</td>
+      <td>0.038462</td>
+      <td>0.038462</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>lf_person</th>
+      <td>4</td>
+      <td>[2]</td>
+      <td>0.307692</td>
+      <td>0.307692</td>
+      <td>0.038462</td>
+      <td>5</td>
+      <td>3</td>
+      <td>0.625000</td>
+    </tr>
+    <tr>
+      <th>lf_ydist</th>
+      <td>5</td>
+      <td>[2]</td>
+      <td>0.576923</td>
+      <td>0.576923</td>
+      <td>0.307692</td>
+      <td>7</td>
+      <td>8</td>
+      <td>0.466667</td>
+    </tr>
+    <tr>
+      <th>lf_dist</th>
+      <td>6</td>
+      <td>[2]</td>
+      <td>1.000000</td>
+      <td>0.846154</td>
+      <td>0.346154</td>
+      <td>13</td>
+      <td>6</td>
+      <td>0.500000</td>
+    </tr>
+    <tr>
+      <th>lf_area</th>
+      <td>7</td>
+      <td>[2]</td>
+      <td>0.346154</td>
+      <td>0.346154</td>
+      <td>0.153846</td>
+      <td>5</td>
+      <td>4</td>
+      <td>0.555556</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
 
 ## 3. Train Label Model
 We now train a multi-class `LabelModel` to assign training labels to the unalabeled training set.
@@ -205,6 +340,13 @@ We use [F1](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1
 ```python
 label_model.score(L_valid, Y_valid, metrics=["f1_micro"])
 ```
+
+
+
+
+    {'f1_micro': 0.5769230769230769}
+
+
 
 ## 4. Train a Classifier
 You can then use these training labels to train any standard discriminative model, such as [an off-the-shelf ResNet](https://github.com/KaimingHe/deep-residual-networks), which should learn to generalize beyond the LF's we've developed!
@@ -302,9 +444,21 @@ trainer = Trainer(
 trainer.fit(model, [dl_train])
 ```
 
+    Epoch 0::   0%|          | 0/2 [00:00<?, ?it/s]/home/ubuntu/snorkel-tutorials/visual_relation/model.py:134: FutureWarning: Method .as_matrix will be removed in a future version. Use .values instead.
+      return self.word_embs.loc[word].as_matrix()
+    Epoch 0:: 100%|██████████| 2/2 [00:02<00:00,  1.29s/it, model/all/train/loss=1.07, model/all/train/lr=0.001]
+
+
 
 ```python
 model.score([dl_valid])
 ```
+
+
+
+
+    {'visual_relation_task/valid_dataset/valid/f1_micro': 0.6153846153846154}
+
+
 
 We have successfully trained a visual relationship detection model! Using categorical and spatial intuition about how objects in a visual relationship interact with each other, we are able to assign high quality training labels to object pairs in the VRD dataset in a multi-class classification setting.

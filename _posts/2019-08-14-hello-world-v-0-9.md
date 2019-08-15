@@ -130,16 +130,16 @@ based on our [deployment with Google AI](https://ai.googleblog.com/2019/03/harne
 
 ## Moving to a Modular, General Purpose Snorkel
 
-Snorkel [started out focused on information extraction from text](https://ajratner.github.io/assets/papers/ratner-cidr17.pdf), a use case we continue to support (for example, see the [relation extraction tutorial](https://www.snorkel.org/use-cases/spouse-demo)).
-However, through interactions with users and use cases across many domains, it has become clear that the best way to support the wide range of potential problems and data modalities Snorkel can be applied to–from image and text to video and time series–is to make Snorkel much more modular and data agnostic.
+Snorkel started out focused on [information extraction from text](https://ajratner.github.io/assets/papers/ratner-cidr17.pdf), a use case we continue to support (for example, see the [relation extraction tutorial](https://www.snorkel.org/use-cases/spouse-demo)).
+However, through interactions with users and use cases across many domains, it has become clear that the best way to support the wide range of potential problems and data modalities Snorkel can be applied to — from image and text to video and time series — is to make Snorkel much more modular and data agnostic.
 
-Therefore, one of the changes that will be most noticeable to prior users of Snorkel is that the end-to-end relational data management system for information extraction has now moved to the [`snorkel-extraction` repo](https://github.com/snorkel-team/snorkel-extraction), and the new version accepts more generic data objects, e.g. numpy arrays, Pandas and Dask DataFrames, Spark RDDs, etc.
-In our experience deploying Snorkel, end-to-end data management systems integrated with Snorkel are still the best way to deploy production applications- but we now leave this as an infrastructure component external to the core Snorkel repo.
+Therefore, one of the changes that will be most noticeable to prior users of Snorkel is that the end-to-end relational data management system for information extraction has now moved to the [`snorkel-extraction` repository](https://github.com/snorkel-team/snorkel-extraction), and the new version accepts more generic data objects, e.g. numpy arrays, Pandas and Dask DataFrames, Spark RDDs, etc.
+In our experience deploying Snorkel, end-to-end data management systems integrated with Snorkel are still the best way to deploy production applications, but we now leave this as an infrastructure component external to the core Snorkel repo for flexibility.
 
 ## Tutorials
 
 One of the most important motivations for us in releasing and maintaining Snorkel as an open source project is to show how programmatic ways of building and managing training data can serve as an efficient, powerful, and accessible new paradigm for building machine learning applications.
-Given this, maintaining clean, readable, and helpful tutorials is expecially important to us.
+Given this, maintaining clean, readable, and helpful tutorials is especially important to us.
 In this new release, we've added or re-worked a variety of tutorials on Snorkel:
 
 * **[Getting Started](https://www.snorkel.org/get-started/):** A new, quicker (but still end-to-end executable) tour of Snorkel
@@ -157,8 +157,7 @@ Please check out our [community forum](https://spectrum.chat/snorkel/tutorials?t
 
 It's now easier than ever to get started with, receive support, and contribute to Snorkel.
 In particular, we've adopted best practices around installation, testing, and
-documentation from lots of well maintained Python libraries that we use and love.
-
+documentation from lots of well-maintained Python libraries that we use and love.
 
 ### Installation
 
@@ -194,7 +193,7 @@ so you'll always be able to find information on the latest features.
 
 ## Moving Forwards
 
-Moving forwards, we're excited to build off of this new release and maintain a regular cadence of new features, tutorials, and integrations.
+Moving forward, we're excited to build off of this new release and maintain a regular cadence of new features, tutorials, and integrations.
 Examples of upcoming additions that we're excited about include further integrations with modern ML platforms, including [TFX](https://www.tensorflow.org/tfx) and [Ludwig](https://uber.github.io/ludwig/); various new tutorials, including on _cross-modal weak supervision_ based on some of our [recent work in the medical imaging and monitoring domain](https://arxiv.org/abs/1903.11101); further data augmentation features around automated policy learning (porting from our [NeurIPS 2017 codebase](https://github.com/HazyResearch/tanda)) and new augmentation deployment form factors; and much more!
 
 Much of the above will be guided by community feedback, so please check out our [community forum](https://spectrum.chat/snorkel?tab=posts), [mailing list](https://groups.google.com/forum/#!forum/snorkel-ml), and [Github Issues page](https://github.com/snorkel-team/snorkel/issues) to give us feedback on what you'd be most excited to see next!

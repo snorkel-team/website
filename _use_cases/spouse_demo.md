@@ -4,6 +4,7 @@ title: Information Extraction in Snorkel
 description: Labeling spouse mentions in documents
 excerpt: Labeling spouse mentions in documents
 order: 7
+github_link: https://github.com/snorkel-team/snorkel-tutorials/blob/master/spouse/spouse_demo.ipynb
 ---
 
 

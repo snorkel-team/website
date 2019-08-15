@@ -4,6 +4,7 @@ title: Building Recommender Systems in Snorkel
 description: Labeling text reviews for book recommendations
 excerpt: Labeling text reviews for book recommendations
 order: 5
+github_link: https://github.com/snorkel-team/snorkel-tutorials/blob/master/recsys/recsys_tutorial.ipynb
 ---
 
 

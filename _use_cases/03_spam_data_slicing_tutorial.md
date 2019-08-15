@@ -4,6 +4,7 @@ title: Intro to Slicing Functions
 description: Monitoring critical data subsets for spam classification
 excerpt: Monitoring critical data subsets for spam classification
 order: 3
+github_link: https://github.com/snorkel-team/snorkel-tutorials/blob/master/spam/03_spam_data_slicing_tutorial.ipynb
 ---
 
 

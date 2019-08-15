@@ -4,6 +4,7 @@ title: Intro to Snorkel's Multitask Learning System
 description: State-of-the-art framework for pretraining & parameter sharing
 excerpt: State-of-the-art framework for pretraining & parameter sharing
 order: 8
+github_link: https://github.com/snorkel-team/snorkel-tutorials/blob/master/multitask/multitask_tutorial.ipynb
 ---
 
 

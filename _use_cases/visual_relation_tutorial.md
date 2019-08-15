@@ -29,7 +29,7 @@ We load the VRD dataset and filter images with at least one action predicate in 
 
 If you are running this notebook for the first time, it will take ~15 mins to download all the required sample data.
 
-The sampled version of the dataset **uses the same 26 examples across the train, dev, and test sets.
+The sampled version of the dataset **uses the same 26 data points across the train, dev, and test sets.
 This setting is meant to demonstrate quickly how Snorkel works with this task, not to demonstrate performance.**
 
 

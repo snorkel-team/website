@@ -90,42 +90,42 @@ df_dev.sample(frac=1, random_state=12).head()
   </thead>
   <tbody>
     <tr>
-      <th>162721</th>
-      <td>6354</td>
-      <td>(29163, 31669, 21391, 3110, 1198, 13736, 15603...</td>
-      <td>25694</td>
-      <td>0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>606415</th>
-      <td>23440</td>
-      <td>(24773, 2756, 15192, 29519, 12973, 27122, 1886...</td>
-      <td>10690</td>
-      <td>0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>594990</th>
-      <td>22985</td>
-      <td>(79, 31145, 13489, 17217, 30664, 59, 16489, 12...</td>
-      <td>14925</td>
-      <td>0</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>767872</th>
-      <td>29887</td>
-      <td>(14933, 17123, 14561, 30242, 6963, 18120, 1897...</td>
-      <td>12855</td>
+      <th>277346</th>
+      <td>10733</td>
+      <td>(18515, 590, 4221, 9716, 4965, 2711, 30370, 21...</td>
+      <td>31043</td>
       <td>1</td>
       <td>NaN</td>
     </tr>
     <tr>
-      <th>779731</th>
-      <td>30342</td>
-      <td>(655, 20426, 12855, 5361, 25356, 5360, 17086, ...</td>
-      <td>11012</td>
+      <th>797926</th>
+      <td>31002</td>
+      <td>(22472, 29064, 19059, 4739, 18534, 20559, 1277...</td>
+      <td>12231</td>
+      <td>1</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>624489</th>
+      <td>24170</td>
+      <td>(16739, 10142, 31677, 22976, 4903, 831, 22079,...</td>
+      <td>22589</td>
+      <td>1</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>565393</th>
+      <td>21830</td>
+      <td>(1532, 19248, 1021, 22612, 18773, 13376, 23564...</td>
+      <td>31238</td>
+      <td>1</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>433259</th>
+      <td>16679</td>
+      <td>(22472, 19544, 28628, 3137, 24753, 24680, 836,...</td>
+      <td>7754</td>
       <td>1</td>
       <td>NaN</td>
     </tr>
@@ -312,56 +312,56 @@ LFAnalysis(L_dev, lfs).lf_summary(df_dev.rating)
       <th>stars_in_review</th>
       <td>0</td>
       <td>[0, 1]</td>
-      <td>0.012126</td>
-      <td>0.003354</td>
-      <td>0.001161</td>
-      <td>80</td>
-      <td>14</td>
-      <td>0.851064</td>
+      <td>0.014573</td>
+      <td>0.003582</td>
+      <td>0.001235</td>
+      <td>93</td>
+      <td>25</td>
+      <td>0.788136</td>
     </tr>
     <tr>
       <th>shared_first_author</th>
       <td>1</td>
       <td>[1]</td>
-      <td>0.031476</td>
-      <td>0.000645</td>
+      <td>0.028653</td>
+      <td>0.000124</td>
       <td>0.000000</td>
-      <td>194</td>
-      <td>50</td>
-      <td>0.795082</td>
+      <td>151</td>
+      <td>81</td>
+      <td>0.650862</td>
     </tr>
     <tr>
       <th>polarity_positive</th>
       <td>2</td>
       <td>[1]</td>
-      <td>0.045021</td>
-      <td>0.011481</td>
-      <td>0.000774</td>
-      <td>284</td>
-      <td>65</td>
-      <td>0.813754</td>
+      <td>0.043349</td>
+      <td>0.011609</td>
+      <td>0.001112</td>
+      <td>265</td>
+      <td>86</td>
+      <td>0.754986</td>
     </tr>
     <tr>
       <th>subjectivity_positive</th>
       <td>3</td>
       <td>[1]</td>
-      <td>0.014577</td>
-      <td>0.010965</td>
-      <td>0.001806</td>
-      <td>80</td>
-      <td>33</td>
-      <td>0.707965</td>
+      <td>0.016179</td>
+      <td>0.012103</td>
+      <td>0.001976</td>
+      <td>101</td>
+      <td>30</td>
+      <td>0.770992</td>
     </tr>
     <tr>
       <th>polarity_negative</th>
       <td>4</td>
       <td>[0]</td>
-      <td>0.014577</td>
-      <td>0.002451</td>
-      <td>0.001548</td>
-      <td>74</td>
-      <td>39</td>
-      <td>0.654867</td>
+      <td>0.014820</td>
+      <td>0.002964</td>
+      <td>0.001976</td>
+      <td>77</td>
+      <td>43</td>
+      <td>0.641667</td>
     </tr>
   </tbody>
 </table>
@@ -371,7 +371,7 @@ LFAnalysis(L_dev, lfs).lf_summary(df_dev.rating)
 
 ### Applying labeling functions to the training set
 
-We apply the labeling functions to the training set, and then filter out examples unlabeled by any LF to form our final training set.
+We apply the labeling functions to the training set, and then filter out data points unlabeled by any LF to form our final training set.
 
 
 ```python
@@ -440,12 +440,12 @@ def get_model(embed_dim=64, hidden_layer_sizes=[32]):
     return model
 ```
 
-We use triples of (`book_idxs`, `book_idx`, `rating`) from our dataframes as training examples. In addition, we want to train the model to recognize when a user will not read a book. To create examples for that, we randomly sample a `book_id` not in `book_idxs` and use that with a `rating` of 0 as a _random negative_ example. We create one such _random negative_ example for every positive (`rating` 1) example in our dataframe so that positive and negative examples are roughly balanced.
+We use triples of (`book_idxs`, `book_idx`, `rating`) from our dataframes as training data points. In addition, we want to train the model to recognize when a user will not read a book. To create data points for that, we randomly sample a `book_id` not in `book_idxs` and use that with a `rating` of 0 as a _random negative_ data point. We create one such _random negative_ data point for every positive (`rating` 1) data point in our dataframe so that positive and negative data points are roughly balanced.
 
 
 ```python
-# Generator to turn dataframe into examples.
-def get_examples_generator(df):
+# Generator to turn dataframe into data points.
+def get_data_points_generator(df):
     def generator():
         for book_idxs, book_idx, rating in zip(df.book_idxs, df.book_idx, df.rating):
             # Remove book_idx from book_idxs so the model can't just look it up.
@@ -472,7 +472,7 @@ def get_examples_generator(df):
 
 
 def get_data_tensors(df):
-    # Use generator to get examples each epoch, along with shuffling and batching.
+    # Use generator to get data points each epoch, along with shuffling and batching.
     padded_shapes = {
         "len_book_idxs": [],
         "book_idxs": [None],
@@ -481,7 +481,7 @@ def get_data_tensors(df):
     }
     dataset = (
         tf.data.Dataset.from_generator(
-            get_examples_generator(df), {k: tf.int64 for k in padded_shapes}
+            get_data_points_generator(df), {k: tf.int64 for k in padded_shapes}
         )
         .shuffle(123)
         .repeat(None)
@@ -529,7 +529,7 @@ X_test, Y_test = get_data_tensors(df_test)
 _ = model.evaluate(X_test, Y_test, steps=30)
 ```
 
-    30/30 [==============================] - 1s 32ms/step - loss: 0.6661 - acc: 0.6349 - f1_batch: 0.4720 - precision_batch: 0.5585 - recall_batch: 0.4248
+    30/30 [==============================] - 1s 32ms/step - loss: 0.6717 - acc: 0.6482 - f1_batch: 0.4793 - precision_batch: 0.5636 - recall_batch: 0.4296
 
 
 Our model has generalized quite well to our test set!

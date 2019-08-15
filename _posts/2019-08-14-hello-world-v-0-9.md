@@ -2,8 +2,8 @@
 layout: default
 title: Introducing the New Snorkel
 author: The Snorkel Team
-description: Introducing the new Snorkel v0.9.
-excerpt: Introducing the new Snorkel v0.9.
+description: Introducing our biggest update to Snorkel yet, version 0.9.
+excerpt: Introducing our biggest update to Snorkel yet, version 0.9.
 show_title_author: True
 ---
 

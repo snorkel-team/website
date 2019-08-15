@@ -9,6 +9,11 @@
   {% include site-header.html class="site-header" %}
   <div class="section">
     <div class="container">
+        {% if page.github_link %}
+        <a href="{{ page.github_link }}" class="btn--dark btn--rounded">View on GitHub</a>
+        <br>
+        <br>
+        {% endif %}
       <div class="row">
         <div class="col-md-8">
           <div class="content">

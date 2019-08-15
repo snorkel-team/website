@@ -4,6 +4,7 @@ title: Intro to Labeling Functions
 description: Labeling data for spam classification
 excerpt: Labeling data for spam classification
 order: 1
+github_link: http://google.com
 ---
 
 

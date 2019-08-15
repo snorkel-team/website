@@ -200,6 +200,11 @@
 
 /* ----- Github Buttons ----- */
 .github {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 160px;
+
   i {
     font-size: 20px;
   }

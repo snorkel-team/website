@@ -8,12 +8,13 @@ github_link: https://github.com/snorkel-team/snorkel-tutorials/blob/master/spam/
 ---
 
 
-# 🚀 Snorkel Intro Tutorial: Spam Detection
+# 🚀 Snorkel Intro Tutorial: Data Labeling
 
 In this tutorial, we will walk through the process of using Snorkel to build a training set for classifying YouTube comments as spam or not spam.
 The goal of this tutorial is to illustrate the basic components and concepts of Snorkel in a simple way, but also to dive into the actual process of iteratively developing real applications in Snorkel.
-For an overview of Snorkel, visit [snorkel.org](http://snorkel.org).
-You can also check out the [Snorkel API documentation](https://snorkel.readthedocs.io/).
+
+* For an overview of Snorkel, visit [snorkel.org](http://snorkel.org)
+* You can also check out the [Snorkel API documentation](https://snorkel.readthedocs.io/)
 
 Our goal is to train a classifier over the comment data that can predict whether a comment is spam or not spam.
 We have access to a large amount of *unlabeled data* in the form of YouTube comments with some metadata.
@@ -81,7 +82,7 @@ Do the latter only with caution: because the labeling functions will be based on
 
 ## 1. Loading Data
 
-We load the YouTube comments dataset and create Pandas DataFrame objects for each of the sets described above.
+We load the YouTube comments dataset and create Pandas DataFrame objects for the train, validation, and test sets.
 DataFrames are extremely popular in Python data analysis workloads, and Snorkel provides native support
 for several DataFrame-like data structures, including Pandas, Dask, and PySpark.
 For more information on working with Pandas DataFrames, see the [Pandas DataFrame guide](https://pandas.pydata.org/pandas-docs/stable/getting_started/dsintro.html).
@@ -100,69 +101,22 @@ As mentioned above, the dataset contains comments from 5 of the most popular You
 * The `dev` set is a random sample of 200 data points from the `train` set with gold labels added.
 * The fifth video is split 50/50 between a validation set (`valid`) and `test` set.
 
-This next cell takes care of some notebook-specific housekeeping.
-You can ignore it.
-
-
-```python
-%matplotlib inline
-
-import os
-
-# For reproducibility
-os.environ["PYTHONHASHSEED"] = "0"
-
-# Turn off TensorFlow logging messages
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
-
-# Make sure we're running from the spam/ directory
-if os.path.basename(os.getcwd()) == "snorkel-tutorials":
-    os.chdir("spam")
-```
-
-This next cell makes sure a spaCy English model is downloaded.
-If this is your first time downloading this model, restart the kernel after executing the next cell.
-
-
-```python
-# Download the spaCy english model
-! python -m spacy download en_core_web_sm
-```
-
-    Requirement already satisfied: en_core_web_sm==2.1.0 from https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.1.0/en_core_web_sm-2.1.0.tar.gz#egg=en_core_web_sm==2.1.0 in /Users/braden/repos/snorkel-tutorials/.tox/spam/lib/python3.7/site-packages (2.1.0)
-    [33mWARNING: You are using pip version 19.1.1, however version 19.2.2 is available.
-    You should consider upgrading via the 'pip install --upgrade pip' command.[0m
-    [38;5;2m✔ Download and installation successful[0m
-    You can now load the model via spacy.load('en_core_web_sm')
-
-
 
 ```python
 from utils import load_spam_dataset
-```
 
-
-```python
 df_train, df_dev, df_valid, df_test = load_spam_dataset()
 
 # We pull out the label vectors for ease of use later
-Y_dev = df_dev["label"].values
-Y_valid = df_valid["label"].values
-Y_test = df_test["label"].values
+Y_dev = df_dev.label.values
+Y_valid = df_valid.label.values
+Y_test = df_test.label.values
 ```
 
 Let's view 5 example data points from the `dev` set.
 
 
 ```python
-import pandas as pd
-```
-
-
-```python
-# Don't truncate text fields in the display
-pd.set_option("display.max_colwidth", 0)
-
 df_dev.sample(5, random_state=3)
 ```
 
@@ -207,7 +161,7 @@ df_dev.sample(5, random_state=3)
       <th>151</th>
       <td>Melissa Erhart</td>
       <td>NaN</td>
-      <td>Check out this playlist on YouTube:chcfcvzfzfbvzdr﻿</td>
+      <td>Check out this playlist on YouTube:chcfcvzfzfb...</td>
       <td>1</td>
       <td>4</td>
     </tr>
@@ -215,7 +169,7 @@ df_dev.sample(5, random_state=3)
       <th>31</th>
       <td>Angel</td>
       <td>2014-11-02T17:27:09</td>
-      <td>Hi there~I'm group leader of Angel, a rookie Korean pop group. We have four  members, Chanicka, Julie, Stephanie, and myself, Leah. Please feel free to  check out our channel and leave some feedback on our cover videos (:  criticism is welcome as we know we're not top notch singers so please come  leave some constructive feedback on our videos; we appreciate any chance to  improve before auditioning for a Korean management company. We plan on  auditioning for JYP, BigHit, Jellyfish, YG or SM. Thank you for taking time  out of your day to read this !﻿</td>
+      <td>Hi there~I'm group leader of Angel, a rookie K...</td>
       <td>1</td>
       <td>1</td>
     </tr>
@@ -231,7 +185,7 @@ df_dev.sample(5, random_state=3)
       <th>237</th>
       <td>BigBird Larry</td>
       <td>2015-05-24T09:48:00.835000</td>
-      <td>Every single one of his songs brings me back to place I can never go back to and it hurts so bad inside﻿</td>
+      <td>Every single one of his songs brings me back t...</td>
       <td>0</td>
       <td>4</td>
     </tr>
@@ -241,7 +195,7 @@ df_dev.sample(5, random_state=3)
 
 
 
-The class distribution varies slightly from class to class, but all are approximately class-balanced.
+The class distribution varies slightly between `SPAM` and `HAM`, but they're approximately class-balanced.
 You can verify this by looking at the `dev` set labels.
 
 
@@ -251,17 +205,13 @@ ABSTAIN = -1
 HAM = 0
 SPAM = 1
 
-for split_name, df in [("dev", df_dev), ("valid", df_valid), ("test", df_test)]:
-    spam_freq = (df["label"].values == SPAM).mean()
-    print(f"{split_name.upper():<6} {spam_freq * 100:0.1f}% SPAM")
+print(f"Dev SPAM frequency: {100 * (df_dev.label.values == SPAM).mean():.1f}%")
 ```
 
-    DEV    54.0% SPAM
-    VALID  46.7% SPAM
-    TEST   47.2% SPAM
+    Dev SPAM frequency: 54.0%
 
 
-## 2. Write Labeling Functions (LFs)
+## 2. Writing Labeling Functions (LFs)
 
 ### A gentle introduction to LFs
 
@@ -333,7 +283,7 @@ df_train[["author", "text", "video"]].sample(20, random_state=2)
     <tr>
       <th>4</th>
       <td>ambareesh nimkar</td>
-      <td>"eye of the tiger" "i am the champion" seems like katy perry is using  titles of old rock songs for lyrics..﻿</td>
+      <td>"eye of the tiger" "i am the champion" seems l...</td>
       <td>2</td>
     </tr>
     <tr>
@@ -351,7 +301,7 @@ df_train[["author", "text", "video"]].sample(20, random_state=2)
     <tr>
       <th>80</th>
       <td>Jason Haddad</td>
-      <td>Hey, check out my new website!! This site is about kids stuff. kidsmediausa  . com</td>
+      <td>Hey, check out my new website!! This site is a...</td>
       <td>1</td>
     </tr>
     <tr>
@@ -363,25 +313,25 @@ df_train[["author", "text", "video"]].sample(20, random_state=2)
     <tr>
       <th>305</th>
       <td>M.E.S</td>
-      <td>hey guys look im aware im spamming and it pisses people off but please take a moment to check out my music.  im a young rapper and i love to do it and i just wanna share my music with more people  just click my picture and then see if you like my stuff</td>
+      <td>hey guys look im aware im spamming and it piss...</td>
       <td>4</td>
     </tr>
     <tr>
       <th>22</th>
       <td>John Monster</td>
-      <td>Οh my god ... Roar is the most liked video at Vevo .. while 2 months ago  was Justin's Baby.. congrats Katy . Applause &amp;lt;3 ﻿</td>
+      <td>Οh my god ... Roar is the most liked video at ...</td>
       <td>2</td>
     </tr>
     <tr>
       <th>338</th>
       <td>Alanoud Alsaleh</td>
-      <td>I started hating Katy Perry after finding out that she stole all of the  ideas on her videos  from an old comic book. Yet, her music is catchy. ﻿</td>
+      <td>I started hating Katy Perry after finding out ...</td>
       <td>2</td>
     </tr>
     <tr>
       <th>336</th>
       <td>Leonardo Baptista</td>
-      <td>http://www.avaaz.org/po/petition/Youtube_Corporation_Fox_Broadcasting_Company_Anular_os_strikes_no_Canal_Nostalgia/?cXPZpgb ﻿</td>
+      <td>http://www.avaaz.org/po/petition/Youtube_Corpo...</td>
       <td>1</td>
     </tr>
     <tr>
@@ -399,43 +349,43 @@ df_train[["author", "text", "video"]].sample(20, random_state=2)
     <tr>
       <th>129</th>
       <td>b0b1t.48058475</td>
-      <td>i rekt ur mum last nite. cuz da haterz were 2 much 4 meh lik dis if u cri evertim and sponswer mi robox vidz https://www.indiegogo.com/projects/gimme-dem-moneyz-4-roblox/x/8851222#home﻿</td>
+      <td>i rekt ur mum last nite. cuz da haterz were 2 ...</td>
       <td>2</td>
     </tr>
     <tr>
       <th>277</th>
       <td>MeSoHornyMeLuvULongTime</td>
-      <td>This video is so racist!!! There are only animals.﻿</td>
+      <td>This video is so racist!!! There are only anim...</td>
       <td>2</td>
     </tr>
     <tr>
       <th>265</th>
       <td>HarveyIsTheBoss</td>
-      <td>You gotta say its funny. well not 2 billion worth funny but still. It  clicked and everything went uphill. At least you don't have JB's shit on  #1.﻿</td>
+      <td>You gotta say its funny. well not 2 billion wo...</td>
       <td>1</td>
     </tr>
     <tr>
       <th>214</th>
       <td>janez novak</td>
-      <td>share and like this page to win a hand signed Rihanna photo!!! fb -  Fans of Rihanna</td>
+      <td>share and like this page to win a hand signed ...</td>
       <td>4</td>
     </tr>
     <tr>
       <th>76</th>
       <td>Bizzle Sperq</td>
-      <td>https://www.facebook.com/nicushorbboy add mee &amp;lt;3 &amp;lt;3﻿</td>
+      <td>https://www.facebook.com/nicushorbboy add mee ...</td>
       <td>1</td>
     </tr>
     <tr>
       <th>123</th>
       <td>Gaming and Stuff PRO</td>
-      <td>Hello! Do you like gaming, art videos, scientific experiments, tutorials,  lyrics videos, and much, much more of that? If you do please check out our  channel and subscribe to it, we've just started, but soon we hope we will  be able to cover all of our expectations... You can also check out what  we've got so far!﻿</td>
+      <td>Hello! Do you like gaming, art videos, scienti...</td>
       <td>1</td>
     </tr>
     <tr>
       <th>268</th>
       <td>Young IncoVEVO</td>
-      <td>Check out my Music Videos! and PLEASE SUBSCRIBE!!!! Fuego - U LA LA Remix  hyperurl.co/k6a5xt﻿</td>
+      <td>Check out my Music Videos! and PLEASE SUBSCRIB...</td>
       <td>1</td>
     </tr>
     <tr>
@@ -472,17 +422,13 @@ For the two versions of our rule, we'll write a Python function over a single da
 
 ```python
 from snorkel.labeling import labeling_function
-```
 
 
-```python
 @labeling_function()
 def check(x):
     return SPAM if "check" in x.text.lower() else ABSTAIN
-```
 
 
-```python
 @labeling_function()
 def check_out(x):
     return SPAM if "check out" in x.text.lower() else ABSTAIN
@@ -504,22 +450,18 @@ We'll create one label matrix for the `train` set and one for the `dev` set.
 
 ```python
 from snorkel.labeling import PandasLFApplier
-```
 
-
-```python
 lfs = [check_out, check]
 
 applier = PandasLFApplier(lfs=lfs)
 L_train = applier.apply(df=df_train)
 L_dev = applier.apply(df=df_dev)
-
-L_train
 ```
 
-    100%|██████████| 1586/1586 [00:00<00:00, 19586.74it/s]
-    100%|██████████| 100/100 [00:00<00:00, 27458.62it/s]
 
+```python
+L_train
+```
 
 
 
@@ -569,10 +511,7 @@ Since we have labels for the `dev` set but not the `train` set, we'll compute th
 
 ```python
 from snorkel.labeling import LFAnalysis
-```
 
-
-```python
 LFAnalysis(L=L_train, lfs=lfs).lf_summary()
 ```
 
@@ -703,10 +642,7 @@ This may give ideas for where the LF could be made more specific.
 
 ```python
 from snorkel.analysis import get_label_buckets
-```
 
-
-```python
 buckets = get_label_buckets(Y_dev, L_dev[:, 1])
 df_dev.iloc[buckets[(HAM, SPAM)]]
 ```
@@ -795,7 +731,7 @@ df_train.iloc[L_train[:, 1] == SPAM].sample(10, random_state=1)
       <th>305</th>
       <td>M.E.S</td>
       <td>NaN</td>
-      <td>hey guys look im aware im spamming and it pisses people off but please take a moment to check out my music.  im a young rapper and i love to do it and i just wanna share my music with more people  just click my picture and then see if you like my stuff</td>
+      <td>hey guys look im aware im spamming and it piss...</td>
       <td>-1.0</td>
       <td>4</td>
     </tr>
@@ -803,7 +739,7 @@ df_train.iloc[L_train[:, 1] == SPAM].sample(10, random_state=1)
       <th>265</th>
       <td>Kawiana Lewis</td>
       <td>2015-02-27T02:20:40.987000</td>
-      <td>Check out this video on YouTube:opponents mm &lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;--•[••••=====++¥¥£££&lt;br /&gt;﻿</td>
+      <td>Check out this video on YouTube:opponents mm &lt;...</td>
       <td>-1.0</td>
       <td>3</td>
     </tr>
@@ -819,7 +755,7 @@ df_train.iloc[L_train[:, 1] == SPAM].sample(10, random_state=1)
       <th>147</th>
       <td>TheGenieBoy</td>
       <td>NaN</td>
-      <td>check out fantasy music    right here -------&amp;gt; the1fantasy  good music man.</td>
+      <td>check out fantasy music    right here -------&amp;...</td>
       <td>-1.0</td>
       <td>4</td>
     </tr>
@@ -827,7 +763,7 @@ df_train.iloc[L_train[:, 1] == SPAM].sample(10, random_state=1)
       <th>240</th>
       <td>Made2Falter</td>
       <td>2014-09-09T23:55:30</td>
-      <td>Check out our vids, our songs are awesome! And that I guarantee :)﻿</td>
+      <td>Check out our vids, our songs are awesome! And...</td>
       <td>-1.0</td>
       <td>2</td>
     </tr>
@@ -835,7 +771,7 @@ df_train.iloc[L_train[:, 1] == SPAM].sample(10, random_state=1)
       <th>273</th>
       <td>Artady</td>
       <td>2014-08-11T16:27:55</td>
-      <td>https://soundcloud.com/artady please check my stuff; and make some feedback﻿</td>
+      <td>https://soundcloud.com/artady please check my ...</td>
       <td>-1.0</td>
       <td>2</td>
     </tr>
@@ -843,7 +779,7 @@ df_train.iloc[L_train[:, 1] == SPAM].sample(10, random_state=1)
       <th>94</th>
       <td>Nick McGoldrick</td>
       <td>2014-10-27T13:19:06</td>
-      <td>Check out my drum cover of E.T. here! thanks -&amp;gt;   /watch?v=NO9pOVZ9OIQ&amp;amp;list=UUltuCDIHsDeI01by1OW7WuQ﻿</td>
+      <td>Check out my drum cover of E.T. here! thanks -...</td>
       <td>-1.0</td>
       <td>2</td>
     </tr>
@@ -851,7 +787,7 @@ df_train.iloc[L_train[:, 1] == SPAM].sample(10, random_state=1)
       <th>139</th>
       <td>MFkin PRXPHETZ</td>
       <td>2014-01-20T09:08:39</td>
-      <td>if you like raw talent, raw lyrics, straight real hip hop Everyone check my newest sound  Dizzy X - Got the Juice (Prod by. Drugs the Model Citizen)   COMMENT TELL ME WHAT YOU THINK  DONT BE LAZY!!!!  - 1/7 Prophetz﻿</td>
+      <td>if you like raw talent, raw lyrics, straight r...</td>
       <td>-1.0</td>
       <td>1</td>
     </tr>
@@ -859,7 +795,7 @@ df_train.iloc[L_train[:, 1] == SPAM].sample(10, random_state=1)
       <th>303</th>
       <td>이 정훈</td>
       <td>NaN</td>
-      <td>This great Warning will happen soon. ,0\nLneaDw26bFst76VHKJL8PxaEy6VMNlvmriUDTSFK6vY,Ali Paša,2013-09-26T22:28:17.047000,Croatia &amp;lt;3,0\nLneaDw26bFvkAHxpKEnM25FYWkyXthsUpri6JuQsZnU,G Belrus,2013-09-26T22:26:12.832000,Nice one,0\nLneaDw26bFtvZQt6JUEhasIEFRJG1exI_dVqdnQVPho,exode. comeback.,2013-09-26T22:23:00.710000,600m views.,0\nLneaDw26bFunOarAg71AwGU6TJO6aZDKFIUn_TZ1_HY,Muhammad Shaeel Abbas,2013-09-26T22:15:45.476000,Fuck off!,0\nLneaDw26bFt-oToUFj0z3vffLFNaxyKwZSIVQhiMx-E,Notorious Niko,2013-09-26T22:00:43.613000,"Hey guys im a 17yr old rapper trying to get exposure... I live in belgium where NO ONE speaks english so i have to resort to this gay SPAM...  Check out my 2 latest tracks as they are probably my best.. Audio isnt the best but im gonna invest in some real equipment for my next track..  Please Thumbs this up so others can see.. or hey dont just check me out yourself and leave a response and a like :D  Thanks in advance, you guys will be part of making my dream come TRUE   -Notorious Niko</td>
+      <td>This great Warning will happen soon. ,0\nLneaD...</td>
       <td>-1.0</td>
       <td>4</td>
     </tr>
@@ -867,7 +803,7 @@ df_train.iloc[L_train[:, 1] == SPAM].sample(10, random_state=1)
       <th>246</th>
       <td>media.uploader</td>
       <td>NaN</td>
-      <td>Check out my channel to see Rihanna short mix by me :)</td>
+      <td>Check out my channel to see Rihanna short mix ...</td>
       <td>-1.0</td>
       <td>4</td>
     </tr>
@@ -919,7 +855,7 @@ df_train.iloc[buckets[(ABSTAIN, SPAM)]].sample(10, random_state=1)
       <th>403</th>
       <td>ownpear902</td>
       <td>2014-07-22T18:44:36.299000</td>
-      <td>check it out free stuff for watching videos and filling surveys&lt;br /&gt;&lt;br /&gt;&lt;a href="http://www.prizerebel.com/index.php?r=1446084"&gt;http://www.prizerebel.com/index.php?r=1446084&lt;/a&gt;﻿</td>
+      <td>check it out free stuff for watching videos an...</td>
       <td>-1.0</td>
       <td>3</td>
     </tr>
@@ -927,7 +863,7 @@ df_train.iloc[buckets[(ABSTAIN, SPAM)]].sample(10, random_state=1)
       <th>256</th>
       <td>PacKmaN</td>
       <td>2014-11-05T21:56:39</td>
-      <td>check men out i put allot of effort into my music but unfortunatly not many  watch it﻿</td>
+      <td>check men out i put allot of effort into my mu...</td>
       <td>-1.0</td>
       <td>1</td>
     </tr>
@@ -951,7 +887,7 @@ df_train.iloc[buckets[(ABSTAIN, SPAM)]].sample(10, random_state=1)
       <th>352</th>
       <td>MrJtill0317</td>
       <td>NaN</td>
-      <td>┏━━━┓┏┓╋┏┓┏━━━┓┏━━━┓┏┓╋╋┏┓  ┃┏━┓┃┃┃╋┃┃┃┏━┓┃┗┓┏┓┃┃┗┓┏┛┃  ┃┗━━┓┃┗━┛┃┃┃╋┃┃╋┃┃┃┃┗┓┗┛┏  ┗━━┓┃┃┏━┓┃┃┗━┛┃╋┃┃┃┃╋┗┓┏┛  ┃┗━┛┃┃┃╋┃┃┃┏━┓┃┏┛┗┛┃╋╋┃┃  ┗━━━┛┗┛╋┗┛┗┛╋┗┛┗━━━┛╋╋┗┛ CHECK MY VIDEOS AND SUBSCRIBE AND LIKE PLZZ</td>
+      <td>┏━━━┓┏┓╋┏┓┏━━━┓┏━━━┓┏┓╋╋┏┓  ┃┏━┓┃┃┃╋┃┃┃┏━┓┃┗┓┏...</td>
       <td>-1.0</td>
       <td>4</td>
     </tr>
@@ -959,7 +895,7 @@ df_train.iloc[buckets[(ABSTAIN, SPAM)]].sample(10, random_state=1)
       <th>161</th>
       <td>MarianMusicChannel</td>
       <td>2014-08-24T03:57:52</td>
-      <td>Hello! I'm Marian, I'm a singer from Venezuela! I was part of a boy-girl band named cubik, and I'm now singing on my own  'cause I wanted to play my own pop and pop-rock songs.  It would mean a lot if you could have a look at my channel to check my  music and watch my new video!! and if u like, subscribe to it! XOXO THANKS!!  PS: if you like a lot my channel, you can share it with your friends!!  Haha!! LOL MARIAN﻿</td>
+      <td>Hello! I'm Marian, I'm a singer from Venezuela...</td>
       <td>-1.0</td>
       <td>2</td>
     </tr>
@@ -975,7 +911,7 @@ df_train.iloc[buckets[(ABSTAIN, SPAM)]].sample(10, random_state=1)
       <th>292</th>
       <td>Soundhase</td>
       <td>2014-08-19T18:59:38</td>
-      <td>Hi Guys! check this awesome EDM &amp;amp; House mix :) thanks a lot..  https://soundcloud.com/soundhase/edm-house-mix-2﻿</td>
+      <td>Hi Guys! check this awesome EDM &amp;amp; House mi...</td>
       <td>-1.0</td>
       <td>2</td>
     </tr>
@@ -983,7 +919,7 @@ df_train.iloc[buckets[(ABSTAIN, SPAM)]].sample(10, random_state=1)
       <th>179</th>
       <td>Nerdy Peach</td>
       <td>2014-10-29T22:44:41</td>
-      <td>Hey! I'm NERDY PEACH and I'm a new youtuber and it would mean THE ABSOLUTE  world to me if you could check 'em out! &amp;lt;3  Hope you like them! =D﻿</td>
+      <td>Hey! I'm NERDY PEACH and I'm a new youtuber an...</td>
       <td>-1.0</td>
       <td>2</td>
     </tr>
@@ -991,7 +927,7 @@ df_train.iloc[buckets[(ABSTAIN, SPAM)]].sample(10, random_state=1)
       <th>16</th>
       <td>zhichao wang</td>
       <td>2013-11-29T02:13:56</td>
-      <td>i think about 100 millions of the views come from people who only wanted to  check the views﻿</td>
+      <td>i think about 100 millions of the views come f...</td>
       <td>-1.0</td>
       <td>1</td>
     </tr>
@@ -1011,10 +947,8 @@ Let's see if we can use regular expressions to account for modifications of "che
 
 ```python
 import re
-```
 
 
-```python
 @labeling_function()
 def regex_check_out(x):
     return SPAM if re.search(r"check.*out", x.text, flags=re.I) else ABSTAIN
@@ -1030,10 +964,6 @@ applier = PandasLFApplier(lfs=lfs)
 L_train = applier.apply(df=df_train)
 L_dev = applier.apply(df=df_dev)
 ```
-
-    100%|██████████| 1586/1586 [00:00<00:00, 22933.92it/s]
-    100%|██████████| 100/100 [00:00<00:00, 20624.01it/s]
-
 
 
 ```python
@@ -1271,7 +1201,7 @@ df_train.iloc[buckets[(SPAM, ABSTAIN)]].sample(10, random_state=1)
       <th>16</th>
       <td>zhichao wang</td>
       <td>2013-11-29T02:13:56</td>
-      <td>i think about 100 millions of the views come from people who only wanted to  check the views﻿</td>
+      <td>i think about 100 millions of the views come f...</td>
       <td>-1.0</td>
       <td>1</td>
     </tr>
@@ -1279,7 +1209,7 @@ df_train.iloc[buckets[(SPAM, ABSTAIN)]].sample(10, random_state=1)
       <th>99</th>
       <td>Santeri Saariokari</td>
       <td>2014-09-03T16:32:59</td>
-      <td>Hey guys go to check my video name "growtopia my story"﻿</td>
+      <td>Hey guys go to check my video name "growtopia ...</td>
       <td>-1.0</td>
       <td>2</td>
     </tr>
@@ -1287,7 +1217,7 @@ df_train.iloc[buckets[(SPAM, ABSTAIN)]].sample(10, random_state=1)
       <th>21</th>
       <td>BeBe Burkey</td>
       <td>2013-11-28T16:30:13</td>
-      <td>and u should.d check my channel and tell me what I should do next!﻿</td>
+      <td>and u should.d check my channel and tell me wh...</td>
       <td>-1.0</td>
       <td>1</td>
     </tr>
@@ -1303,7 +1233,7 @@ df_train.iloc[buckets[(SPAM, ABSTAIN)]].sample(10, random_state=1)
       <th>288</th>
       <td>Kochos</td>
       <td>2014-01-20T17:08:37</td>
-      <td>i check back often to help reach 2x10^9 views and I avoid watching Baby﻿</td>
+      <td>i check back often to help reach 2x10^9 views ...</td>
       <td>-1.0</td>
       <td>1</td>
     </tr>
@@ -1327,7 +1257,7 @@ df_train.iloc[buckets[(SPAM, ABSTAIN)]].sample(10, random_state=1)
       <th>333</th>
       <td>FreexGaming</td>
       <td>2014-10-18T08:12:26</td>
-      <td>want to win borderlands the pre-sequel? check my channel :)﻿</td>
+      <td>want to win borderlands the pre-sequel? check ...</td>
       <td>-1.0</td>
       <td>2</td>
     </tr>
@@ -1335,7 +1265,7 @@ df_train.iloc[buckets[(SPAM, ABSTAIN)]].sample(10, random_state=1)
       <th>167</th>
       <td>Brandon Pryor</td>
       <td>2014-01-19T00:36:25</td>
-      <td>I dont even watch it anymore i just come here to check on 2 Billion or not﻿</td>
+      <td>I dont even watch it anymore i just come here ...</td>
       <td>-1.0</td>
       <td>1</td>
     </tr>
@@ -1380,10 +1310,8 @@ We'll start by creating a `Preprocessor` that runs `TextBlob` on our comments, t
 ```python
 from snorkel.preprocess import preprocessor
 from textblob import TextBlob
-```
 
 
-```python
 @preprocessor(memoize=True)
 def textblob_sentiment(x):
     scores = TextBlob(x.text)
@@ -1392,41 +1320,8 @@ def textblob_sentiment(x):
     return x
 ```
 
-We can use a preprocessor on its own as well.
-In order to see how we should use TextBlob scores in an LF, let's see how the distributions differ for `SPAM` and `HAM`.
 We'll have to tune the output of our LFs based on the TextBlob scores.
 Tuning input parameters or thresholds from model outputs is a common practice in developing LFs.
-
-
-```python
-import matplotlib.pyplot as plt
-```
-
-
-```python
-spam_polarities = [
-    textblob_sentiment(x).polarity for _, x in df_dev.iterrows() if x.label == SPAM
-]
-
-ham_polarities = [
-    textblob_sentiment(x).polarity for _, x in df_dev.iterrows() if x.label == HAM
-]
-
-plt.hist([spam_polarities, ham_polarities])
-plt.title("TextBlob sentiment polarity scores")
-plt.xlabel("Sentiment polarity score")
-plt.ylabel("Count")
-plt.legend(["Spam", "Ham"])
-plt.show()
-```
-
-
-![png](01_spam_tutorial_files/01_spam_tutorial_69_0.png)
-
-
-We'll target the high polarity bin on the far right in our LF since there are many more `HAM` comments.
-There are several other ways we could bin this histogram to get plausible LFs, but we'll just
-write one for now.
 
 
 ```python
@@ -1434,42 +1329,6 @@ write one for now.
 def textblob_polarity(x):
     return HAM if x.polarity > 0.9 else ABSTAIN
 ```
-
-Let's do the same for the subjectivity scores.
-This will run faster than the last cell, since we memoized the `Preprocessor` outputs.
-
-
-```python
-spam_subjectivities = [
-    textblob_sentiment(x).subjectivity for _, x in df_dev.iterrows() if x.label == SPAM
-]
-
-ham_subjectivities = [
-    textblob_sentiment(x).subjectivity for _, x in df_dev.iterrows() if x.label == HAM
-]
-
-plt.hist([spam_subjectivities, ham_subjectivities])
-plt.title("TextBlob sentiment subjectivity scores")
-plt.xlabel("Sentiment subjectivity score")
-plt.ylabel("Count")
-plt.legend(["Spam", "Ham"])
-plt.show()
-
-plt.hist([spam_subjectivities, ham_subjectivities], bins=[0, 0.5, 1])
-plt.title("TextBlob sentiment subjectivity scores")
-plt.xlabel("Sentiment subjectivity score")
-plt.ylabel("Count")
-plt.legend(["Spam", "Ham"])
-plt.show()
-```
-
-
-![png](01_spam_tutorial_files/01_spam_tutorial_73_0.png)
-
-
-
-![png](01_spam_tutorial_files/01_spam_tutorial_73_1.png)
-
 
 It looks like subjectivity scores above 0.5 will work pretty well for identifying `HAM` comments, though not perfectly.
 We'll rely on our label model to learn that this is a lower accuracy rule.
@@ -1491,10 +1350,6 @@ applier = PandasLFApplier(lfs)
 L_train = applier.apply(df_train)
 L_dev = applier.apply(df_dev)
 ```
-
-    100%|██████████| 1586/1586 [00:00<00:00, 1673.84it/s]
-    100%|██████████| 100/100 [00:00<00:00, 15815.63it/s]
-
 
 
 ```python
@@ -1619,7 +1474,7 @@ LFAnalysis(L_dev, lfs).lf_summary(Y=Y_dev)
 
 Again, these LFs aren't perfect, so we'll rely on our label model to denoise and resolve their outputs.
 
-## More Labeling Functions
+## 3. Writing More Labeling Functions
 
 If a single LF had high enough coverage to label our entire test dataset accurately, then we wouldn't need a classifier at all.
 We could just use that single simple heuristic to complete the task.
@@ -1628,7 +1483,7 @@ Instead, we usually need to **combine multiple LFs** to label our dataset, both 
 
 In the following sections, we'll show just a few of the many types of LFs that you could write to generate a training dataset for this problem.
 
-### i. Keyword LFs
+### a) Keyword LFs
 
 For text applications, some of the simplest LFs to write are often just keyword lookups.
 These will often follow the same execution pattern, so we can create a template and use the `resources` parameter to pass in LF-specific keywords.
@@ -1639,10 +1494,8 @@ wraps a Python function (the `f` parameter), and we can use the `resources` para
 
 ```python
 from snorkel.labeling import LabelingFunction
-```
 
 
-```python
 def keyword_lookup(x, keywords, label):
     if any(word in x.text.lower() for word in keywords):
         return label
@@ -1673,12 +1526,12 @@ keyword_please = make_keyword_lf(keywords=["please", "plz"])
 keyword_song = make_keyword_lf(keywords=["song"], label=HAM)
 ```
 
-### ii. Pattern-matching LFs (regular expressions)
+### b) Pattern-matching LFs (regular expressions)
 
 If we want a little more control over a keyword search, we can look for regular expressions instead.
 The LF we developed above (`regex_check_out`) is an example of this.
 
-### iii.  Heuristic LFs
+### c)  Heuristic LFs
 
 There may other heuristics or "rules of thumb" that you come up with as you look at the data.
 So long as you can express it in a function, it's a viable LF!
@@ -1691,7 +1544,7 @@ def short_comment(x):
     return HAM if len(x.text.split()) < 5 else ABSTAIN
 ```
 
-### iv. LFs with Complex Preprocessors
+### d) LFs with Complex Preprocessors
 
 Some LFs rely on fields that aren't present in the raw data, but can be derived from it.
 We can enrich our data (providing more fields for the LFs to refer to) using `Preprocessor`s.
@@ -1704,9 +1557,6 @@ For more info, see the [`SpacyPreprocessor` documentation](https://snorkel.readt
 
 If you prefer to use a different NLP tool, you can also wrap that as a `Preprocessor` and use it in the same way.
 For more info, see the [`preprocessor` documentation](https://snorkel.readthedocs.io/en/master/packages/_autosummary/preprocess/snorkel.preprocess.preprocessor.html#snorkel.preprocess.preprocessor).
-
-If the spaCy English model wasn't already installed, the next cell may raise an exception.
-If this happens, restart the kernel and re-execute the cells up to this point.
 
 
 ```python
@@ -1735,10 +1585,8 @@ This resulting LF is identical to the one defined manually above.
 
 ```python
 from snorkel.labeling.lf.nlp import nlp_labeling_function
-```
 
 
-```python
 @nlp_labeling_function()
 def has_person_nlp(x):
     """Ham comments mention specific people and are short."""
@@ -1751,12 +1599,12 @@ def has_person_nlp(x):
 **Adding new domain-specific preprocessors and LF types is a great way to contribute to Snorkel!
 If you have an idea, feel free to reach out to the maintainers or submit a PR!**
 
-### v. Third-party Model LFs
+### e) Third-party Model LFs
 
 We can also utilize other models, including ones trained for other tasks that are related to, but not the same as, the one we care about.
 The TextBlob-based LFs we created above are great examples of this!
 
-### Applying our LFs
+## 4. Combining Labeling Function Outputs with the Label Model
 
 This tutorial demonstrates just a handful of the types of LFs that one might write for this task.
 Many of these are no doubt suboptimal.
@@ -1793,14 +1641,12 @@ applier = PandasLFApplier(lfs=lfs)
 L_train = applier.apply(df=df_train)
 L_dev = applier.apply(df=df_dev)
 L_valid = applier.apply(df=df_valid)
-
-LFAnalysis(L=L_dev, lfs=lfs).lf_summary(Y=Y_dev)
 ```
 
-    100%|██████████| 1586/1586 [00:14<00:00, 112.47it/s]
-    100%|██████████| 100/100 [00:00<00:00, 110.18it/s]
-    100%|██████████| 120/120 [00:01<00:00, 95.59it/s] 
 
+```python
+LFAnalysis(L=L_dev, lfs=lfs).lf_summary(Y=Y_dev)
+```
 
 
 
@@ -1950,30 +1796,6 @@ LFAnalysis(L=L_dev, lfs=lfs).lf_summary(Y=Y_dev)
 
 
 
-We see that our labeling functions vary in coverage, accuracy, and how much they overlap/conflict with one another.
-We can view a histogram of how many LF labels the data points in our dev set have to get an idea of our total coverage.
-
-
-```python
-def plot_label_frequency(L):
-    plt.hist((L != ABSTAIN).sum(axis=1), density=True, bins=range(L.shape[1]))
-    plt.xlabel("Number of labels")
-    plt.ylabel("Fraction of dataset")
-    plt.show()
-
-
-plot_label_frequency(L_train)
-```
-
-
-![png](01_spam_tutorial_files/01_spam_tutorial_109_0.png)
-
-
-We see that over half of our `train` dataset data points have 2 or fewer labels from LFs.
-Fortunately, the signal we do have can be used to train a classifier over the comment text directly, allowing it to generalize beyond what we've specified via our LFs.
-
-## 3. Combining Labeling Function Outputs with the Label Model
-
 Our goal is now to convert the labels from our LFs into a single _noise-aware_ probabilistic (or confidence-weighted) label per data point.
 A simple baseline for doing this is to take the majority vote on a per-data point basis: if more LFs voted SPAM than HAM, label it SPAM (and vice versa).
 We can test this with the
@@ -1982,12 +1804,13 @@ We can test this with the
 
 ```python
 from snorkel.labeling import MajorityLabelVoter
+
+majority_model = MajorityLabelVoter()
+preds_train = majority_model.predict(L=L_train)
 ```
 
 
 ```python
-majority_model = MajorityLabelVoter()
-preds_train = majority_model.predict(L=L_train)
 preds_train
 ```
 
@@ -2011,10 +1834,7 @@ The `LabelModel` trains much more quickly than typical discriminative models sin
 
 ```python
 from snorkel.labeling import LabelModel
-```
 
-
-```python
 label_model = LabelModel(cardinality=2, verbose=True)
 label_model.fit(L_train=L_train, n_epochs=1000, lr=0.001, log_freq=100, seed=123)
 ```
@@ -2084,13 +1904,13 @@ df_fp_dev.sample(5, random_state=3)
   <tbody>
     <tr>
       <th>195</th>
-      <td>Check Out The New Hot Video By Dante B Called Riled Up</td>
+      <td>Check Out The New Hot Video By Dante B Called ...</td>
       <td>1</td>
       <td>0.0</td>
     </tr>
     <tr>
       <th>334</th>
-      <td>Check out Em&amp;#39;s dope new song monster here: /watch?v=w6gkM-XNY2M  MMLP2 FTW :)</td>
+      <td>Check out Em&amp;#39;s dope new song monster here:...</td>
       <td>1</td>
       <td>0.0</td>
     </tr>
@@ -2118,27 +1938,6 @@ df_fp_dev.sample(5, random_state=3)
 
 
 
-Let's briefly confirm that the labels the `LabelModel` produces are probabilistic in nature.
-The following histogram shows the confidences we have that each data point has the label SPAM.
-The points we are least certain about will have labels close to 0.5.
-
-
-```python
-def plot_probabilities_histogram(Y):
-    plt.hist(Y, bins=10)
-    plt.xlabel("Probability of SPAM")
-    plt.ylabel("Number of data points")
-    plt.show()
-
-
-probs_train = label_model.predict_proba(L=L_train)
-plot_probabilities_histogram(probs_train[:, SPAM])
-```
-
-
-![png](01_spam_tutorial_files/01_spam_tutorial_123_0.png)
-
-
 ### Filtering out unlabeled data points
 
 As we saw earlier, some of the data points in our `train` set received no labels from any of our LFs.
@@ -2148,16 +1947,13 @@ These examples convey no supervision signal and tend to hurt performance, so we 
 
 ```python
 from snorkel.labeling import filter_unlabeled_dataframe
-```
 
-
-```python
 df_train_filtered, probs_train_filtered = filter_unlabeled_dataframe(
     X=df_train, y=probs_train, L=L_train
 )
 ```
 
-## 4. Training a Classifier
+## 5. Training a Classifier
 
 In this final section of the tutorial, we'll use the noisy training labels we generated in the last section to train a classifier for our task.
 **The output of the Snorkel `LabelModel` is just a set of labels which can be used with most popular libraries for performing supervised learning, such as TensorFlow, Keras, PyTorch, Scikit-Learn, Ludwig, and XGBoost.**
@@ -2170,20 +1966,13 @@ For simplicity and speed, we use a simple "bag of n-grams" feature representatio
 
 ```python
 from sklearn.feature_extraction.text import CountVectorizer
-```
-
-
-```python
-words_train = [row.text for i, row in df_train_filtered.iterrows()]
-words_dev = [row.text for i, row in df_dev.iterrows()]
-words_valid = [row.text for i, row in df_valid.iterrows()]
-words_test = [row.text for i, row in df_test.iterrows()]
 
 vectorizer = CountVectorizer(ngram_range=(1, 2))
-X_train = vectorizer.fit_transform(words_train)
-X_dev = vectorizer.transform(words_dev)
-X_valid = vectorizer.transform(words_valid)
-X_test = vectorizer.transform(words_test)
+X_train = vectorizer.fit_transform(df_train_filtered.text.tolist())
+
+X_dev = vectorizer.transform(df_dev.text.tolist())
+X_valid = vectorizer.transform(df_valid.text.tolist())
+X_test = vectorizer.transform(df_test.text.tolist())
 ```
 
 ### Keras Classifier with Probabilistic Labels
@@ -2195,79 +1984,32 @@ us take full advantage of the label model's learning procedure (see our [NeurIPS
 We use the common settings of an `Adam` optimizer and early stopping (evaluating the model on the validation set after each epoch and reloading the weights from when it achieved the best score).
 For more information on Keras, see the [Keras documentation](https://keras.io/).
 
-This next cell makes our Keras results reproducible. You can ignore it.
-
-
-```python
-import numpy as np
-import random
-import tensorflow as tf
-
-seed = 1
-np.random.seed(seed)
-random.seed(seed)
-
-session_conf = tf.compat.v1.ConfigProto(
-    intra_op_parallelism_threads=1, inter_op_parallelism_threads=1
-)
-
-from tensorflow.keras import backend as K
-
-tf.set_random_seed(seed)
-sess = tf.compat.v1.Session(graph=tf.get_default_graph(), config=session_conf)
-K.set_session(sess)
-```
-
 
 ```python
 from snorkel.analysis import metric_score
 from snorkel.utils import preds_to_probs
-```
+from utils import get_keras_logreg, get_keras_early_stopping
 
-
-```python
-# Our model is a simple linear layer mapping from feature
-# vectors to the number of labels in our problem (2).
-keras_model = tf.keras.Sequential()
-keras_model.add(
-    tf.keras.layers.Dense(
-        units=2,
-        input_dim=X_train.shape[1],
-        activation=tf.nn.softmax,
-        kernel_regularizer=tf.keras.regularizers.l2(0.001),
-    )
-)
-optimizer = tf.keras.optimizers.Adam(lr=0.01)
-keras_model.compile(
-    optimizer=optimizer, loss="categorical_crossentropy", metrics=["accuracy"]
-)
-
-early_stopping = tf.keras.callbacks.EarlyStopping(
-    monitor="val_acc", patience=10, verbose=1, restore_best_weights=True
-)
+# Define a vanilla logistic regression model with Keras
+keras_model = get_keras_logreg(input_dim=X_train.shape[1])
 
 keras_model.fit(
     x=X_train,
     y=probs_train_filtered,
     validation_data=(X_valid, preds_to_probs(Y_valid, 2)),
-    callbacks=[early_stopping],
+    callbacks=[get_keras_early_stopping()],
     epochs=20,
     verbose=0,
 )
+```
 
+
+```python
 preds_test = keras_model.predict(x=X_test).argmax(axis=1)
 test_acc = metric_score(golds=Y_test, preds=preds_test, metric="accuracy")
 print(f"Test Accuracy: {test_acc * 100:.1f}%")
 ```
 
-    WARNING: Logging before flag parsing goes to stderr.
-    W0814 23:20:49.250481 4630525376 deprecation.py:506] From /Users/braden/repos/snorkel-tutorials/.tox/spam/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
-    Instructions for updating:
-    Call initializer instance with the dtype argument instead of passing it to the constructor
-
-
-    Restoring model weights from the end of the best epoch.
-    Epoch 00012: early stopping
     Test Accuracy: 94.4%
 
 
@@ -2279,40 +2021,26 @@ We can compare this to the score we could have gotten if we had used our small l
 
 
 ```python
-keras_dev_model = tf.keras.Sequential()
-keras_dev_model.add(
-    tf.keras.layers.Dense(
-        units=1,
-        input_dim=X_train.shape[1],
-        activation=tf.nn.sigmoid,
-        kernel_regularizer=tf.keras.regularizers.l2(0.001),
-    )
-)
-optimizer = tf.keras.optimizers.Adam(lr=0.001)
-keras_dev_model.compile(
-    optimizer=optimizer, loss="binary_crossentropy", metrics=["accuracy"]
-)
+keras_dev_model = get_keras_logreg(input_dim=X_train.shape[1], output_dim=1)
 
 keras_dev_model.fit(
     x=X_dev,
     y=Y_dev,
     validation_data=(X_valid, Y_valid),
-    callbacks=[early_stopping],
+    callbacks=[get_keras_early_stopping()],
     epochs=20,
     verbose=0,
 )
+```
 
+
+```python
 preds_test_dev = np.round(keras_dev_model.predict(x=X_test))
 test_acc = metric_score(golds=Y_test, preds=preds_test_dev, metric="accuracy")
 print(f"Test Accuracy: {test_acc * 100:.1f}%")
 ```
 
-    W0814 23:20:51.133057 4630525376 deprecation.py:323] From /Users/braden/repos/snorkel-tutorials/.tox/spam/lib/python3.7/site-packages/tensorflow/python/ops/nn_impl.py:180: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
-    Instructions for updating:
-    Use tf.where in 2.0, which has the same broadcast rule as np.where
-
-
-    Test Accuracy: 88.4%
+    Test Accuracy: 92.8%
 
 
 ### Scikit-Learn with Rounded Labels
@@ -2325,10 +2053,7 @@ It's important to note that this transformation is lossy, as we no longer have v
 
 ```python
 from snorkel.utils import probs_to_preds
-```
 
-
-```python
 preds_train_filtered = probs_to_preds(probs=probs_train_filtered)
 ```
 
@@ -2337,13 +2062,13 @@ For example, this allows us to use standard models from Scikit-Learn.
 
 ```python
 from sklearn.linear_model import LogisticRegression
+
+sklearn_model = LogisticRegression(C=0.001, solver="liblinear")
+sklearn_model.fit(X=X_train, y=preds_train_filtered)
 ```
 
 
 ```python
-sklearn_model = LogisticRegression(C=0.001, solver="liblinear")
-sklearn_model.fit(X=X_train, y=preds_train_filtered)
-
 print(f"Test Accuracy: {sklearn_model.score(X=X_test, y=Y_test) * 100:.1f}%")
 ```
 

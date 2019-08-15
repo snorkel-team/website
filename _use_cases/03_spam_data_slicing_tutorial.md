@@ -94,7 +94,7 @@ short_link_df = slice_dataframe(df_valid, short_link)
 short_link_df[["text", "label"]]
 ```
 
-    100%|██████████| 120/120 [00:00<00:00, 19190.78it/s]
+    100%|██████████| 120/120 [00:00<00:00, 19566.03it/s]
 
 
 
@@ -212,7 +212,7 @@ applier = PandasSFApplier(sfs)
 S_test = applier.apply(df_test)
 ```
 
-    100%|██████████| 250/250 [00:00<00:00, 25077.15it/s]
+    100%|██████████| 250/250 [00:00<00:00, 18645.33it/s]
 
 
 Now, we initialize a [`Scorer`](https://snorkel.readthedocs.io/en/master/packages/_autosummary/analysis/snorkel.analysis.Scorer.html#snorkel.analysis.Scorer) using the desired `metrics`.
@@ -347,7 +347,7 @@ polarity_df = slice_dataframe(df_valid, textblob_polarity)
 polarity_df[["text", "label"]].head()
 ```
 
-    100%|██████████| 120/120 [00:00<00:00, 887.05it/s]
+    100%|██████████| 120/120 [00:00<00:00, 846.58it/s]
 
 
 
@@ -435,7 +435,7 @@ scorer.score_slices(
 )
 ```
 
-    100%|██████████| 250/250 [00:00<00:00, 1100.62it/s]
+    100%|██████████| 250/250 [00:00<00:00, 1003.10it/s]
 
 
 
@@ -582,8 +582,8 @@ trainer = Trainer(lr=1e-4, n_epochs=2)
 trainer.fit(slice_model, [train_dl, valid_dl])
 ```
 
-    Epoch 0:: 100%|██████████| 25/25 [01:10<00:00,  2.84s/it, model/all/train/loss=0.472, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.908, task/SnorkelDataset/valid/f1=0.893]
-    Epoch 1:: 100%|██████████| 25/25 [01:10<00:00,  2.90s/it, model/all/train/loss=0.0931, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.933, task/SnorkelDataset/valid/f1=0.926]
+    Epoch 0:: 100%|██████████| 25/25 [00:27<00:00,  1.12s/it, model/all/train/loss=0.472, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.908, task/SnorkelDataset/valid/f1=0.893]
+    Epoch 1:: 100%|██████████| 25/25 [00:27<00:00,  1.13s/it, model/all/train/loss=0.0931, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.933, task/SnorkelDataset/valid/f1=0.926]
 
 
 ### Representation learning with slices
@@ -600,8 +600,8 @@ S_train = applier.apply(df_train)
 S_valid = applier.apply(df_valid)
 ```
 
-    100%|██████████| 1586/1586 [00:01<00:00, 1306.66it/s]
-    100%|██████████| 120/120 [00:00<00:00, 6503.30it/s]
+    100%|██████████| 1586/1586 [00:01<00:00, 1042.17it/s]
+    100%|██████████| 120/120 [00:00<00:00, 8086.70it/s]
 
 
 In order to train using slice information, we'd like to initialize a **slice-aware dataloader**.
@@ -633,10 +633,10 @@ trainer = Trainer(n_epochs=2, lr=1e-4, progress_bar=True)
 trainer.fit(slice_model, [train_dl_slice, valid_dl_slice])
 ```
 
-    Epoch 0::  96%|█████████▌| 24/25 [01:10<00:03,  3.04s/it, model/all/train/loss=0.376, model/all/train/lr=0.0001]/Users/braden/repos/snorkel-tutorials/.tox/spam/lib/python3.7/site-packages/sklearn/metrics/classification.py:1437: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 due to no predicted samples.
+    Epoch 0::  96%|█████████▌| 24/25 [00:29<00:01,  1.31s/it, model/all/train/loss=0.376, model/all/train/lr=0.0001]/home/ubuntu/snorkel-tutorials/.tox/spam/lib/python3.6/site-packages/sklearn/metrics/classification.py:1437: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 due to no predicted samples.
       'precision', 'predicted', average, warn_for)
-    Epoch 0:: 100%|██████████| 25/25 [01:12<00:00,  2.99s/it, model/all/train/loss=0.371, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.933, task/SnorkelDataset/valid/f1=0.926, task_slice:short_link_ind/SnorkelDataset/valid/f1=0, task_slice:short_link_pred/SnorkelDataset/valid/accuracy=0.8, task_slice:short_link_pred/SnorkelDataset/valid/f1=0.889, task_slice:keyword_subscribe_ind/SnorkelDataset/valid/f1=0, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/f1=1, task_slice:keyword_please_ind/SnorkelDataset/valid/f1=0, task_slice:keyword_please_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_please_pred/SnorkelDataset/valid/f1=1, task_slice:regex_check_out_ind/SnorkelDataset/valid/f1=0.471, task_slice:regex_check_out_pred/SnorkelDataset/valid/accuracy=1, task_slice:regex_check_out_pred/SnorkelDataset/valid/f1=1, task_slice:short_comment_ind/SnorkelDataset/valid/f1=0, task_slice:short_comment_pred/SnorkelDataset/valid/accuracy=0.947, task_slice:short_comment_pred/SnorkelDataset/valid/f1=0.5, task_slice:textblob_polarity_ind/SnorkelDataset/valid/f1=0, task_slice:textblob_polarity_pred/SnorkelDataset/valid/accuracy=1, task_slice:textblob_polarity_pred/SnorkelDataset/valid/f1=1, task_slice:base_ind/SnorkelDataset/valid/f1=1, task_slice:base_pred/SnorkelDataset/valid/accuracy=0.933, task_slice:base_pred/SnorkelDataset/valid/f1=0.926]
-    Epoch 1:: 100%|██████████| 25/25 [01:17<00:00,  3.31s/it, model/all/train/loss=0.17, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.925, task/SnorkelDataset/valid/f1=0.914, task_slice:short_link_ind/SnorkelDataset/valid/f1=0, task_slice:short_link_pred/SnorkelDataset/valid/accuracy=0.2, task_slice:short_link_pred/SnorkelDataset/valid/f1=0.333, task_slice:keyword_subscribe_ind/SnorkelDataset/valid/f1=0.333, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/f1=1, task_slice:keyword_please_ind/SnorkelDataset/valid/f1=0.5, task_slice:keyword_please_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_please_pred/SnorkelDataset/valid/f1=1, task_slice:regex_check_out_ind/SnorkelDataset/valid/f1=0.791, task_slice:regex_check_out_pred/SnorkelDataset/valid/accuracy=1, task_slice:regex_check_out_pred/SnorkelDataset/valid/f1=1, task_slice:short_comment_ind/SnorkelDataset/valid/f1=0, task_slice:short_comment_pred/SnorkelDataset/valid/accuracy=0.947, task_slice:short_comment_pred/SnorkelDataset/valid/f1=0.5, task_slice:textblob_polarity_ind/SnorkelDataset/valid/f1=0, task_slice:textblob_polarity_pred/SnorkelDataset/valid/accuracy=1, task_slice:textblob_polarity_pred/SnorkelDataset/valid/f1=1, task_slice:base_ind/SnorkelDataset/valid/f1=1, task_slice:base_pred/SnorkelDataset/valid/accuracy=0.908, task_slice:base_pred/SnorkelDataset/valid/f1=0.893]
+    Epoch 0:: 100%|██████████| 25/25 [00:30<00:00,  1.30s/it, model/all/train/loss=0.371, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.933, task/SnorkelDataset/valid/f1=0.926, task_slice:short_link_ind/SnorkelDataset/valid/f1=0, task_slice:short_link_pred/SnorkelDataset/valid/accuracy=0.8, task_slice:short_link_pred/SnorkelDataset/valid/f1=0.889, task_slice:keyword_subscribe_ind/SnorkelDataset/valid/f1=0, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/f1=1, task_slice:keyword_please_ind/SnorkelDataset/valid/f1=0, task_slice:keyword_please_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_please_pred/SnorkelDataset/valid/f1=1, task_slice:regex_check_out_ind/SnorkelDataset/valid/f1=0.471, task_slice:regex_check_out_pred/SnorkelDataset/valid/accuracy=1, task_slice:regex_check_out_pred/SnorkelDataset/valid/f1=1, task_slice:short_comment_ind/SnorkelDataset/valid/f1=0, task_slice:short_comment_pred/SnorkelDataset/valid/accuracy=0.947, task_slice:short_comment_pred/SnorkelDataset/valid/f1=0.5, task_slice:textblob_polarity_ind/SnorkelDataset/valid/f1=0, task_slice:textblob_polarity_pred/SnorkelDataset/valid/accuracy=1, task_slice:textblob_polarity_pred/SnorkelDataset/valid/f1=1, task_slice:base_ind/SnorkelDataset/valid/f1=1, task_slice:base_pred/SnorkelDataset/valid/accuracy=0.933, task_slice:base_pred/SnorkelDataset/valid/f1=0.926]
+    Epoch 1:: 100%|██████████| 25/25 [00:33<00:00,  1.44s/it, model/all/train/loss=0.17, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.925, task/SnorkelDataset/valid/f1=0.914, task_slice:short_link_ind/SnorkelDataset/valid/f1=0, task_slice:short_link_pred/SnorkelDataset/valid/accuracy=0.2, task_slice:short_link_pred/SnorkelDataset/valid/f1=0.333, task_slice:keyword_subscribe_ind/SnorkelDataset/valid/f1=0.333, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/f1=1, task_slice:keyword_please_ind/SnorkelDataset/valid/f1=0.5, task_slice:keyword_please_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_please_pred/SnorkelDataset/valid/f1=1, task_slice:regex_check_out_ind/SnorkelDataset/valid/f1=0.791, task_slice:regex_check_out_pred/SnorkelDataset/valid/accuracy=1, task_slice:regex_check_out_pred/SnorkelDataset/valid/f1=1, task_slice:short_comment_ind/SnorkelDataset/valid/f1=0, task_slice:short_comment_pred/SnorkelDataset/valid/accuracy=0.947, task_slice:short_comment_pred/SnorkelDataset/valid/f1=0.5, task_slice:textblob_polarity_ind/SnorkelDataset/valid/f1=0, task_slice:textblob_polarity_pred/SnorkelDataset/valid/accuracy=1, task_slice:textblob_polarity_pred/SnorkelDataset/valid/f1=1, task_slice:base_ind/SnorkelDataset/valid/f1=1, task_slice:base_pred/SnorkelDataset/valid/accuracy=0.908, task_slice:base_pred/SnorkelDataset/valid/f1=0.893]
 
 
 At inference time, the primary task head (`spam_task`) will make all final predictions.

@@ -1,11 +1,11 @@
 ---
 layout: default
 title: Programming Training Data
+author: Alex Ratner, Stephen Bach, Chris Ré
 description: The new interface for ML.
 excerpt: The new interface for ML.
 ---
 
-# Programming Training Data: The new interface for programming ML systems
 Machine learning today is both far more and far less accessible than ever before. On the one hand, without any manual feature engineering or custom algorithm development, a developer can have a deep learning model downloaded and running near state-of-the-art within minutes. However, in other ways, machine learning has never been so opaque and inaccessible. Modern deep learning models admit one primary input type---training data---and other than that, are largely black boxes. Given some knowledge of a new domain or task, how do we inject this into our model? Given some modification to our objectives, how do we quickly modify our model? How does one *program* the modern machine learning stack?
 
 One answer, of course, is that today’s ML systems don’t need to be programmed at all---and, given large volumes of training data, this is more true than ever before. However, in practice, these training sets have to be assembled, cleaned, and debugged---a prohibitively expensive and slow task, especially when domain expertise is required. Even more importantly, in the real world, tasks iteratively change and evolve. For example, labeling guidelines, granularities, or downstream use cases often change, necessitating re-labeling. For all these reasons, practitioners have increasingly been turning to [weaker forms of supervision](https://hazyresearch.github.io/snorkel/blog/ws_blog_post.html), such as heuristically generating training data with external knowledge bases, patterns or rules, or other classifiers. Essentially, these are all ways of programmatically generating training data---or, more succinctly, *programming training data*.

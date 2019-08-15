@@ -116,7 +116,18 @@ For more, check out the [resources page](https://www.snorkel.org/resources/).
 
 ### Big Data Operators
 
-**TODO: HRE**
+Snorkel v0.9 provides native support for applying core operators using
+[Spark](https://spark.apache.org/) and [Dask](https://dask.org/),
+making it easier than ever to work with massive data sets.
+Check out our [API documentation](https://snorkel.readthedocs.io/en/v0.9.0/packages/labeling.html)
+for more details.
+Natural language processing, in particular, is a common bottleneck in Snorkel workloads.
+To faciliate plug-and-play scale-up for text applications, we have special tooling, like the 
+[`spark_nlp_labeling_function`](https://snorkel.readthedocs.io/en/master/packages/_autosummary/labeling/snorkel.labeling.lf.nlp_spark.spark_nlp_labeling_function.html).
+For usage examples, check out the
+[Drybell tutorial](https://github.com/snorkel-team/snorkel-tutorials/tree/master/drybell)
+based on our [deployment with Google AI](https://ai.googleblog.com/2019/03/harnessing-organizational-knowledge-for.html).
+
 
 ## Moving to a Modular, General Purpose Snorkel
 

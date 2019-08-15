@@ -59,14 +59,13 @@
   margin-top: 40px;
 
   li {
-    &::before {
-      display: none;
-    }
-  }
+    margin-bottom: 0;
 
-  li {
     + li {
       margin-left: 2.5rem;
+    }
+    &::before {
+      display: none;
     }
   }
 

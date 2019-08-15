@@ -9,9 +9,16 @@
   {% include site-header.html class="site-header" %}
   <div class="section">
     <div class="container">
+        {% if page.github_link %}
+        <a href="{{ page.github_link }}" class="btn--dark btn--rounded">View on GitHub</a>
+        <br>
+        <br>
+        {% endif %}
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-9">
           <div class="content">
+            <h1>{{ page.title }}</h1>
+            <h5>{{ page.author }}</h5>
             {% if page.body %}
             {{ page.body | rich_text }}
             {% else %}
@@ -21,7 +28,6 @@
           <!-- /.content -->
         </div>
         <!-- /.col -->
-        <div class="col-md-1"></div>
         <div class="col-md-3">
           <div class="sections-list-wrapper">
             <div class="sections-list js-sections js-affix js-scrollspy hidden-xs hidden-sm"></div>
@@ -83,6 +89,7 @@
     {% endif %} {% include site-footer.html %}
   </div>
   <!-- /.js-footer-area -->
+  {% include google-analytics.html  %}
 </body>
 
 </html>

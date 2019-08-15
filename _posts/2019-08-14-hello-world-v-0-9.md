@@ -4,6 +4,7 @@ title: Introducing the New Snorkel
 author: The Snorkel Team
 description: Introducing the new Snorkel v0.9.
 excerpt: Introducing the new Snorkel v0.9.
+show_title_author: True
 ---
 
 Snorkel was started in 2016 at Stanford as a project that, as suggested by an advisor to his graduate student at the time, should probably take "an afternoon".

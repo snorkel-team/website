@@ -36,9 +36,9 @@ Snorkel's ability to build high-quality datasets from multiple noisy labeling si
 
 ## Loading Crowdsourcing Dataset
 
-We start by loading our data which has 287 examples in total.
+We start by loading our data which has 287 data points in total.
 We take 50 for our development set and 50 for our test set.
-The remaining 187 examples form our training set.
+The remaining 187 data points form our training set.
 Since the dataset is already small, we skip using a validation set.
 Note that this very small dataset is primarily used for demonstration purposes here.
 In a real setting, we would expect to have access to many more unlabeled tweets, which could help us to train a higher quality model.
@@ -54,7 +54,7 @@ Y_test = df_test.sentiment.values
 
 ## Writing Labeling Functions
 Each crowdworker can be thought of as a single labeling function,
-as each worker labels a subset of examples,
+as each worker labels a subset of data points,
 and may have errors or conflicting labels with other workers / labeling functions.
 So we create one labeling function per worker.
 We'll simply return the label the worker submitted for a given tweet, and abstain
@@ -150,59 +150,59 @@ LFAnalysis(L_dev, worker_lfs).lf_summary(Y_dev).sample(5)
   </thead>
   <tbody>
     <tr>
-      <th>worker_7860247</th>
-      <td>19</td>
-      <td>[0, 1]</td>
-      <td>0.24</td>
-      <td>0.24</td>
-      <td>0.20</td>
-      <td>12</td>
+      <th>worker_18914675</th>
+      <td>85</td>
+      <td>[]</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
       <td>0</td>
-      <td>1.000000</td>
+      <td>0</td>
+      <td>0.000000</td>
     </tr>
     <tr>
-      <th>worker_13763729</th>
-      <td>40</td>
+      <th>worker_6371053</th>
+      <td>9</td>
       <td>[0, 1]</td>
       <td>0.10</td>
       <td>0.10</td>
-      <td>0.08</td>
-      <td>5</td>
+      <td>0.10</td>
+      <td>4</td>
+      <td>1</td>
+      <td>0.800000</td>
+    </tr>
+    <tr>
+      <th>worker_6340330</th>
+      <td>2</td>
+      <td>[1]</td>
+      <td>0.04</td>
+      <td>0.04</td>
+      <td>0.04</td>
+      <td>2</td>
       <td>0</td>
       <td>1.000000</td>
     </tr>
     <tr>
-      <th>worker_11919161</th>
-      <td>36</td>
+      <th>worker_6332651</th>
+      <td>0</td>
       <td>[0, 1]</td>
       <td>0.06</td>
       <td>0.06</td>
       <td>0.06</td>
-      <td>3</td>
-      <td>0</td>
-      <td>1.000000</td>
+      <td>1</td>
+      <td>2</td>
+      <td>0.333333</td>
     </tr>
     <tr>
-      <th>worker_18034918</th>
-      <td>73</td>
+      <th>worker_14400603</th>
+      <td>43</td>
       <td>[0, 1]</td>
       <td>0.18</td>
       <td>0.18</td>
-      <td>0.14</td>
+      <td>0.18</td>
       <td>8</td>
       <td>1</td>
       <td>0.888889</td>
-    </tr>
-    <tr>
-      <th>worker_15124755</th>
-      <td>53</td>
-      <td>[0, 1]</td>
-      <td>0.06</td>
-      <td>0.06</td>
-      <td>0.06</td>
-      <td>3</td>
-      <td>0</td>
-      <td>1.000000</td>
     </tr>
   </tbody>
 </table>
@@ -415,9 +415,9 @@ print(f"LabelModel Accuracy: {acc:.3f}")
 We see that we get very high accuracy on the development set.
 This is due to the abundance of high quality crowdworker labels.
 **Since we don't have these high quality crowdsourcing labels for the
-test set or new incoming examples, we can't use the LabelModel reliably
+test set or new incoming data points, we can't use the LabelModel reliably
 at inference time.**
-In order to run inference on new incoming examples, we need to train a
+In order to run inference on new incoming data points, we need to train a
 discriminative model over the tweets themselves.
 Let's generate a set of probabilistic labels for that training set.
 
@@ -472,11 +472,11 @@ print(f"Accuracy of trained model: {sklearn_model.score(X_test, Y_test)}")
     Accuracy of trained model: 0.86
 
 
-We now have a trained model that can be applied to future examples without requiring crowdsourced labels, and with accuracy not much lower than the `LabelModel` that _does_ have access to crowdsourced labels!
+We now have a trained model that can be applied to future data points without requiring crowdsourced labels, and with accuracy not much lower than the `LabelModel` that _does_ have access to crowdsourced labels!
 
 ## Summary
 
 In this tutorial, we accomplished the following:
 * We demonstrated how to combine crowdsourced labels with other programmatic LFs to improve coverage.
 * We used the `LabelModel` to combine inputs from crowdworkers and other LFs to generate high quality probabilistic labels.
-* We used our probabilistic labels to train a classifier for making predictions on new, unseen examples.
+* We used our probabilistic labels to train a classifier for making predictions on new, unseen data points.

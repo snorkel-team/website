@@ -57,7 +57,7 @@ df_train, df_valid, df_test = load_spam_dataset(load_train_labels=True, split_de
 
 ## 1. Write slicing functions
 
-We leverage *slicing functions* (SFs), which output binary _masks_ indicating whether an example is in the slice or not.
+We leverage *slicing functions* (SFs), which output binary _masks_ indicating whether an data point is in the slice or not.
 Each slice represents some noisily-defined subset of the data (corresponding to an SF) that we'd like to programmatically monitor.
 
 In the following cells, we use the [`@slicing_function()`](https://snorkel.readthedocs.io/en/master/packages/_autosummary/slicing/snorkel.slicing.slicing_function.html#snorkel.slicing.slicing_function) decorator to initialize an SF that identifies shortened links the spam dataset.
@@ -84,7 +84,7 @@ sfs = [short_link]
 
 ### Visualize slices
 
-With a utility function, [`slice_dataframe`](https://snorkel.readthedocs.io/en/master/packages/_autosummary/slicing/snorkel.slicing.slice_dataframe.html#snorkel.slicing.slice_dataframe), we can visualize examples belonging to this slice in a `pandas.DataFrame`.
+With a utility function, [`slice_dataframe`](https://snorkel.readthedocs.io/en/master/packages/_autosummary/slicing/snorkel.slicing.slice_dataframe.html#snorkel.slicing.slice_dataframe), we can visualize data points belonging to this slice in a `pandas.DataFrame`.
 
 
 ```python
@@ -94,7 +94,7 @@ short_link_df = slice_dataframe(df_valid, short_link)
 short_link_df[["text", "label"]]
 ```
 
-    100%|██████████| 120/120 [00:00<00:00, 19566.03it/s]
+    100%|██████████| 120/120 [00:00<00:00, 19982.39it/s]
 
 
 
@@ -202,7 +202,7 @@ probs_test = preds_to_probs(preds_test, 2)
 
 We apply our list of `sfs` to the data using an SF applier.
 For our data format, we leverage the [`PandasSFApplier`](https://snorkel.readthedocs.io/en/master/packages/_autosummary/slicing/snorkel.slicing.PandasSFApplier.html#snorkel.slicing.PandasSFApplier).
-The output of the `applier` is an [`np.recarray`](https://docs.scipy.org/doc/numpy/reference/generated/numpy.recarray.html) which stores vectors in named fields indicating whether each of $n$ examples belongs to the corresponding slice.
+The output of the `applier` is an [`np.recarray`](https://docs.scipy.org/doc/numpy/reference/generated/numpy.recarray.html) which stores vectors in named fields indicating whether each of $n$ data points belongs to the corresponding slice.
 
 
 ```python
@@ -212,7 +212,7 @@ applier = PandasSFApplier(sfs)
 S_test = applier.apply(df_test)
 ```
 
-    100%|██████████| 250/250 [00:00<00:00, 18645.33it/s]
+    100%|██████████| 250/250 [00:00<00:00, 17694.80it/s]
 
 
 Now, we initialize a [`Scorer`](https://snorkel.readthedocs.io/en/master/packages/_autosummary/analysis/snorkel.analysis.Scorer.html#snorkel.analysis.Scorer) using the desired `metrics`.
@@ -336,9 +336,9 @@ def textblob_polarity(x):
     return x.polarity > 0.9
 ```
 
-Again, we'd like to visualize examples in a particular slice. This time, we'll inspect the `textblob_polarity` slice.
+Again, we'd like to visualize data points in a particular slice. This time, we'll inspect the `textblob_polarity` slice.
 
-Most examples with high-polarity sentiments are strong opinions about the video — hence, they are usually relevant to the video, and the corresponding labels are $0$.
+Most data points with high-polarity sentiments are strong opinions about the video — hence, they are usually relevant to the video, and the corresponding labels are $0$.
 We might define a slice here for *product and marketing reasons*, it's important to make sure that we don't misclassify very positive comments from good users.
 
 
@@ -347,7 +347,7 @@ polarity_df = slice_dataframe(df_valid, textblob_polarity)
 polarity_df[["text", "label"]].head()
 ```
 
-    100%|██████████| 120/120 [00:00<00:00, 846.58it/s]
+    100%|██████████| 120/120 [00:00<00:00, 842.18it/s]
 
 
 
@@ -435,7 +435,7 @@ scorer.score_slices(
 )
 ```
 
-    100%|██████████| 250/250 [00:00<00:00, 1003.10it/s]
+    100%|██████████| 250/250 [00:00<00:00, 998.98it/s] 
 
 
 
@@ -512,7 +512,7 @@ Next, we'll introduce a model that helps us to do this balancing act automatical
 ## 3. Improve slice performance
 
 In the following section, we demonstrate a modeling approach that we call _Slice-based Learning,_ which improves performance by adding extra slice-specific representational capacity to whichever model we're using.
-Intuitively, we'd like to model to learn *representations that are better suited to handle examples in this slice*.
+Intuitively, we'd like to model to learn *representations that are better suited to handle data points in this slice*.
 In our approach, we model each slice as a separate "expert task" in the style of [multi-task learning](https://github.com/snorkel-team/snorkel-tutorials/blob/master/multitask/multitask_tutorial.ipynb); for further details of how slice-based learning works under the hood, check out the [code](https://github.com/snorkel-team/snorkel/blob/master/snorkel/slicing/utils.py) (with paper coming soon)!
 
 In other approaches, one might attempt to increase slice performance with techniques like _oversampling_ (i.e. with PyTorch's [`WeightedRandomSampler`](https://pytorch.org/docs/stable/data.html#torch.utils.data.WeightedRandomSampler)), effectively shifting the training distribution towards certain populations.
@@ -582,8 +582,8 @@ trainer = Trainer(lr=1e-4, n_epochs=2)
 trainer.fit(slice_model, [train_dl, valid_dl])
 ```
 
-    Epoch 0:: 100%|██████████| 25/25 [00:27<00:00,  1.12s/it, model/all/train/loss=0.472, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.908, task/SnorkelDataset/valid/f1=0.893]
-    Epoch 1:: 100%|██████████| 25/25 [00:27<00:00,  1.13s/it, model/all/train/loss=0.0931, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.933, task/SnorkelDataset/valid/f1=0.926]
+    Epoch 0:: 100%|██████████| 25/25 [00:27<00:00,  1.11s/it, model/all/train/loss=0.472, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.908, task/SnorkelDataset/valid/f1=0.893]
+    Epoch 1:: 100%|██████████| 25/25 [00:27<00:00,  1.12s/it, model/all/train/loss=0.0931, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.933, task/SnorkelDataset/valid/f1=0.926]
 
 
 ### Representation learning with slices
@@ -600,8 +600,8 @@ S_train = applier.apply(df_train)
 S_valid = applier.apply(df_valid)
 ```
 
-    100%|██████████| 1586/1586 [00:01<00:00, 1042.17it/s]
-    100%|██████████| 120/120 [00:00<00:00, 8086.70it/s]
+    100%|██████████| 1586/1586 [00:01<00:00, 1038.34it/s]
+    100%|██████████| 120/120 [00:00<00:00, 8252.17it/s]
 
 
 In order to train using slice information, we'd like to initialize a **slice-aware dataloader**.
@@ -633,10 +633,10 @@ trainer = Trainer(n_epochs=2, lr=1e-4, progress_bar=True)
 trainer.fit(slice_model, [train_dl_slice, valid_dl_slice])
 ```
 
-    Epoch 0::  96%|█████████▌| 24/25 [00:29<00:01,  1.31s/it, model/all/train/loss=0.376, model/all/train/lr=0.0001]/home/ubuntu/snorkel-tutorials/.tox/spam/lib/python3.6/site-packages/sklearn/metrics/classification.py:1437: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 due to no predicted samples.
+    Epoch 0::  96%|█████████▌| 24/25 [00:28<00:01,  1.29s/it, model/all/train/loss=0.376, model/all/train/lr=0.0001]/home/ubuntu/snorkel-tutorials/.tox/spam/lib/python3.6/site-packages/sklearn/metrics/classification.py:1437: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 due to no predicted samples.
       'precision', 'predicted', average, warn_for)
-    Epoch 0:: 100%|██████████| 25/25 [00:30<00:00,  1.30s/it, model/all/train/loss=0.371, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.933, task/SnorkelDataset/valid/f1=0.926, task_slice:short_link_ind/SnorkelDataset/valid/f1=0, task_slice:short_link_pred/SnorkelDataset/valid/accuracy=0.8, task_slice:short_link_pred/SnorkelDataset/valid/f1=0.889, task_slice:keyword_subscribe_ind/SnorkelDataset/valid/f1=0, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/f1=1, task_slice:keyword_please_ind/SnorkelDataset/valid/f1=0, task_slice:keyword_please_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_please_pred/SnorkelDataset/valid/f1=1, task_slice:regex_check_out_ind/SnorkelDataset/valid/f1=0.471, task_slice:regex_check_out_pred/SnorkelDataset/valid/accuracy=1, task_slice:regex_check_out_pred/SnorkelDataset/valid/f1=1, task_slice:short_comment_ind/SnorkelDataset/valid/f1=0, task_slice:short_comment_pred/SnorkelDataset/valid/accuracy=0.947, task_slice:short_comment_pred/SnorkelDataset/valid/f1=0.5, task_slice:textblob_polarity_ind/SnorkelDataset/valid/f1=0, task_slice:textblob_polarity_pred/SnorkelDataset/valid/accuracy=1, task_slice:textblob_polarity_pred/SnorkelDataset/valid/f1=1, task_slice:base_ind/SnorkelDataset/valid/f1=1, task_slice:base_pred/SnorkelDataset/valid/accuracy=0.933, task_slice:base_pred/SnorkelDataset/valid/f1=0.926]
-    Epoch 1:: 100%|██████████| 25/25 [00:33<00:00,  1.44s/it, model/all/train/loss=0.17, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.925, task/SnorkelDataset/valid/f1=0.914, task_slice:short_link_ind/SnorkelDataset/valid/f1=0, task_slice:short_link_pred/SnorkelDataset/valid/accuracy=0.2, task_slice:short_link_pred/SnorkelDataset/valid/f1=0.333, task_slice:keyword_subscribe_ind/SnorkelDataset/valid/f1=0.333, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/f1=1, task_slice:keyword_please_ind/SnorkelDataset/valid/f1=0.5, task_slice:keyword_please_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_please_pred/SnorkelDataset/valid/f1=1, task_slice:regex_check_out_ind/SnorkelDataset/valid/f1=0.791, task_slice:regex_check_out_pred/SnorkelDataset/valid/accuracy=1, task_slice:regex_check_out_pred/SnorkelDataset/valid/f1=1, task_slice:short_comment_ind/SnorkelDataset/valid/f1=0, task_slice:short_comment_pred/SnorkelDataset/valid/accuracy=0.947, task_slice:short_comment_pred/SnorkelDataset/valid/f1=0.5, task_slice:textblob_polarity_ind/SnorkelDataset/valid/f1=0, task_slice:textblob_polarity_pred/SnorkelDataset/valid/accuracy=1, task_slice:textblob_polarity_pred/SnorkelDataset/valid/f1=1, task_slice:base_ind/SnorkelDataset/valid/f1=1, task_slice:base_pred/SnorkelDataset/valid/accuracy=0.908, task_slice:base_pred/SnorkelDataset/valid/f1=0.893]
+    Epoch 0:: 100%|██████████| 25/25 [00:30<00:00,  1.29s/it, model/all/train/loss=0.371, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.933, task/SnorkelDataset/valid/f1=0.926, task_slice:short_link_ind/SnorkelDataset/valid/f1=0, task_slice:short_link_pred/SnorkelDataset/valid/accuracy=0.8, task_slice:short_link_pred/SnorkelDataset/valid/f1=0.889, task_slice:keyword_subscribe_ind/SnorkelDataset/valid/f1=0, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/f1=1, task_slice:keyword_please_ind/SnorkelDataset/valid/f1=0, task_slice:keyword_please_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_please_pred/SnorkelDataset/valid/f1=1, task_slice:regex_check_out_ind/SnorkelDataset/valid/f1=0.471, task_slice:regex_check_out_pred/SnorkelDataset/valid/accuracy=1, task_slice:regex_check_out_pred/SnorkelDataset/valid/f1=1, task_slice:short_comment_ind/SnorkelDataset/valid/f1=0, task_slice:short_comment_pred/SnorkelDataset/valid/accuracy=0.947, task_slice:short_comment_pred/SnorkelDataset/valid/f1=0.5, task_slice:textblob_polarity_ind/SnorkelDataset/valid/f1=0, task_slice:textblob_polarity_pred/SnorkelDataset/valid/accuracy=1, task_slice:textblob_polarity_pred/SnorkelDataset/valid/f1=1, task_slice:base_ind/SnorkelDataset/valid/f1=1, task_slice:base_pred/SnorkelDataset/valid/accuracy=0.933, task_slice:base_pred/SnorkelDataset/valid/f1=0.926]
+    Epoch 1:: 100%|██████████| 25/25 [00:33<00:00,  1.42s/it, model/all/train/loss=0.17, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.925, task/SnorkelDataset/valid/f1=0.914, task_slice:short_link_ind/SnorkelDataset/valid/f1=0, task_slice:short_link_pred/SnorkelDataset/valid/accuracy=0.2, task_slice:short_link_pred/SnorkelDataset/valid/f1=0.333, task_slice:keyword_subscribe_ind/SnorkelDataset/valid/f1=0.333, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/f1=1, task_slice:keyword_please_ind/SnorkelDataset/valid/f1=0.5, task_slice:keyword_please_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_please_pred/SnorkelDataset/valid/f1=1, task_slice:regex_check_out_ind/SnorkelDataset/valid/f1=0.791, task_slice:regex_check_out_pred/SnorkelDataset/valid/accuracy=1, task_slice:regex_check_out_pred/SnorkelDataset/valid/f1=1, task_slice:short_comment_ind/SnorkelDataset/valid/f1=0, task_slice:short_comment_pred/SnorkelDataset/valid/accuracy=0.947, task_slice:short_comment_pred/SnorkelDataset/valid/f1=0.5, task_slice:textblob_polarity_ind/SnorkelDataset/valid/f1=0, task_slice:textblob_polarity_pred/SnorkelDataset/valid/accuracy=1, task_slice:textblob_polarity_pred/SnorkelDataset/valid/f1=1, task_slice:base_ind/SnorkelDataset/valid/f1=1, task_slice:base_pred/SnorkelDataset/valid/accuracy=0.908, task_slice:base_pred/SnorkelDataset/valid/f1=0.893]
 
 
 At inference time, the primary task head (`spam_task`) will make all final predictions.
@@ -938,7 +938,7 @@ slice_model.score_slices([valid_dl_slice, test_dl_slice], as_dataframe=True)
 
 
 
-*Note: in this toy dataset, we see high variance in slice performance, because our dataset is so small that (i) there are few examples the train split, giving little signal to learn over, and (ii) there are few examples in the test split, making our evaluation metrics very noisy.
+*Note: in this toy dataset, we see high variance in slice performance, because our dataset is so small that (i) there are few data points in the train split, giving little signal to learn over, and (ii) there are few data points in the test split, making our evaluation metrics very noisy.
 For a demonstration of data slicing deployed in state-of-the-art models, please see our [SuperGLUE](https://github.com/HazyResearch/snorkel-superglue/tree/master/tutorials) tutorials.*
 
 ---

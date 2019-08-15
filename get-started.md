@@ -10,7 +10,7 @@ title: Get Started
         <p class="subheadline">INSTALL NOW</p>
         <h1>Get Started</h1>
         <div class="code-block">
-          <p># For pip users<br>pip install https://github.com/snorkel-team/snorkel/releases/download/v0.9.0/snorkel-0.9.0-py3-none-any.whl</p>
+          <p># For pip users (PyPI available soon)<br>pip install https://github.com/snorkel-team/snorkel/releases/download/v0.9.0/snorkel-0.9.0-py3-none-any.whl</p>
           <p># For conda users<br>conda install snorkel -c conda-forge</p>
           <!-- <span style="color: #9D3FA7;">import</span><span style="color: #18171C;"> snorkel</span> -->
         </div>

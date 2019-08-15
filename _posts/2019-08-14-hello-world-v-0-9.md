@@ -79,12 +79,20 @@ For more on TFs, see the [getting started guide](https://snorkel.org/get-started
 
 ### Slicing Functions
 
+The newest addition to the Snorkel operator set–also supported in v0.9–is the _slicing function (SF)_.
+Slicing functions enable users to heuristically select _slices_ or subsets of the training dataset that are critical for application performance.
+Snorkel then uses these SFs to help with (i) monitoring of the model performance over these slices, and (ii) to increase performance on the slices by adding representational capacity to whatever model is being used (technical report coming soon!).
+The syntax for a slicing function is similar to that of a labeling function; for example, if in our spam classification problem it was especially critical to correctly flag potentially malicious links, we could write an SF for this:
+
 ```python
 @slicing_function()
 def short_link(x):
     """Return whether text matches common pattern for shortened ".ly" links."""
     return int(bool(re.search(r"\w+\.ly", x.text)))
 ```
+
+For more on SFs, see the [getting started guide](https://snorkel.org/get-started/), and then the more advanced [intro tutorial to SFs](https://www.snorkel.org/use-cases/03-spam-data-slicing-tutorial).
+
 
 ## Upgraded Labeling Pipeline
 

@@ -51,10 +51,16 @@ def lf_regex_check_out(x):
 ```
 
 In the new version of Snorkel, we include a new labeling function class that handles flexible preprocessors, memoization, efficient execution over a variety of generic data types, and much more.
+For more on LFs, see the [getting started guide](https://snorkel.org/get-started/), and then the more advanced [intro tutorial to LFs](https://www.snorkel.org/use-cases/01-spam-tutorial).
 
 ### Transformation Functions
 
-Another key operation
+Another key training data management technique that has emerged over the last several years as especially crucial to model performance is _data augmentation_, the strategy of creating transformed copies of labeled data points to effectively inject knowledge of invariances into the model.
+Data augmentation is traditionally done in ad hoc ways and hand-tuned ways, buried in data loader preprocessing scripts... but it is [absolutely critical to model performance](https://www.snorkel.org/tanda/).
+It's also a perfect fit for the overall philosophy of Snorkel: enable users to _program machine learning models via the training data._
+
+In Snorkel, data augmentation is now supported as a first class citizen, represented by the _transformation function (TF)_, which takes in a data point and returns a transformed copy of it, building on our [NeurIPS 2017 work](https://arxiv.org/abs/1709.01643) here on autoamtically learning data augmentation policies.
+The canonical example of a transformation would be rotating, stretching, or shearing an image (all of which Snorkel supports), but TFs can also be used over text data, for example randomly replacing words with synonyms:
 
 ```python
 @transformation_function()
@@ -67,6 +73,8 @@ def tf_replace_word_with_synonym(x):
         x.text = " ".join(words[:idx] + [synonyms[0]] + words[idx + 1 :])
         return x
 ```
+
+For more on TFs, see the [getting started guide](https://snorkel.org/get-started/), and then the more advanced [intro tutorial to TFs](https://www.snorkel.org/use-cases/02-spam-data-augmentation-tutorial).
 
 
 ### Slicing Functions

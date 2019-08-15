@@ -129,6 +129,22 @@ If this is your first time downloading this model, restart the kernel after exec
 ! python -m spacy download en_core_web_sm
 ```
 
+    Collecting en_core_web_sm==2.1.0 from https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.1.0/en_core_web_sm-2.1.0.tar.gz#egg=en_core_web_sm==2.1.0
+    [?25l  Downloading https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.1.0/en_core_web_sm-2.1.0.tar.gz (11.1MB)
+    [K     |████████████████████████████████| 11.1MB 655kB/s 
+    [?25hBuilding wheels for collected packages: en-core-web-sm
+      Building wheel for en-core-web-sm (setup.py) ... [?25l- \ | / done
+    [?25h  Created wheel for en-core-web-sm: filename=en_core_web_sm-2.1.0-cp36-none-any.whl size=11074434 sha256=4bd8cabc2b3f0cb61265a6a20b20939123bf5ee1d3b4990a774a1e1eb4ec9da9
+      Stored in directory: /tmp/pip-ephem-wheel-cache-vg30xe9n/wheels/39/ea/3b/507f7df78be8631a7a3d7090962194cf55bc1158572c0be77f
+    Successfully built en-core-web-sm
+    Installing collected packages: en-core-web-sm
+    Successfully installed en-core-web-sm-2.1.0
+    [33mWARNING: You are using pip version 19.2.1, however version 19.2.2 is available.
+    You should consider upgrading via the 'pip install --upgrade pip' command.[0m
+    [38;5;2m✔ Download and installation successful[0m
+    You can now load the model via spacy.load('en_core_web_sm')
+
+
 
 ```python
 from utils import load_spam_dataset
@@ -159,6 +175,81 @@ pd.set_option("display.max_colwidth", 0)
 df_dev.sample(5, random_state=3)
 ```
 
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>author</th>
+      <th>date</th>
+      <th>text</th>
+      <th>label</th>
+      <th>video</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>128</th>
+      <td>Pepe The Meme King</td>
+      <td>2015-05-19T03:49:29.427000</td>
+      <td>everyday I&amp;#39;m shufflin﻿</td>
+      <td>0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>151</th>
+      <td>Melissa Erhart</td>
+      <td>NaN</td>
+      <td>Check out this playlist on YouTube:chcfcvzfzfbvzdr﻿</td>
+      <td>1</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>Angel</td>
+      <td>2014-11-02T17:27:09</td>
+      <td>Hi there~I'm group leader of Angel, a rookie Korean pop group. We have four  members, Chanicka, Julie, Stephanie, and myself, Leah. Please feel free to  check out our channel and leave some feedback on our cover videos (:  criticism is welcome as we know we're not top notch singers so please come  leave some constructive feedback on our videos; we appreciate any chance to  improve before auditioning for a Korean management company. We plan on  auditioning for JYP, BigHit, Jellyfish, YG or SM. Thank you for taking time  out of your day to read this !﻿</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>Sandeep Singh</td>
+      <td>2015-05-23T17:51:58.957000</td>
+      <td>Charlie from LOST﻿</td>
+      <td>0</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>237</th>
+      <td>BigBird Larry</td>
+      <td>2015-05-24T09:48:00.835000</td>
+      <td>Every single one of his songs brings me back to place I can never go back to and it hurts so bad inside﻿</td>
+      <td>0</td>
+      <td>4</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
 The class distribution varies slightly from class to class, but all are approximately class-balanced.
 You can verify this by looking at the `dev` set labels.
 
@@ -173,6 +264,11 @@ for split_name, df in [("dev", df_dev), ("valid", df_valid), ("test", df_test)]:
     spam_freq = (df["label"].values == SPAM).mean()
     print(f"{split_name.upper():<6} {spam_freq * 100:0.1f}% SPAM")
 ```
+
+    DEV    54.0% SPAM
+    VALID  46.7% SPAM
+    TEST   47.2% SPAM
+
 
 ## 2. Write Labeling Functions (LFs)
 
@@ -215,6 +311,159 @@ We'll start by looking at 20 random examples from the `train` set to generate so
 ```python
 df_train[["author", "text", "video"]].sample(20, random_state=2)
 ```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>author</th>
+      <th>text</th>
+      <th>video</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>4</th>
+      <td>ambareesh nimkar</td>
+      <td>"eye of the tiger" "i am the champion" seems like katy perry is using  titles of old rock songs for lyrics..﻿</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>87</th>
+      <td>pratik patel</td>
+      <td>mindblowing dance.,.,.superbbb song﻿</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>RaMpAgE420</td>
+      <td>Check out Berzerk video on my channel ! :D</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>80</th>
+      <td>Jason Haddad</td>
+      <td>Hey, check out my new website!! This site is about kids stuff. kidsmediausa  . com</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>104</th>
+      <td>austin green</td>
+      <td>Eminem is my insperasen and fav﻿</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>305</th>
+      <td>M.E.S</td>
+      <td>hey guys look im aware im spamming and it pisses people off but please take a moment to check out my music.  im a young rapper and i love to do it and i just wanna share my music with more people  just click my picture and then see if you like my stuff</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>John Monster</td>
+      <td>Οh my god ... Roar is the most liked video at Vevo .. while 2 months ago  was Justin's Baby.. congrats Katy . Applause &amp;lt;3 ﻿</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>338</th>
+      <td>Alanoud Alsaleh</td>
+      <td>I started hating Katy Perry after finding out that she stole all of the  ideas on her videos  from an old comic book. Yet, her music is catchy. ﻿</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>336</th>
+      <td>Leonardo Baptista</td>
+      <td>http://www.avaaz.org/po/petition/Youtube_Corporation_Fox_Broadcasting_Company_Anular_os_strikes_no_Canal_Nostalgia/?cXPZpgb ﻿</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>143</th>
+      <td>UKz DoleSnacher</td>
+      <td>Remove This video its wank﻿</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>163</th>
+      <td>Monica Parker</td>
+      <td>Check out this video on YouTube:﻿</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>129</th>
+      <td>b0b1t.48058475</td>
+      <td>i rekt ur mum last nite. cuz da haterz were 2 much 4 meh lik dis if u cri evertim and sponswer mi robox vidz https://www.indiegogo.com/projects/gimme-dem-moneyz-4-roblox/x/8851222#home﻿</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>277</th>
+      <td>MeSoHornyMeLuvULongTime</td>
+      <td>This video is so racist!!! There are only animals.﻿</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>265</th>
+      <td>HarveyIsTheBoss</td>
+      <td>You gotta say its funny. well not 2 billion worth funny but still. It  clicked and everything went uphill. At least you don't have JB's shit on  #1.﻿</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>214</th>
+      <td>janez novak</td>
+      <td>share and like this page to win a hand signed Rihanna photo!!! fb -  Fans of Rihanna</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>76</th>
+      <td>Bizzle Sperq</td>
+      <td>https://www.facebook.com/nicushorbboy add mee &amp;lt;3 &amp;lt;3﻿</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>123</th>
+      <td>Gaming and Stuff PRO</td>
+      <td>Hello! Do you like gaming, art videos, scientific experiments, tutorials,  lyrics videos, and much, much more of that? If you do please check out our  channel and subscribe to it, we've just started, but soon we hope we will  be able to cover all of our expectations... You can also check out what  we've got so far!﻿</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>268</th>
+      <td>Young IncoVEVO</td>
+      <td>Check out my Music Videos! and PLEASE SUBSCRIBE!!!! Fuego - U LA LA Remix  hyperurl.co/k6a5xt﻿</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>433</th>
+      <td>Chris Edgar</td>
+      <td>Love the way you lie - Driveshaft﻿</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>40</th>
+      <td>rap classics</td>
+      <td>check out my channel for rap and hip hop music</td>
+      <td>4</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
 
 One dominant pattern in the comments that look like spam is the use of the phrase "check out" (e.g. "check out my channel").
 Let's start with that.
@@ -277,6 +526,23 @@ L_dev = applier.apply(df=df_dev)
 L_train
 ```
 
+    100%|██████████| 1586/1586 [00:00<00:00, 34463.97it/s]
+    100%|██████████| 100/100 [00:00<00:00, 24477.99it/s]
+
+
+
+
+
+    array([[-1, -1],
+           [-1, -1],
+           [-1,  1],
+           ...,
+           [ 1,  1],
+           [-1,  1],
+           [ 1,  1]])
+
+
+
 ### c) Evaluate performance on training and development sets
 
 We can easily calculate the coverage of these LFs (i.e., the percentage of the dataset that they label) as follows:
@@ -287,6 +553,10 @@ coverage_check, coverage_check_out = (L_train != ABSTAIN).mean(axis=0)
 print(f"check coverage: {coverage_check * 100:.1f}%")
 print(f"check_out coverage: {coverage_check_out * 100:.1f}%")
 ```
+
+    check coverage: 21.4%
+    check_out coverage: 25.8%
+
 
 Lots of statistics about labeling functions &mdash; like coverage &mdash; are useful when building any Snorkel application.
 So Snorkel provides tooling for common LF analyses using the
@@ -316,9 +586,120 @@ LFAnalysis(L=L_train, lfs=lfs).lf_summary()
 ```
 
 
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>j</th>
+      <th>Polarity</th>
+      <th>Coverage</th>
+      <th>Overlaps</th>
+      <th>Conflicts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>check_out</th>
+      <td>0</td>
+      <td>[1]</td>
+      <td>0.214376</td>
+      <td>0.214376</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>check</th>
+      <td>1</td>
+      <td>[1]</td>
+      <td>0.257881</td>
+      <td>0.214376</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
 ```python
 LFAnalysis(L=L_dev, lfs=lfs).lf_summary(Y=Y_dev)
 ```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>j</th>
+      <th>Polarity</th>
+      <th>Coverage</th>
+      <th>Overlaps</th>
+      <th>Conflicts</th>
+      <th>Correct</th>
+      <th>Incorrect</th>
+      <th>Emp. Acc.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>check_out</th>
+      <td>0</td>
+      <td>[1]</td>
+      <td>0.22</td>
+      <td>0.22</td>
+      <td>0.0</td>
+      <td>22</td>
+      <td>0</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>check</th>
+      <td>1</td>
+      <td>[1]</td>
+      <td>0.30</td>
+      <td>0.22</td>
+      <td>0.0</td>
+      <td>29</td>
+      <td>1</td>
+      <td>0.966667</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
 
 So even these very simple rules do quite well!
 We might want to pick the `check` rule, since both have high precision and `check` has higher coverage.
@@ -339,6 +720,49 @@ buckets = get_label_buckets(Y_dev, L_dev[:, 1])
 df_dev.iloc[buckets[(HAM, SPAM)]]
 ```
 
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>author</th>
+      <th>date</th>
+      <th>text</th>
+      <th>label</th>
+      <th>video</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>260</th>
+      <td>Eanna Cusack</td>
+      <td>2014-01-20T22:20:59</td>
+      <td>Im just to check how much views it has﻿</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
 There's only one row here because `check` produced only one false positive on the `dev` set.
 Now let's take a look at 10 random `train` set examples where `check` labeled `SPAM` to see if it matches our intuition or if we can identify some false positives.
 
@@ -346,6 +770,121 @@ Now let's take a look at 10 random `train` set examples where `check` labeled `S
 ```python
 df_train.iloc[L_train[:, 1] == SPAM].sample(10, random_state=1)
 ```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>author</th>
+      <th>date</th>
+      <th>text</th>
+      <th>label</th>
+      <th>video</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>305</th>
+      <td>M.E.S</td>
+      <td>NaN</td>
+      <td>hey guys look im aware im spamming and it pisses people off but please take a moment to check out my music.  im a young rapper and i love to do it and i just wanna share my music with more people  just click my picture and then see if you like my stuff</td>
+      <td>-1.0</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>265</th>
+      <td>Kawiana Lewis</td>
+      <td>2015-02-27T02:20:40.987000</td>
+      <td>Check out this video on YouTube:opponents mm &lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;--•[••••=====++¥¥£££&lt;br /&gt;﻿</td>
+      <td>-1.0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>89</th>
+      <td>Stricker Stric</td>
+      <td>NaN</td>
+      <td>eminem new song check out my videos</td>
+      <td>-1.0</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>147</th>
+      <td>TheGenieBoy</td>
+      <td>NaN</td>
+      <td>check out fantasy music    right here -------&amp;gt; the1fantasy  good music man.</td>
+      <td>-1.0</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>240</th>
+      <td>Made2Falter</td>
+      <td>2014-09-09T23:55:30</td>
+      <td>Check out our vids, our songs are awesome! And that I guarantee :)﻿</td>
+      <td>-1.0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>273</th>
+      <td>Artady</td>
+      <td>2014-08-11T16:27:55</td>
+      <td>https://soundcloud.com/artady please check my stuff; and make some feedback﻿</td>
+      <td>-1.0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>94</th>
+      <td>Nick McGoldrick</td>
+      <td>2014-10-27T13:19:06</td>
+      <td>Check out my drum cover of E.T. here! thanks -&amp;gt;   /watch?v=NO9pOVZ9OIQ&amp;amp;list=UUltuCDIHsDeI01by1OW7WuQ﻿</td>
+      <td>-1.0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>139</th>
+      <td>MFkin PRXPHETZ</td>
+      <td>2014-01-20T09:08:39</td>
+      <td>if you like raw talent, raw lyrics, straight real hip hop Everyone check my newest sound  Dizzy X - Got the Juice (Prod by. Drugs the Model Citizen)   COMMENT TELL ME WHAT YOU THINK  DONT BE LAZY!!!!  - 1/7 Prophetz﻿</td>
+      <td>-1.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>303</th>
+      <td>이 정훈</td>
+      <td>NaN</td>
+      <td>This great Warning will happen soon. ,0\nLneaDw26bFst76VHKJL8PxaEy6VMNlvmriUDTSFK6vY,Ali Paša,2013-09-26T22:28:17.047000,Croatia &amp;lt;3,0\nLneaDw26bFvkAHxpKEnM25FYWkyXthsUpri6JuQsZnU,G Belrus,2013-09-26T22:26:12.832000,Nice one,0\nLneaDw26bFtvZQt6JUEhasIEFRJG1exI_dVqdnQVPho,exode. comeback.,2013-09-26T22:23:00.710000,600m views.,0\nLneaDw26bFunOarAg71AwGU6TJO6aZDKFIUn_TZ1_HY,Muhammad Shaeel Abbas,2013-09-26T22:15:45.476000,Fuck off!,0\nLneaDw26bFt-oToUFj0z3vffLFNaxyKwZSIVQhiMx-E,Notorious Niko,2013-09-26T22:00:43.613000,"Hey guys im a 17yr old rapper trying to get exposure... I live in belgium where NO ONE speaks english so i have to resort to this gay SPAM...  Check out my 2 latest tracks as they are probably my best.. Audio isnt the best but im gonna invest in some real equipment for my next track..  Please Thumbs this up so others can see.. or hey dont just check me out yourself and leave a response and a like :D  Thanks in advance, you guys will be part of making my dream come TRUE   -Notorious Niko</td>
+      <td>-1.0</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>246</th>
+      <td>media.uploader</td>
+      <td>NaN</td>
+      <td>Check out my channel to see Rihanna short mix by me :)</td>
+      <td>-1.0</td>
+      <td>4</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
 
 No clear false positives here, but many look like they could be labeled by `check_out` as well.
 Let's see 10 examples where `check_out` abstained, but `check` labeled.
@@ -355,6 +894,121 @@ Let's see 10 examples where `check_out` abstained, but `check` labeled.
 buckets = get_label_buckets(L_train[:, 0], L_train[:, 1])
 df_train.iloc[buckets[(ABSTAIN, SPAM)]].sample(10, random_state=1)
 ```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>author</th>
+      <th>date</th>
+      <th>text</th>
+      <th>label</th>
+      <th>video</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>403</th>
+      <td>ownpear902</td>
+      <td>2014-07-22T18:44:36.299000</td>
+      <td>check it out free stuff for watching videos and filling surveys&lt;br /&gt;&lt;br /&gt;&lt;a href="http://www.prizerebel.com/index.php?r=1446084"&gt;http://www.prizerebel.com/index.php?r=1446084&lt;/a&gt;﻿</td>
+      <td>-1.0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>256</th>
+      <td>PacKmaN</td>
+      <td>2014-11-05T21:56:39</td>
+      <td>check men out i put allot of effort into my music but unfortunatly not many  watch it﻿</td>
+      <td>-1.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>196</th>
+      <td>Angek95</td>
+      <td>2014-11-03T22:28:56</td>
+      <td>Check my channel, please!﻿</td>
+      <td>-1.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>282</th>
+      <td>CronicleFPS</td>
+      <td>2014-11-06T03:10:26</td>
+      <td>Check me out I'm all about gaming ﻿</td>
+      <td>-1.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>352</th>
+      <td>MrJtill0317</td>
+      <td>NaN</td>
+      <td>┏━━━┓┏┓╋┏┓┏━━━┓┏━━━┓┏┓╋╋┏┓  ┃┏━┓┃┃┃╋┃┃┃┏━┓┃┗┓┏┓┃┃┗┓┏┛┃  ┃┗━━┓┃┗━┛┃┃┃╋┃┃╋┃┃┃┃┗┓┗┛┏  ┗━━┓┃┃┏━┓┃┃┗━┛┃╋┃┃┃┃╋┗┓┏┛  ┃┗━┛┃┃┃╋┃┃┃┏━┓┃┏┛┗┛┃╋╋┃┃  ┗━━━┛┗┛╋┗┛┗┛╋┗┛┗━━━┛╋╋┗┛ CHECK MY VIDEOS AND SUBSCRIBE AND LIKE PLZZ</td>
+      <td>-1.0</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>161</th>
+      <td>MarianMusicChannel</td>
+      <td>2014-08-24T03:57:52</td>
+      <td>Hello! I'm Marian, I'm a singer from Venezuela! I was part of a boy-girl band named cubik, and I'm now singing on my own  'cause I wanted to play my own pop and pop-rock songs.  It would mean a lot if you could have a look at my channel to check my  music and watch my new video!! and if u like, subscribe to it! XOXO THANKS!!  PS: if you like a lot my channel, you can share it with your friends!!  Haha!! LOL MARIAN﻿</td>
+      <td>-1.0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>270</th>
+      <td>Kyle Jaber</td>
+      <td>2014-01-19T00:21:29</td>
+      <td>Check me out! I'm kyle. I rap so yeah ﻿</td>
+      <td>-1.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>292</th>
+      <td>Soundhase</td>
+      <td>2014-08-19T18:59:38</td>
+      <td>Hi Guys! check this awesome EDM &amp;amp; House mix :) thanks a lot..  https://soundcloud.com/soundhase/edm-house-mix-2﻿</td>
+      <td>-1.0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>179</th>
+      <td>Nerdy Peach</td>
+      <td>2014-10-29T22:44:41</td>
+      <td>Hey! I'm NERDY PEACH and I'm a new youtuber and it would mean THE ABSOLUTE  world to me if you could check 'em out! &amp;lt;3  Hope you like them! =D﻿</td>
+      <td>-1.0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>zhichao wang</td>
+      <td>2013-11-29T02:13:56</td>
+      <td>i think about 100 millions of the views come from people who only wanted to  check the views﻿</td>
+      <td>-1.0</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
 
 Most of these seem like small modifications of "check out", like "check me out" or "check it out".
 Can we get the best of both worlds?
@@ -386,15 +1040,149 @@ L_train = applier.apply(df=df_train)
 L_dev = applier.apply(df=df_dev)
 ```
 
+    100%|██████████| 1586/1586 [00:00<00:00, 25269.96it/s]
+    100%|██████████| 100/100 [00:00<00:00, 18652.96it/s]
+
+
 
 ```python
 LFAnalysis(L=L_train, lfs=lfs).lf_summary()
 ```
 
 
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>j</th>
+      <th>Polarity</th>
+      <th>Coverage</th>
+      <th>Overlaps</th>
+      <th>Conflicts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>check_out</th>
+      <td>0</td>
+      <td>[1]</td>
+      <td>0.214376</td>
+      <td>0.214376</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>check</th>
+      <td>1</td>
+      <td>[1]</td>
+      <td>0.257881</td>
+      <td>0.233922</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>regex_check_out</th>
+      <td>2</td>
+      <td>[1]</td>
+      <td>0.233922</td>
+      <td>0.233922</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
 ```python
 LFAnalysis(L_dev, lfs).lf_summary(Y=Y_dev)
 ```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>j</th>
+      <th>Polarity</th>
+      <th>Coverage</th>
+      <th>Overlaps</th>
+      <th>Conflicts</th>
+      <th>Correct</th>
+      <th>Incorrect</th>
+      <th>Emp. Acc.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>check_out</th>
+      <td>0</td>
+      <td>[1]</td>
+      <td>0.22</td>
+      <td>0.22</td>
+      <td>0.0</td>
+      <td>22</td>
+      <td>0</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>check</th>
+      <td>1</td>
+      <td>[1]</td>
+      <td>0.30</td>
+      <td>0.29</td>
+      <td>0.0</td>
+      <td>29</td>
+      <td>1</td>
+      <td>0.966667</td>
+    </tr>
+    <tr>
+      <th>regex_check_out</th>
+      <td>2</td>
+      <td>[1]</td>
+      <td>0.29</td>
+      <td>0.29</td>
+      <td>0.0</td>
+      <td>29</td>
+      <td>0</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
 
 We've split the difference in `train` set coverage, and increased our accuracy on the `dev` set to 100%!
 This looks promising.
@@ -406,6 +1194,49 @@ buckets = get_label_buckets(L_dev[:, 1], L_dev[:, 2])
 df_dev.iloc[buckets[(SPAM, ABSTAIN)]]
 ```
 
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>author</th>
+      <th>date</th>
+      <th>text</th>
+      <th>label</th>
+      <th>video</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>260</th>
+      <td>Eanna Cusack</td>
+      <td>2014-01-20T22:20:59</td>
+      <td>Im just to check how much views it has﻿</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
 To understand the coverage difference between `check` and `regex_check_out`, let's take a look at 10 examples from the `train` set.
 Remember: coverage isn't always good.
 Adding false positives will increase coverage.
@@ -415,6 +1246,121 @@ Adding false positives will increase coverage.
 buckets = get_label_buckets(L_train[:, 1], L_train[:, 2])
 df_train.iloc[buckets[(SPAM, ABSTAIN)]].sample(10, random_state=1)
 ```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>author</th>
+      <th>date</th>
+      <th>text</th>
+      <th>label</th>
+      <th>video</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>16</th>
+      <td>zhichao wang</td>
+      <td>2013-11-29T02:13:56</td>
+      <td>i think about 100 millions of the views come from people who only wanted to  check the views﻿</td>
+      <td>-1.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>99</th>
+      <td>Santeri Saariokari</td>
+      <td>2014-09-03T16:32:59</td>
+      <td>Hey guys go to check my video name "growtopia my story"﻿</td>
+      <td>-1.0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>BeBe Burkey</td>
+      <td>2013-11-28T16:30:13</td>
+      <td>and u should.d check my channel and tell me what I should do next!﻿</td>
+      <td>-1.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>239</th>
+      <td>Cony</td>
+      <td>2013-11-28T16:01:47</td>
+      <td>You should check my channel for Funny VIDEOS!!﻿</td>
+      <td>-1.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>288</th>
+      <td>Kochos</td>
+      <td>2014-01-20T17:08:37</td>
+      <td>i check back often to help reach 2x10^9 views and I avoid watching Baby﻿</td>
+      <td>-1.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>65</th>
+      <td>by.Ovskiy</td>
+      <td>2014-10-13T17:09:46</td>
+      <td>Rap from Belarus, check my channel:)﻿</td>
+      <td>-1.0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>196</th>
+      <td>Angek95</td>
+      <td>2014-11-03T22:28:56</td>
+      <td>Check my channel, please!﻿</td>
+      <td>-1.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>333</th>
+      <td>FreexGaming</td>
+      <td>2014-10-18T08:12:26</td>
+      <td>want to win borderlands the pre-sequel? check my channel :)﻿</td>
+      <td>-1.0</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>167</th>
+      <td>Brandon Pryor</td>
+      <td>2014-01-19T00:36:25</td>
+      <td>I dont even watch it anymore i just come here to check on 2 Billion or not﻿</td>
+      <td>-1.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>266</th>
+      <td>Zielimeek21</td>
+      <td>2013-11-28T21:49:00</td>
+      <td>I'm only checking the views﻿</td>
+      <td>-1.0</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
 
 Most of these are SPAM, but a good number are false positives.
 **To keep precision high (while not sacrificing much in terms of coverage), we'd choose our regex-based rule.**
@@ -483,6 +1429,10 @@ plt.legend(["Spam", "Ham"])
 plt.show()
 ```
 
+
+![png](01_spam_tutorial_files/01_spam_tutorial_69_0.png)
+
+
 We'll target the high polarity bin on the far right in our LF since there are many more `HAM` comments.
 There are several other ways we could bin this histogram to get plausible LFs, but we'll just
 write one for now.
@@ -522,6 +1472,14 @@ plt.legend(["Spam", "Ham"])
 plt.show()
 ```
 
+
+![png](01_spam_tutorial_files/01_spam_tutorial_73_0.png)
+
+
+
+![png](01_spam_tutorial_files/01_spam_tutorial_73_1.png)
+
+
 It looks like subjectivity scores above 0.5 will work pretty well for identifying `HAM` comments, though not perfectly.
 We'll rely on our label model to learn that this is a lower accuracy rule.
 
@@ -543,15 +1501,130 @@ L_train = applier.apply(df_train)
 L_dev = applier.apply(df_dev)
 ```
 
+    100%|██████████| 1586/1586 [00:01<00:00, 1110.33it/s]
+    100%|██████████| 100/100 [00:00<00:00, 14621.43it/s]
+
+
 
 ```python
 LFAnalysis(L_train, lfs).lf_summary()
 ```
 
 
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>j</th>
+      <th>Polarity</th>
+      <th>Coverage</th>
+      <th>Overlaps</th>
+      <th>Conflicts</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>textblob_polarity</th>
+      <td>0</td>
+      <td>[0]</td>
+      <td>0.035309</td>
+      <td>0.013871</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>textblob_subjectivity</th>
+      <td>1</td>
+      <td>[0]</td>
+      <td>0.357503</td>
+      <td>0.013871</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
 ```python
 LFAnalysis(L_dev, lfs).lf_summary(Y=Y_dev)
 ```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>j</th>
+      <th>Polarity</th>
+      <th>Coverage</th>
+      <th>Overlaps</th>
+      <th>Conflicts</th>
+      <th>Correct</th>
+      <th>Incorrect</th>
+      <th>Emp. Acc.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>textblob_polarity</th>
+      <td>0</td>
+      <td>[0]</td>
+      <td>0.05</td>
+      <td>0.02</td>
+      <td>0.0</td>
+      <td>4</td>
+      <td>1</td>
+      <td>0.800000</td>
+    </tr>
+    <tr>
+      <th>textblob_subjectivity</th>
+      <td>1</td>
+      <td>[0]</td>
+      <td>0.41</td>
+      <td>0.02</td>
+      <td>0.0</td>
+      <td>24</td>
+      <td>17</td>
+      <td>0.585366</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
 
 Again, these LFs aren't perfect, so we'll rely on our label model to denoise and resolve their outputs.
 
@@ -733,6 +1806,159 @@ L_valid = applier.apply(df=df_valid)
 LFAnalysis(L=L_dev, lfs=lfs).lf_summary(Y=Y_dev)
 ```
 
+    100%|██████████| 1586/1586 [00:12<00:00, 123.38it/s]
+    100%|██████████| 100/100 [00:00<00:00, 121.66it/s]
+    100%|██████████| 120/120 [00:01<00:00, 106.89it/s]
+
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>j</th>
+      <th>Polarity</th>
+      <th>Coverage</th>
+      <th>Overlaps</th>
+      <th>Conflicts</th>
+      <th>Correct</th>
+      <th>Incorrect</th>
+      <th>Emp. Acc.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>keyword_my</th>
+      <td>0</td>
+      <td>[1]</td>
+      <td>0.22</td>
+      <td>0.22</td>
+      <td>0.14</td>
+      <td>19</td>
+      <td>3</td>
+      <td>0.863636</td>
+    </tr>
+    <tr>
+      <th>keyword_subscribe</th>
+      <td>1</td>
+      <td>[1]</td>
+      <td>0.14</td>
+      <td>0.12</td>
+      <td>0.06</td>
+      <td>14</td>
+      <td>0</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>keyword_http</th>
+      <td>2</td>
+      <td>[1]</td>
+      <td>0.10</td>
+      <td>0.08</td>
+      <td>0.07</td>
+      <td>10</td>
+      <td>0</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>keyword_please</th>
+      <td>3</td>
+      <td>[1]</td>
+      <td>0.10</td>
+      <td>0.10</td>
+      <td>0.06</td>
+      <td>10</td>
+      <td>0</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>keyword_song</th>
+      <td>4</td>
+      <td>[0]</td>
+      <td>0.16</td>
+      <td>0.12</td>
+      <td>0.06</td>
+      <td>11</td>
+      <td>5</td>
+      <td>0.687500</td>
+    </tr>
+    <tr>
+      <th>regex_check_out</th>
+      <td>5</td>
+      <td>[1]</td>
+      <td>0.29</td>
+      <td>0.22</td>
+      <td>0.17</td>
+      <td>29</td>
+      <td>0</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>short_comment</th>
+      <td>6</td>
+      <td>[0]</td>
+      <td>0.28</td>
+      <td>0.20</td>
+      <td>0.07</td>
+      <td>19</td>
+      <td>9</td>
+      <td>0.678571</td>
+    </tr>
+    <tr>
+      <th>has_person_nlp</th>
+      <td>7</td>
+      <td>[0]</td>
+      <td>0.15</td>
+      <td>0.13</td>
+      <td>0.04</td>
+      <td>10</td>
+      <td>5</td>
+      <td>0.666667</td>
+    </tr>
+    <tr>
+      <th>textblob_polarity</th>
+      <td>8</td>
+      <td>[0]</td>
+      <td>0.05</td>
+      <td>0.05</td>
+      <td>0.01</td>
+      <td>4</td>
+      <td>1</td>
+      <td>0.800000</td>
+    </tr>
+    <tr>
+      <th>textblob_subjectivity</th>
+      <td>9</td>
+      <td>[0]</td>
+      <td>0.41</td>
+      <td>0.34</td>
+      <td>0.20</td>
+      <td>24</td>
+      <td>17</td>
+      <td>0.585366</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
 We see that our labeling functions vary in coverage, accuracy, and how much they overlap/conflict with one another.
 We can view a histogram of how many LF labels the data points in our dev set have to get an idea of our total coverage.
 
@@ -747,6 +1973,10 @@ def plot_label_frequency(L):
 
 plot_label_frequency(L_train)
 ```
+
+
+![png](01_spam_tutorial_files/01_spam_tutorial_109_0.png)
+
 
 We see that over half of our `train` dataset data points have 2 or fewer labels from LFs.
 Fortunately, the signal we do have can be used to train a classifier over the comment text directly, allowing it to generalize beyond what we've specified via our LFs.
@@ -769,6 +1999,13 @@ majority_model = MajorityLabelVoter()
 preds_train = majority_model.predict(L=L_train)
 preds_train
 ```
+
+
+
+
+    array([1, 1, 0, ..., 1, 1, 1])
+
+
 
 However, as we can clearly see by looking the summary statistics of our LFs in the previous section, they are not all equally accurate, and should not be treated identically. In addition to having varied accuracies and coverages, LFs may be correlated, resulting in certain signals being overrepresented in a majority-vote-based model. To handle these issues appropriately, we will instead use a more sophisticated Snorkel `LabelModel` to combine the outputs of the LFs.
 
@@ -800,6 +2037,10 @@ label_model_acc = label_model.score(L=L_valid, Y=Y_valid)["accuracy"]
 print(f"{'Label Model Accuracy:':<25} {label_model_acc * 100:.1f}%")
 ```
 
+    Majority Vote Accuracy:   84.2%
+    Label Model Accuracy:     86.7%
+
+
 So our `LabelModel` improves over the majority vote baseline!
 However, it is typically **not suitable as an inference-time model** to make predictions for unseen examples, due to (among other things) some data points having all abstain labels.
 In the next section, we will use the output of the label model as  training labels to train a
@@ -823,6 +2064,69 @@ df_fp_dev["probability"] = probs_dev[buckets[(SPAM, HAM)], 1]
 df_fp_dev.sample(5, random_state=3)
 ```
 
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>text</th>
+      <th>label</th>
+      <th>probability</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>195</th>
+      <td>Check Out The New Hot Video By Dante B Called Riled Up</td>
+      <td>1</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>334</th>
+      <td>Check out Em&amp;#39;s dope new song monster here: /watch?v=w6gkM-XNY2M  MMLP2 FTW :)</td>
+      <td>1</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>431</th>
+      <td>CHECK OUT Eminem - Rap God LYRIC VIDEO</td>
+      <td>1</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>313</th>
+      <td>Aslamu Lykum... From Pakistan﻿</td>
+      <td>1</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>189</th>
+      <td>/watch?v=aImbWbfQbzg watch and subscrible</td>
+      <td>1</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
 Let's briefly confirm that the labels the `LabelModel` produces are probabilistic in nature.
 The following histogram shows the confidences we have that each data point has the label SPAM.
 The points we are least certain about will have labels close to 0.5.
@@ -839,6 +2143,10 @@ def plot_probabilities_histogram(Y):
 probs_train = label_model.predict_proba(L=L_train)
 plot_probabilities_histogram(probs_train[:, SPAM])
 ```
+
+
+![png](01_spam_tutorial_files/01_spam_tutorial_123_0.png)
+
 
 ### Filtering out unlabeled data points
 
@@ -961,6 +2269,17 @@ test_acc = metric_score(golds=Y_test, preds=preds_test, metric="accuracy")
 print(f"Test Accuracy: {test_acc * 100:.1f}%")
 ```
 
+    WARNING: Logging before flag parsing goes to stderr.
+    W0814 23:04:24.694567 140620606748480 deprecation.py:506] From /home/ubuntu/snorkel-tutorials/.tox/spam/lib/python3.6/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+    Instructions for updating:
+    Call initializer instance with the dtype argument instead of passing it to the constructor
+
+
+    Restoring model weights from the end of the best epoch.
+    Epoch 00012: early stopping
+    Test Accuracy: 94.4%
+
+
 **We observe an additional boost in accuracy over the `LabelModel` by multiple points!
 By using the label model to transfer the domain knowledge encoded in our LFs to the discriminative model,
 we were able to generalize beyond the noisy labeling heuristics**.
@@ -997,6 +2316,14 @@ test_acc = metric_score(golds=Y_test, preds=preds_test_dev, metric="accuracy")
 print(f"Test Accuracy: {test_acc * 100:.1f}%")
 ```
 
+    W0814 23:04:26.702136 140620606748480 deprecation.py:323] From /home/ubuntu/snorkel-tutorials/.tox/spam/lib/python3.6/site-packages/tensorflow/python/ops/nn_impl.py:180: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+    Instructions for updating:
+    Use tf.where in 2.0, which has the same broadcast rule as np.where
+
+
+    Test Accuracy: 88.4%
+
+
 ### Scikit-Learn with Rounded Labels
 
 If we want to use a library or model that doesn't accept probabilistic labels, we can replace each label distribution with the label of the class that has the maximum probability.
@@ -1028,6 +2355,9 @@ sklearn_model.fit(X=X_train, y=preds_train_filtered)
 
 print(f"Test Accuracy: {sklearn_model.score(X=X_test, y=Y_test) * 100:.1f}%")
 ```
+
+    Test Accuracy: 93.2%
+
 
 ## Summary
 

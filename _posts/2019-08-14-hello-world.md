@@ -24,12 +24,16 @@ We know we'll have a lot more to do, but we're excited for the feedback and enga
 
 ## New Ways to Build & Manage Training Data
 
-TODO: Intro bit here
+Snorkel was motivated by the observation that as modern machine learning models became increasingly performant and easy-to-use---but also massively data-hungry---building and managing _training datasets_ was increasingly becoming the key development bottleneck and limiting reagant to actually building real-world ML applications.
+The goal of Snorkel is to take the operations that are often _most_ critical to ML model success, but also most often relegated to ad hoc and manual processes---e.g. labeling, augmenting, and managing training data---and make them the first class citizens of a programmatic _development_ process.
 
 <figure>
-	<img style="width: 100%; max-width: 580px;" src="/doks-theme/assets/images/layout/Overview.png"/>
+        <img style="width: 100%; max-width: 580px;" src="/doks-theme/assets/images/layout/Overview.png"/>
 </figure>
 
+When we started the Snorkel project, we chose to tackle one aspect of this process first: _labeling_ training data.
+In the new version of Snorkel, we both expand the support for this operation, and introduce two new operations: _transforming_ or _augmenting_ data, and _slicing_ or partitioning data.
+We now give a brief preview of what these operations look like in the new Snorkel:
 
 ### Labeling Functions
 ```python

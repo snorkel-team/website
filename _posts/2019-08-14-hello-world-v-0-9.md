@@ -143,13 +143,43 @@ This is a great way to contribute...!  Link to spectrum for voting!
 
 ## Becoming a Modern Python Library
 
+It's now easier than ever to get started with, receive support, and contribute to,
+and maintain Snorkel.
+In particular, we've adopted best practices around installation, testing, and
+documentation from lots of well maintained Python libraries that we use and love.
+
+
 ### Installation
+
+We now support installation in a number of ways, including `pip`, `conda`, and installing
+from source.
+Our tutorials repo also supports Docker installation.
+For more details, see the
+[Snorkel README](https://github.com/snorkel-team/snorkel/#installation) and
+[Tutorials README](https://github.com/snorkel-team/snorkel-tutorials#getting-started).
 
 ### Unit and Integration Testing
 
+Snorkel v0.9 has
+[over 200 unit tests and integration tests](https://github.com/snorkel-team/snorkel/tree/master/test)
+and [coverage tracked on Codecov](https://codecov.io/gh/snorkel-team/snorkel),
+so you can be more confident than ever in the library's robustness.
+We upgraded to [`tox`](https://tox.readthedocs.io/en/latest/) and
+[`pytest`](https://docs.pytest.org/) 
+as our primary testing suite, making it easier for developers to contribute new functionality.
+We also added a host of automated tooling to enforce strict code standards
+such as static type checking with [`mypy`](http://mypy-lang.org/),
+code formatting with [`black`](https://black.readthedocs.io/en/stable/),
+and docstring compliance with [`doctest-plus`](https://github.com/astropy/pytest-doctestplus)
+and [`pydocstyle`](http://www.pydocstyle.org/).
+
 ### Documentation
 
-
+Snorkel's [API Documentation on ReadTheDocs](https://snorkel.readthedocs.io)
+has been overhauled, making it easier to navigate and read.
+The documentation is now much more complete (thanks to the tooling listed above and
+several documentation sprints) and rebuilds automatically on pushes to `master`,
+so you'll always be able to find information on the latest features.
 
 ## Moving Forwards
 

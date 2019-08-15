@@ -9,12 +9,9 @@ title: Get Started
       <div class="col-sm-5 mobile-margin">
         <p class="subheadline">INSTALL NOW</p>
         <h1>Get Started</h1>
-        <p>
-          Run any of the following to install:
-        </p>
         <div class="code-block">
-         <p>pip install snorkel</p>
-          <p>conda install snorkel -c conda-forge</p>
+          <p># For pip users<br>pip install snorkel</p>
+          <p># For conda users<br>conda install snorkel -c conda-forge</p>
           <!-- <span style="color: #9D3FA7;">import</span><span style="color: #18171C;"> snorkel</span> -->
         </div>
         <a class="btn" href="/use-cases/">Tutorials</a>

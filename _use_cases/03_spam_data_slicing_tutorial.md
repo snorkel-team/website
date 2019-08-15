@@ -20,31 +20,6 @@ In this tutorial, we:
 1. **Monitor** application-critical data subsets
 2. **Improve model performance** on slices
 
-First, we'll set up our notebook for reproducibility and proper logging.
-
-
-```python
-import logging
-import os
-import pandas as pd
-from snorkel.utils import set_seed
-
-# For reproducibility
-os.environ["PYTHONHASHSEED"] = "0"
-set_seed(111)
-
-# Make sure we're running from the spam/ directory
-if os.path.basename(os.getcwd()) == "snorkel-tutorials":
-    os.chdir("spam")
-
-# To visualize logs
-logger = logging.getLogger()
-logger.setLevel(logging.WARNING)
-
-# Show full columns for viewing data
-pd.set_option("display.max_colwidth", -1)
-```
-
 _Note:_ this tutorial differs from the labeling tutorial in that we use ground truth labels in the train split for demo purposes.
 SFs are intended to be used *after the training set has already been labeled* by LFs (or by hand) in the training data pipeline.
 
@@ -91,11 +66,12 @@ With a utility function, [`slice_dataframe`](https://snorkel.readthedocs.io/en/m
 from snorkel.slicing import slice_dataframe
 
 short_link_df = slice_dataframe(df_valid, short_link)
-short_link_df[["text", "label"]]
 ```
 
-    100%|██████████| 120/120 [00:00<00:00, 19982.39it/s]
 
+```python
+short_link_df[["text", "label"]]
+```
 
 
 
@@ -125,17 +101,17 @@ short_link_df[["text", "label"]]
   <tbody>
     <tr>
       <th>280</th>
-      <td>Being paid to respond to fast paid surveys from home has enabled me to give up working and make more than 4500 bucks monthly.  To read more go to this web site bit.ly\1bSefQe</td>
+      <td>Being paid to respond to fast paid surveys fro...</td>
       <td>1</td>
     </tr>
     <tr>
       <th>192</th>
-      <td>Meet The Richest Online Marketer  NOW CLICK : bit.ly/make-money-without-adroid</td>
+      <td>Meet The Richest Online Marketer  NOW CLICK : ...</td>
       <td>1</td>
     </tr>
     <tr>
       <th>301</th>
-      <td>coby this USL and past :&lt;br /&gt;&lt;a href="http://adf.ly"&gt;http://adf.ly&lt;/a&gt; /1HmVtX&lt;br /&gt;delete space after y﻿</td>
+      <td>coby this USL and past :&lt;br /&gt;&lt;a href="http://...</td>
       <td>1</td>
     </tr>
     <tr>
@@ -145,7 +121,7 @@ short_link_df[["text", "label"]]
     </tr>
     <tr>
       <th>18</th>
-      <td>Earn money for being online with 0 efforts!    bit.ly\14gKvDo</td>
+      <td>Earn money for being online with 0 efforts!   ...</td>
       <td>1</td>
     </tr>
   </tbody>
@@ -180,14 +156,10 @@ from sklearn.linear_model import LogisticRegression
 
 sklearn_model = LogisticRegression(C=0.001, solver="liblinear")
 sklearn_model.fit(X=X_train, y=Y_train)
-sklearn_model.score(X_test, Y_test)
+print(f"Test set accuracy: {100 * sklearn_model.score(X_test, Y_test):.1f}%")
 ```
 
-
-
-
-    0.928
-
+    Test set accuracy: 92.8%
 
 
 
@@ -211,9 +183,6 @@ from snorkel.slicing import PandasSFApplier
 applier = PandasSFApplier(sfs)
 S_test = applier.apply(df_test)
 ```
-
-    100%|██████████| 250/250 [00:00<00:00, 17694.80it/s]
-
 
 Now, we initialize a [`Scorer`](https://snorkel.readthedocs.io/en/master/packages/_autosummary/analysis/snorkel.analysis.Scorer.html#snorkel.analysis.Scorer) using the desired `metrics`.
 
@@ -344,11 +313,12 @@ We might define a slice here for *product and marketing reasons*, it's important
 
 ```python
 polarity_df = slice_dataframe(df_valid, textblob_polarity)
-polarity_df[["text", "label"]].head()
 ```
 
-    100%|██████████| 120/120 [00:00<00:00, 842.18it/s]
 
+```python
+polarity_df[["text", "label"]].head()
+```
 
 
 
@@ -429,14 +399,14 @@ Let's see how the `sklearn` model we learned before performs on these new slices
 ```python
 applier = PandasSFApplier(sfs)
 S_test = applier.apply(df_test)
+```
 
+
+```python
 scorer.score_slices(
     S=S_test, golds=Y_test, preds=preds_test, probs=probs_test, as_dataframe=True
 )
 ```
-
-    100%|██████████| 250/250 [00:00<00:00, 998.98it/s] 
-
 
 
 
@@ -582,8 +552,8 @@ trainer = Trainer(lr=1e-4, n_epochs=2)
 trainer.fit(slice_model, [train_dl, valid_dl])
 ```
 
-    Epoch 0:: 100%|██████████| 25/25 [00:27<00:00,  1.11s/it, model/all/train/loss=0.472, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.908, task/SnorkelDataset/valid/f1=0.893]
-    Epoch 1:: 100%|██████████| 25/25 [00:27<00:00,  1.12s/it, model/all/train/loss=0.0931, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.933, task/SnorkelDataset/valid/f1=0.926]
+    Epoch 0:: 100%|██████████| 25/25 [00:26<00:00,  1.09s/it, model/all/train/loss=0.472, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.908, task/SnorkelDataset/valid/f1=0.893]
+    Epoch 1:: 100%|██████████| 25/25 [00:26<00:00,  1.10s/it, model/all/train/loss=0.0931, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.933, task/SnorkelDataset/valid/f1=0.926]
 
 
 ### Representation learning with slices
@@ -599,10 +569,6 @@ applier = PandasSFApplier(sfs)
 S_train = applier.apply(df_train)
 S_valid = applier.apply(df_valid)
 ```
-
-    100%|██████████| 1586/1586 [00:01<00:00, 1038.34it/s]
-    100%|██████████| 120/120 [00:00<00:00, 8252.17it/s]
-
 
 In order to train using slice information, we'd like to initialize a **slice-aware dataloader**.
 To do this, we can use [`slice_model.make_slice_dataloader`](https://snorkel.readthedocs.io/en/master/packages/_autosummary/slicing/snorkel.slicing.SlicingClassifier.html#snorkel.slicing.SlicingClassifier.predict) to add slice labels to an existing dataloader.
@@ -633,9 +599,9 @@ trainer = Trainer(n_epochs=2, lr=1e-4, progress_bar=True)
 trainer.fit(slice_model, [train_dl_slice, valid_dl_slice])
 ```
 
-    Epoch 0::  96%|█████████▌| 24/25 [00:28<00:01,  1.29s/it, model/all/train/loss=0.376, model/all/train/lr=0.0001]/home/ubuntu/snorkel-tutorials/.tox/spam/lib/python3.6/site-packages/sklearn/metrics/classification.py:1437: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 due to no predicted samples.
+    Epoch 0::  96%|█████████▌| 24/25 [00:28<00:01,  1.28s/it, model/all/train/loss=0.376, model/all/train/lr=0.0001]/home/ubuntu/snorkel-tutorials/.tox/spam/lib/python3.6/site-packages/sklearn/metrics/classification.py:1437: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 due to no predicted samples.
       'precision', 'predicted', average, warn_for)
-    Epoch 0:: 100%|██████████| 25/25 [00:30<00:00,  1.29s/it, model/all/train/loss=0.371, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.933, task/SnorkelDataset/valid/f1=0.926, task_slice:short_link_ind/SnorkelDataset/valid/f1=0, task_slice:short_link_pred/SnorkelDataset/valid/accuracy=0.8, task_slice:short_link_pred/SnorkelDataset/valid/f1=0.889, task_slice:keyword_subscribe_ind/SnorkelDataset/valid/f1=0, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/f1=1, task_slice:keyword_please_ind/SnorkelDataset/valid/f1=0, task_slice:keyword_please_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_please_pred/SnorkelDataset/valid/f1=1, task_slice:regex_check_out_ind/SnorkelDataset/valid/f1=0.471, task_slice:regex_check_out_pred/SnorkelDataset/valid/accuracy=1, task_slice:regex_check_out_pred/SnorkelDataset/valid/f1=1, task_slice:short_comment_ind/SnorkelDataset/valid/f1=0, task_slice:short_comment_pred/SnorkelDataset/valid/accuracy=0.947, task_slice:short_comment_pred/SnorkelDataset/valid/f1=0.5, task_slice:textblob_polarity_ind/SnorkelDataset/valid/f1=0, task_slice:textblob_polarity_pred/SnorkelDataset/valid/accuracy=1, task_slice:textblob_polarity_pred/SnorkelDataset/valid/f1=1, task_slice:base_ind/SnorkelDataset/valid/f1=1, task_slice:base_pred/SnorkelDataset/valid/accuracy=0.933, task_slice:base_pred/SnorkelDataset/valid/f1=0.926]
+    Epoch 0:: 100%|██████████| 25/25 [00:29<00:00,  1.28s/it, model/all/train/loss=0.371, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.933, task/SnorkelDataset/valid/f1=0.926, task_slice:short_link_ind/SnorkelDataset/valid/f1=0, task_slice:short_link_pred/SnorkelDataset/valid/accuracy=0.8, task_slice:short_link_pred/SnorkelDataset/valid/f1=0.889, task_slice:keyword_subscribe_ind/SnorkelDataset/valid/f1=0, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/f1=1, task_slice:keyword_please_ind/SnorkelDataset/valid/f1=0, task_slice:keyword_please_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_please_pred/SnorkelDataset/valid/f1=1, task_slice:regex_check_out_ind/SnorkelDataset/valid/f1=0.471, task_slice:regex_check_out_pred/SnorkelDataset/valid/accuracy=1, task_slice:regex_check_out_pred/SnorkelDataset/valid/f1=1, task_slice:short_comment_ind/SnorkelDataset/valid/f1=0, task_slice:short_comment_pred/SnorkelDataset/valid/accuracy=0.947, task_slice:short_comment_pred/SnorkelDataset/valid/f1=0.5, task_slice:textblob_polarity_ind/SnorkelDataset/valid/f1=0, task_slice:textblob_polarity_pred/SnorkelDataset/valid/accuracy=1, task_slice:textblob_polarity_pred/SnorkelDataset/valid/f1=1, task_slice:base_ind/SnorkelDataset/valid/f1=1, task_slice:base_pred/SnorkelDataset/valid/accuracy=0.933, task_slice:base_pred/SnorkelDataset/valid/f1=0.926]
     Epoch 1:: 100%|██████████| 25/25 [00:33<00:00,  1.42s/it, model/all/train/loss=0.17, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.925, task/SnorkelDataset/valid/f1=0.914, task_slice:short_link_ind/SnorkelDataset/valid/f1=0, task_slice:short_link_pred/SnorkelDataset/valid/accuracy=0.2, task_slice:short_link_pred/SnorkelDataset/valid/f1=0.333, task_slice:keyword_subscribe_ind/SnorkelDataset/valid/f1=0.333, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/f1=1, task_slice:keyword_please_ind/SnorkelDataset/valid/f1=0.5, task_slice:keyword_please_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_please_pred/SnorkelDataset/valid/f1=1, task_slice:regex_check_out_ind/SnorkelDataset/valid/f1=0.791, task_slice:regex_check_out_pred/SnorkelDataset/valid/accuracy=1, task_slice:regex_check_out_pred/SnorkelDataset/valid/f1=1, task_slice:short_comment_ind/SnorkelDataset/valid/f1=0, task_slice:short_comment_pred/SnorkelDataset/valid/accuracy=0.947, task_slice:short_comment_pred/SnorkelDataset/valid/f1=0.5, task_slice:textblob_polarity_ind/SnorkelDataset/valid/f1=0, task_slice:textblob_polarity_pred/SnorkelDataset/valid/accuracy=1, task_slice:textblob_polarity_pred/SnorkelDataset/valid/f1=1, task_slice:base_ind/SnorkelDataset/valid/f1=1, task_slice:base_pred/SnorkelDataset/valid/accuracy=0.908, task_slice:base_pred/SnorkelDataset/valid/f1=0.893]
 
 
@@ -947,8 +913,3 @@ For a demonstration of data slicing deployed in state-of-the-art models, please 
 This tutorial walked through the process authoring slices, monitoring model performance on specific slices, and improving model performance using slice information.
 This programming abstraction provides a mechanism to heuristically identify critical data subsets.
 For more technical details about _Slice-based Learning,_ stay tuned — our technical report is coming soon!
-
-
-```python
-
-```

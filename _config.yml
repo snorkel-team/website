@@ -13,7 +13,7 @@ doks:
         item_url: /use-cases/
       - item_name: Features
         item_url: /features/
-      - item_name: Blog
+      - item_name: Blogs
         item_url: /blog/
       - item_name: Resources
         item_url: /resources/
@@ -32,7 +32,7 @@ doks:
         item_url: /use-cases/
       - item_name: Features
         item_url: /features/
-      - item_name: Blog
+      - item_name: Blogs
         item_url: /blog/
       - item_name: Resources
         item_url: /resources/

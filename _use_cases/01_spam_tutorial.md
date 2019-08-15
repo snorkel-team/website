@@ -4,7 +4,7 @@ title: Intro to Labeling Functions
 description: Labeling data for spam classification
 excerpt: Labeling data for spam classification
 order: 1
-github_link: http://google.com
+github_link: https://github.com/snorkel-team/snorkel-tutorials/blob/master/spam/01_spam_tutorial.ipynb
 ---
 
 

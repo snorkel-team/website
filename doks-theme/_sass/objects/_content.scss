@@ -15,4 +15,9 @@
   a {
     color: $color-nav-hover;
   }
+
+  div {
+    position: relative;
+    overflow-x: scroll;
+  }
 }

@@ -36,6 +36,9 @@
       margin-bottom: .625rem;
       border-left: 3px solid #eee;
       transition: border .2s;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
 
       &.active {
         border-left-color: $color-dark-blue;

@@ -24,26 +24,36 @@ We know we'll have a lot more to do, but we're excited for the feedback and enga
 
 ## New Ways to Build & Manage Training Data
 
-Snorkel was motivated by the observation that as modern machine learning models became increasingly performant and easy-to-use---but also massively data-hungry---building and managing _training datasets_ was increasingly becoming the key development bottleneck and limiting reagant to actually building real-world ML applications.
-The goal of Snorkel is to take the operations that are often _most_ critical to ML model success, but also most often relegated to ad hoc and manual processes---e.g. labeling, augmenting, and managing training data---and make them the first class citizens of a programmatic _development_ process.
+Snorkel is motivated by the observation that as modern machine learning models have become increasingly performant and easy-to-use---but also massively data-hungry---building and managing _training datasets_ has increasingly become the key development bottleneck and limiting reagant to actually building real-world ML applications.
+The goal of Snorkel is to take the operations that practitioners employ over the training data, which are often _most_ critical to ML model success, but also most often relegated to ad hoc and manual processes---e.g. labeling, augmenting, and managing training data---and make them the first class citizens of a programmatic _development_ process.
 
-<figure>
+<figure align="center">
         <img style="width: 100%; max-width: 580px;" src="/doks-theme/assets/images/layout/Overview.png"/>
 </figure>
 
 When we started the Snorkel project, we chose to tackle one aspect of this process first: _labeling_ training data.
 In the new version of Snorkel, we both expand the support for this operation, and introduce two new operations: _transforming_ or _augmenting_ data, and _slicing_ or partitioning data.
+For an overview of how these all fit together in the new version of Snorkel, we recommend checking out the new [getting started guide](https://snorkel.org/get-started/)!
+
 We now give a brief preview of what these operations look like in the new Snorkel:
 
 ### Labeling Functions
+
+The core operator in Snorkel for the majority of the project has been the _labeling function (LF)_, which provides an abstracted way to represent various heuristic or noisy programmatic labeling strategies, which Snorkel then models and combines into clean training labels.
+For example, in a spam classification problem, a labeling function could employ a regular expression:
+
 ```python
 @labeling_function()
-def lf_keyword_my(x):
-    """Many spam comments talk about 'my channel', 'my video', etc."""
-    return SPAM if "my" in x.text.lower() else ABSTAIN
+def lf_regex_check_out(x):
+    """Spam comments say 'check out my video', 'check it out', etc."""
+    return SPAM if re.search(r"check.*out", x.text, flags=re.I) else ABSTAIN
 ```
 
+In the new version of Snorkel, we include a new labeling function class that handles flexible preprocessors, memoization, efficient execution over a variety of generic data types, and much more.
+
 ### Transformation Functions
+
+Another key operation
 
 ```python
 @transformation_function()
@@ -71,11 +81,11 @@ def short_link(x):
 
 ### New Matrix Completion-Style Modeling Approach
 
-TODO: Picture here!
+<figure align="center">
+        <img style="width: 100%; max-width: 580px;" src="/doks-theme/assets/images/2019-08-14-hello-world-v-0-9/matrix_completion.png"/>
+</figure>
 
 ### Big Data Operators
-
-### New Structure Learning Approach
 
 TODO
 

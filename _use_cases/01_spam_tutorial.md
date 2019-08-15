@@ -34,7 +34,7 @@ def lf_contains_link(x):
 ```
 
 The tutorial is divided into four parts:
-1. **Loading Data**: We load a [YouTube comments dataset](https://www.kaggle.com/goneee/youtube-spam-classifiedcomments) from Kaggle, originally introduced in ["TubeSpam: Comment Spam Filtering on YouTube"](https://ieeexplore.ieee.org/document/7424299/), ICMLA'15 (T.C. Alberto, J.V. Lochter, J.V. Almeida).
+1. **Loading Data**: We load a [YouTube comments dataset](http://www.dt.fee.unicamp.br/~tiago//youtubespamcollection/), originally introduced in ["TubeSpam: Comment Spam Filtering on YouTube"](https://ieeexplore.ieee.org/document/7424299/), ICMLA'15 (T.C. Alberto, J.V. Lochter, J.V. Almeida).
 
 2. **Writing Labeling Functions**: We write Python programs that take as input a data point and assign labels (or abstain) using heuristics, pattern matching, and third-party models.
 
@@ -44,7 +44,7 @@ The tutorial is divided into four parts:
 
 ### Task: Spam Detection
 
-We use a [YouTube comments dataset](https://www.kaggle.com/goneee/youtube-spam-classifiedcomments) that consists of YouTube comments from 5 videos. The task is to classify each comment as being
+We use a [YouTube comments dataset](http://www.dt.fee.unicamp.br/~tiago//youtubespamcollection/) that consists of YouTube comments from 5 videos. The task is to classify each comment as being
 
 * **`HAM`**: comments relevant to the video (even very simple ones), or
 * **`SPAM`**: irrelevant (often trying to advertise something) or inappropriate messages
@@ -81,7 +81,7 @@ Do the latter only with caution: because the labeling functions will be based on
 
 ## 1. Loading Data
 
-We load the Kaggle dataset and create Pandas DataFrame objects for each of the sets described above.
+We load the YouTube comments dataset and create Pandas DataFrame objects for each of the sets described above.
 DataFrames are extremely popular in Python data analysis workloads, and Snorkel provides native support
 for several DataFrame-like data structures, including Pandas, Dask, and PySpark.
 For more information on working with Pandas DataFrames, see the [Pandas DataFrame guide](https://pandas.pydata.org/pandas-docs/stable/getting_started/dsintro.html).
@@ -129,17 +129,8 @@ If this is your first time downloading this model, restart the kernel after exec
 ! python -m spacy download en_core_web_sm
 ```
 
-    Collecting en_core_web_sm==2.1.0 from https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.1.0/en_core_web_sm-2.1.0.tar.gz#egg=en_core_web_sm==2.1.0
-    [?25l  Downloading https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.1.0/en_core_web_sm-2.1.0.tar.gz (11.1MB)
-    [K     |████████████████████████████████| 11.1MB 655kB/s 
-    [?25hBuilding wheels for collected packages: en-core-web-sm
-      Building wheel for en-core-web-sm (setup.py) ... [?25l- \ | / done
-    [?25h  Created wheel for en-core-web-sm: filename=en_core_web_sm-2.1.0-cp36-none-any.whl size=11074434 sha256=4bd8cabc2b3f0cb61265a6a20b20939123bf5ee1d3b4990a774a1e1eb4ec9da9
-      Stored in directory: /tmp/pip-ephem-wheel-cache-vg30xe9n/wheels/39/ea/3b/507f7df78be8631a7a3d7090962194cf55bc1158572c0be77f
-    Successfully built en-core-web-sm
-    Installing collected packages: en-core-web-sm
-    Successfully installed en-core-web-sm-2.1.0
-    [33mWARNING: You are using pip version 19.2.1, however version 19.2.2 is available.
+    Requirement already satisfied: en_core_web_sm==2.1.0 from https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.1.0/en_core_web_sm-2.1.0.tar.gz#egg=en_core_web_sm==2.1.0 in /Users/braden/repos/snorkel-tutorials/.tox/spam/lib/python3.7/site-packages (2.1.0)
+    [33mWARNING: You are using pip version 19.1.1, however version 19.2.2 is available.
     You should consider upgrading via the 'pip install --upgrade pip' command.[0m
     [38;5;2m✔ Download and installation successful[0m
     You can now load the model via spacy.load('en_core_web_sm')
@@ -526,8 +517,8 @@ L_dev = applier.apply(df=df_dev)
 L_train
 ```
 
-    100%|██████████| 1586/1586 [00:00<00:00, 34463.97it/s]
-    100%|██████████| 100/100 [00:00<00:00, 24477.99it/s]
+    100%|██████████| 1586/1586 [00:00<00:00, 19586.74it/s]
+    100%|██████████| 100/100 [00:00<00:00, 27458.62it/s]
 
 
 
@@ -1040,8 +1031,8 @@ L_train = applier.apply(df=df_train)
 L_dev = applier.apply(df=df_dev)
 ```
 
-    100%|██████████| 1586/1586 [00:00<00:00, 25269.96it/s]
-    100%|██████████| 100/100 [00:00<00:00, 18652.96it/s]
+    100%|██████████| 1586/1586 [00:00<00:00, 22933.92it/s]
+    100%|██████████| 100/100 [00:00<00:00, 20624.01it/s]
 
 
 
@@ -1501,8 +1492,8 @@ L_train = applier.apply(df_train)
 L_dev = applier.apply(df_dev)
 ```
 
-    100%|██████████| 1586/1586 [00:01<00:00, 1110.33it/s]
-    100%|██████████| 100/100 [00:00<00:00, 14621.43it/s]
+    100%|██████████| 1586/1586 [00:00<00:00, 1673.84it/s]
+    100%|██████████| 100/100 [00:00<00:00, 15815.63it/s]
 
 
 
@@ -1806,9 +1797,9 @@ L_valid = applier.apply(df=df_valid)
 LFAnalysis(L=L_dev, lfs=lfs).lf_summary(Y=Y_dev)
 ```
 
-    100%|██████████| 1586/1586 [00:12<00:00, 123.38it/s]
-    100%|██████████| 100/100 [00:00<00:00, 121.66it/s]
-    100%|██████████| 120/120 [00:01<00:00, 106.89it/s]
+    100%|██████████| 1586/1586 [00:14<00:00, 112.47it/s]
+    100%|██████████| 100/100 [00:00<00:00, 110.18it/s]
+    100%|██████████| 120/120 [00:01<00:00, 95.59it/s] 
 
 
 
@@ -2270,7 +2261,7 @@ print(f"Test Accuracy: {test_acc * 100:.1f}%")
 ```
 
     WARNING: Logging before flag parsing goes to stderr.
-    W0814 23:04:24.694567 140620606748480 deprecation.py:506] From /home/ubuntu/snorkel-tutorials/.tox/spam/lib/python3.6/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+    W0814 23:20:49.250481 4630525376 deprecation.py:506] From /Users/braden/repos/snorkel-tutorials/.tox/spam/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
     Instructions for updating:
     Call initializer instance with the dtype argument instead of passing it to the constructor
 
@@ -2316,7 +2307,7 @@ test_acc = metric_score(golds=Y_test, preds=preds_test_dev, metric="accuracy")
 print(f"Test Accuracy: {test_acc * 100:.1f}%")
 ```
 
-    W0814 23:04:26.702136 140620606748480 deprecation.py:323] From /home/ubuntu/snorkel-tutorials/.tox/spam/lib/python3.6/site-packages/tensorflow/python/ops/nn_impl.py:180: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+    W0814 23:20:51.133057 4630525376 deprecation.py:323] From /Users/braden/repos/snorkel-tutorials/.tox/spam/lib/python3.7/site-packages/tensorflow/python/ops/nn_impl.py:180: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
     Instructions for updating:
     Use tf.where in 2.0, which has the same broadcast rule as np.where
 

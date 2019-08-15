@@ -17,7 +17,7 @@ You can also check out the [Snorkel API documentation](https://snorkel.readthedo
 For our task, we have access to some labeled YouTube comments for training. We generate additional data by transforming the labeled comments using **_Transformation Functions_**.
 
 The tutorial is divided into four parts:
-1. **Loading Data**: We load a [YouTube comments dataset](https://www.kaggle.com/goneee/youtube-spam-classifiedcomments) from Kaggle.
+1. **Loading Data**: We load a [YouTube comments dataset](http://www.dt.fee.unicamp.br/~tiago//youtubespamcollection/).
 2. **Writing Transformation Functions**: We write Transformation Functions (TFs) that can be applied to training examples to generate new training examples.
 3. **Applying Transformation Functions**: We apply a sequence of TFs to each training data point, using a random policy, to generate an augmented training set.
 4. **Training A Model**: We use the augmented training set to train an LSTM model for classifying new comments as `SPAM` or `HAM`.
@@ -31,7 +31,7 @@ We split our data into 3 sets:
 
 ## 1. Loading Data
 
-We load the Kaggle dataset and create Pandas DataFrame objects for each of the sets described above.
+We load the YouTube comments dataset and create Pandas DataFrame objects for each of the sets described above.
 The two main columns in the DataFrames are:
 * **`text`**: Raw text content of the comment
 * **`label`**: Whether the comment is `SPAM` (1) or `HAM` (0).
@@ -174,8 +174,8 @@ For more info, see the [`SpacyPreprocessor` documentation](https://snorkel.readt
 ! python -m spacy download en_core_web_sm
 ```
 
-    Requirement already satisfied: en_core_web_sm==2.1.0 from https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.1.0/en_core_web_sm-2.1.0.tar.gz#egg=en_core_web_sm==2.1.0 in /home/ubuntu/snorkel-tutorials/.tox/spam/lib/python3.6/site-packages (2.1.0)
-    [33mWARNING: You are using pip version 19.2.1, however version 19.2.2 is available.
+    Requirement already satisfied: en_core_web_sm==2.1.0 from https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.1.0/en_core_web_sm-2.1.0.tar.gz#egg=en_core_web_sm==2.1.0 in /Users/braden/repos/snorkel-tutorials/.tox/spam/lib/python3.7/site-packages (2.1.0)
+    [33mWARNING: You are using pip version 19.1.1, however version 19.2.2 is available.
     You should consider upgrading via the 'pip install --upgrade pip' command.[0m
     [38;5;2m✔ Download and installation successful[0m
     You can now load the model via spacy.load('en_core_web_sm')
@@ -297,7 +297,7 @@ def replace_adjective_with_synonym(x):
             return x
 ```
 
-    [nltk_data] Downloading package wordnet to /home/ubuntu/nltk_data...
+    [nltk_data] Downloading package wordnet to /Users/braden/nltk_data...
     [nltk_data]   Package wordnet is already up-to-date!
 
 
@@ -427,7 +427,7 @@ df_train_augmented = tf_applier.apply(df_train)
 Y_train_augmented = df_train_augmented["label"].values
 ```
 
-    100%|██████████| 1586/1586 [00:26<00:00, 60.99it/s]
+    100%|██████████| 1586/1586 [00:28<00:00, 55.12it/s]
 
 
 
@@ -520,16 +520,16 @@ print(f"Test Accuracy when training on augmented dataset: {test_accuracy_augment
 ```
 
     WARNING: Logging before flag parsing goes to stderr.
-    W0814 23:05:03.335964 140205731931968 deprecation.py:506] From /home/ubuntu/snorkel-tutorials/.tox/spam/lib/python3.6/site-packages/tensorflow/python/keras/initializers.py:119: calling RandomUniform.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+    W0814 23:21:30.086397 4711486912 deprecation.py:506] From /Users/braden/repos/snorkel-tutorials/.tox/spam/lib/python3.7/site-packages/tensorflow/python/keras/initializers.py:119: calling RandomUniform.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
     Instructions for updating:
     Call initializer instance with the dtype argument instead of passing it to the constructor
-    W0814 23:05:03.352319 140205731931968 deprecation.py:506] From /home/ubuntu/snorkel-tutorials/.tox/spam/lib/python3.6/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+    W0814 23:21:30.097786 4711486912 deprecation.py:506] From /Users/braden/repos/snorkel-tutorials/.tox/spam/lib/python3.7/site-packages/tensorflow/python/ops/init_ops.py:1251: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
     Instructions for updating:
     Call initializer instance with the dtype argument instead of passing it to the constructor
-    W0814 23:05:03.543370 140205731931968 deprecation.py:323] From /home/ubuntu/snorkel-tutorials/.tox/spam/lib/python3.6/site-packages/tensorflow/python/ops/nn_impl.py:180: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+    W0814 23:21:30.258535 4711486912 deprecation.py:323] From /Users/braden/repos/snorkel-tutorials/.tox/spam/lib/python3.7/site-packages/tensorflow/python/ops/nn_impl.py:180: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
     Instructions for updating:
     Use tf.where in 2.0, which has the same broadcast rule as np.where
-    W0814 23:05:04.026029 140205731931968 deprecation.py:506] From /home/ubuntu/snorkel-tutorials/.tox/spam/lib/python3.6/site-packages/tensorflow/python/keras/optimizer_v2/adagrad.py:105: calling Constant.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+    W0814 23:21:30.665669 4711486912 deprecation.py:506] From /Users/braden/repos/snorkel-tutorials/.tox/spam/lib/python3.7/site-packages/tensorflow/python/keras/optimizer_v2/adagrad.py:105: calling Constant.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
     Instructions for updating:
     Call initializer instance with the dtype argument instead of passing it to the constructor
 

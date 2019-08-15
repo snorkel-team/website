@@ -96,7 +96,12 @@ For more on SFs, see the [getting started guide](https://snorkel.org/get-started
 
 ## Upgraded Labeling Pipeline
 
+Handling noisy training labels, e.g. produced by labeling functions, remains one of the core focuses of Snorkel, and we're excited to add a set of new capabilities here.
+
 ### New Matrix Completion-Style Modeling Approach
+
+One of the core challenges in any type of programmatic or _weak_ supervision is handling noisy sources of labels (e.g. LFs) that may have varying accuracies, correlations, and broadly overlap and conflict with each other.
+Starting with work in [NeurIPS 2016](#), [ICML 2017](#), and [VLDB 2018](#), Snorkel has handled 
 
 <figure align="center">
         <img style="width: 100%; max-width: 580px;" src="/doks-theme/assets/images/2019-08-14-hello-world-v-0-9/matrix_completion.png"/>
@@ -104,11 +109,11 @@ For more on SFs, see the [getting started guide](https://snorkel.org/get-started
 
 ### Big Data Operators
 
-TODO
+**TODO: HRE**
 
 ## Moving to a Modular, General Purpose Snorkel
 
-TODO
+**TODO: AJR**
 
 ## Tutorials
 
@@ -126,4 +131,5 @@ This is a great way to contribute...!  Link to spectrum for voting!
 
 ## Moving Forwards
 
+**TODO: AJR**
 TODO: Commitment to proper maintenance, new tutorials, new integrations, community forum and mailing list

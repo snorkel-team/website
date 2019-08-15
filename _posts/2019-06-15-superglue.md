@@ -7,15 +7,17 @@ excerpt: Snorkel achieves state-of-the-art result on the SuperGLUE NLP benchmark
 show_title_author: True
 ---
 
+## SuperGLUE with Snorkel: Achieving SOTA Results!
+
 > Using standard models (i.e. pretrained BERT) and minimal tuning, we leverage key abstractions for _programmatically building and managing training data_ to achieve a <mark>state-of-the-art result on SuperGLUE</mark>—a a newly curated benchmark with six tasks for evaluating “general-purpose language understanding technologies.”[^superglue]
 We also give updates on Snorkel's use in the real world with even more applications—from industrial scale at [Google in Snorkel Drybell](https://ai.googleblog.com/2019/03/harnessing-organizational-knowledge-for.html) to scientific work in [MRI classification](https://nature-research-under-consideration.nature.com/users/37265-nature-communications/posts/38921-weakly-supervised-classification-of-rare-aortic-valve-malformations-using-unlabeled-cardiac-mri-sequences) and [automated Genome-wide association study (GWAS) curation](https://ai.stanford.edu/~kuleshov/papers/gwaskb-manuscript.pdf) (both accepted in [Nature Comms](https://www.nature.com/ncomms/))!
 
-# Motivation
+## Motivation
 Programming abstractions in machine learning are changing: practitioners are spending less time on architectures and hardware optimizations and, instead, focusing on training data. In this post, we describe three powerful abstractions that practitioners can use to program their training data. We ran an experiment to test the efficacy of a basic model + training data operations—applying a handful of these to the [SuperGLUE Benchmark](https://super.gluebenchmark.com) _yields new state-of-the-art score results overall and the highest reported score anywhere on a majority of component tasks_.
 
 We will be releasing code in the [Snorkel repo](https://github.com/snorkel-team/snorkel) for reproducing and building on our results in conjunction with a 2-day Snorkel workshop during the last week of June with collaborators from science, industry, and government. This workshop is unfortunately already completely full, but if you would like to be notified of future Snorkel workshops, give us your name and contact information [here](https://docs.google.com/forms/d/e/1FAIpQLScOpiImyBA3uk_CnJ03R1b7Ese9VA3XjfLnemCO76WyTwrO5Q/viewform?usp=sf_link).
 
-# Three key abstractions
+## Three key abstractions
 In our result, as well as more generally, we find that spending our time programmatically building and manipulating the _training data_—rather than the models—provides a powerful and effective strategy to achieve high performance in ML pipelines. In a past [post](https://dawn.cs.stanford.edu/2019/03/22/glue/), we talked about the value of incorporating more supervision signal from more sources, e.g. multi-task learning and transfer learning, as we achieved SOTA on the GLUE Benchmark (a precursor to SuperGLUE). In this post, we focus on three key abstractions for building and modifying training datasets:
   1. Labeling data with labeling functions (LFs) [^dp]
   2. Transforming data with transformation functions (TFs) [^tanda] [^autoaugment]
@@ -74,16 +76,16 @@ We consider the following properties of our approach:
       </figcaption>
   </figure>
 
-# Key properties of LFs, TFs, and SFs
+## Key properties of LFs, TFs, and SFs
   * _Intuitive interfaces_: These abstractions provide intuitive interfaces  to existing practitioner workflows. They allow insights from debugging/error analysis to be directly encoded to improve models.
   * _Programming abstractions as weak supervision_: Furthermore, in practice, many of these techniques can be viewed as a form of weak supervision, as users specify them in noisy, heuristic, and imprecise ways. Dealing with this is one of the core technical challenges we tackle in frameworks like Snorkel.
   * _Supervision as code_: These types of inputs are ways of supervising a model (i.e. they specify training sets). Concretely, they are also code, and thus carry many of the advantages of code—reusability, modifiability, etc.
 
-# SuperGLUE Results
+## SuperGLUE Results
 Using these programming abstractions, we achieve new SOTA on the SuperGLUE Benchmark and 4 of its components tasks. [SuperGLUE](https://super.gluebenchmark.com/) is similar to [GLUE](https://gluebenchmark.com/), but contains “more difficult tasks...chosen to maximize difficulty and diversity, and...selected to show a substantial headroom gap between a strong BERT-based baseline and human performance.”
 After reproducing the BERT++ baselines, we minimally tune these models (baseline models, default learning rate, etc.) and find that with applications of the above programming abstractions, we see <mark>improvements of +4.0 points on the SuperGLUE benchmark (21% reduction of the gap to human performance).</mark>
 
-# Snorkel in the Real World
+## Snorkel in the Real World
 These Snorkel programming abstractions have also been used to fuel progress in high-impact real-world applications.
 
 In March of this year, we published a [paper](https://arxiv.org/pdf/1812.00417.pdf) and [blog post](https://ai.googleblog.com/2019/03/harnessing-organizational-knowledge-for.html) with Google on the lessons learned from deploying Snorkel at industrial scale. Relying on diverse sources of knowledge across the organization—heuristics, taggers, knowledge graphs, legacy systems, etc.—they saw significant improvements in quality, by as much as 17.5 F1 points.
@@ -99,7 +101,7 @@ In [recent work](https://www.biorxiv.org/content/10.1101/339630v4.full) that was
 
 In another forthcoming Nature Communications [paper](https://ai.stanford.edu/~kuleshov/papers/gwaskb-manuscript.pdf), we showed how Snorkel can be used to automate Gene-Wide Association Study (GWAS) curation. On a collection of hundreds of previously published studies reporting significant genotype-phenotype pairs, we auto-labeled a large training set using only labeling functions. The resulting classifier applied to a collection of 598 studies recovered over 3,000 previously documented open-access relations (with an estimated recall of 60-80%) as well as over 2,000 associations not present in existing human curated repositories (with an estimated precision of 82-89%). The resulting database is available for exploration with a user interface at [http://gwaskb.stanford.edu/](http://gwaskb.stanford.edu/).
 
-# Stay Tuned
+## Stay Tuned
 The Snorkel project is active and ongoing! A code release later this month will include significant infrastructural improvements and tutorials for how to apply LFs, TFs, and SFs to SuperGLUE and other tasks. If you've used Snorkel for your own applications, we'd love to hear about it! For updates on Snorkel developments and applications, you can always visit the Snorkel [landing page](http://snorkel.stanford.edu/) or [open-source repository](https://github.com/snorkel-team/snorkel).
 
 ## Acknowledgements

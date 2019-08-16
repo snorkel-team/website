@@ -57,7 +57,7 @@ For more on LFs, see the [Getting Started](https://snorkel.org/get-started/) gui
 ### Transformation Functions
 
 Another key training data management technique that has emerged over the last several years as especially crucial to model performance is _data augmentation_, the strategy of creating transformed copies of labeled data points to effectively inject knowledge of invariances into the model.
-Data augmentation is traditionally done in ad hoc ways and hand-tuned ways, buried in data loader preprocessing scripts...but it is [absolutely critical to model performance](https://www.snorkel.org/tanda/).
+Data augmentation is traditionally done in ad hoc or hand-tuned ways, buried in data loader preprocessing scripts...but it is [absolutely critical to model performance](https://www.snorkel.org/tanda/).
 It's also a perfect fit for the overall philosophy of Snorkel: enable users to _program machine learning models via the training data._
 
 In Snorkel, data augmentation is now supported as a first-class citizen, represented by the _transformation function (TF)_, which takes in a data point and returns a transformed copy of it, building on our [NeurIPS 2017 work](https://arxiv.org/abs/1709.01643) here on automatically learning data augmentation policies.
@@ -193,8 +193,8 @@ so you'll always be able to find information on the latest features.
 
 ## Looking Ahead
 
-We're excited to build on this new release and maintain a regular cadence of new features, tutorials, and integrations.
-Examples of upcoming additions that we're excited about include further integrations with modern ML platforms, including [TFX](https://www.tensorflow.org/tfx) and [Ludwig](https://uber.github.io/ludwig/); various new tutorials, including on _cross-modal weak supervision_ based on some of our [recent work in the medical imaging and monitoring domain](https://arxiv.org/abs/1903.11101); further data augmentation features around automated policy learning (porting from our [NeurIPS 2017 codebase](https://github.com/HazyResearch/tanda)) and new augmentation deployment form factors; and much more!
+We're excited to build on this release and maintain a regular cadence of new features, tutorials, and integrations.
+Examples of upcoming additions that we're excited about include further integrations with modern ML platforms, including [TFX](https://www.tensorflow.org/tfx) and [Ludwig](https://uber.github.io/ludwig/); various new tutorials, including a _cross-modal weak supervision_ tutorial based on some of our [recent work in the medical imaging and monitoring domain](https://arxiv.org/abs/1903.11101); further data augmentation features around automated policy learning (porting from our [NeurIPS 2017 codebase](https://github.com/HazyResearch/tanda)) and new augmentation deployment form factors; and much more!
 
 Much of the above will be guided by community feedback, so please check out our [community forum](https://spectrum.chat/snorkel?tab=posts), [mailing list](https://groups.google.com/forum/#!forum/snorkel-ml), and [Github Issues page](https://github.com/snorkel-team/snorkel/issues) to give us feedback on what you'd be most excited to see next!
 We're looking forward to continuing and deepening our collaboration with the Snorkel community as we further develop and extend this new paradigm for interacting with machine learning through training data, and thank everyone in advance for your feedback and support!

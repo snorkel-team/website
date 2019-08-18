@@ -482,13 +482,13 @@ We can easily calculate the coverage of these LFs (i.e., the percentage of the d
 
 
 ```python
-coverage_check, coverage_check_out = (L_train != ABSTAIN).mean(axis=0)
-print(f"check coverage: {coverage_check * 100:.1f}%")
+coverage_check_out, coverage_check = (L_train != ABSTAIN).mean(axis=0)
 print(f"check_out coverage: {coverage_check_out * 100:.1f}%")
+print(f"check coverage: {coverage_check * 100:.1f}%")
 ```
 
-    check coverage: 21.4%
-    check_out coverage: 25.8%
+    check_out coverage: 21.4%
+    check coverage: 25.8%
 
 
 Lots of statistics about labeling functions &mdash; like coverage &mdash; are useful when building any Snorkel application.

@@ -40,6 +40,10 @@ pre {
     width: 280px;
   }
 
+  @media (max-width: 320px) {
+    width: 240px;
+  }
+
   p {
     @media (max-width: 1200px) {
       word-wrap: break-word;

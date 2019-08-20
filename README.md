@@ -7,12 +7,6 @@
 * Run the following
 ```bash
 $ bundle install
-$ jekyll serve
-```
-
-If the above fails to work, try 
-```bash
-$ bundle install
 $ bundle exec jekyll serve
 ```
 

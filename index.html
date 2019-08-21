@@ -58,8 +58,8 @@ layout: homepage
         <h1>Quickstart</h1>
 
         <div class="code-block">
-            <p># For pip users (PyPI available soon)<br>pip install https://github.com/snorkel-team/snorkel/releases/download/v0.9.0/snorkel-0.9.0-py3-none-any.whl</p>
-            <p># For conda users<br>conda install snorkel -c conda-forge</p>
+          <p># For pip users<br>pip install snorkel</p>
+          <p># For conda users<br>conda install snorkel -c conda-forge</p>
           <!-- <span style="color: #9D3FA7;">import</span><span style="color: #18171C;"> snorkel</span> -->
         </div>
         <a href="https://github.com/snorkel-team/snorkel" class="btn" target="_blank">GitHub</a>
@@ -89,7 +89,7 @@ layout: homepage
       <a class="card-cta" href="/use-cases/">SEE ALL TUTORIALS <i class="icon icon--arrow-right"></i></a>
     </div>
   </div>
-  <div class="container">
+  <div class="container hidden-xs">
     <div class="row row-spacing tweets">
       <!-- <div class="col-sm-8 col-sm-offset-2">
         <a class="twitter-timeline"
@@ -97,50 +97,44 @@ layout: homepage
           Curated tweets by ajratner</a>
         <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
       </div> -->
+      <h3>RECENT <a href="https://twitter.com/search?q=%23snorkelML&src=typed_query">#SNORKELML</a> NEWS</h3>
       <div class="col-sm-4">
         <blockquote class="twitter-tweet">
           <p lang="en" dir="ltr">
-            Exciting to see the Snorkel (<a href="https://t.co/f9wHneXNnX">https://t.co/f9wHneXNnX</a>) weak supervision
-            paradigm being used for modalities beyond text.
-            <a href="https://t.co/MZAmE31eYS">https://t.co/MZAmE31eYS</a>
+            .@HazyResearch on the importance on building tools for weak supervision, and the creation of training data
+            #TheAIconf NYC
           </p>
-          &mdash; Mobilize Center (@MobilizeCenter)
-          <a href="https://twitter.com/MobilizeCenter/status/1155871869733605376?ref_src=twsrc%5Etfw">July 29, 2019</a>
+          &mdash; Ben Lorica (@bigdata)
+          <a href="https://twitter.com/bigdata/status/1118878259129782273?s=20">April 18, 2019</a>
         </blockquote>
         <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
       </div>
       <div class="col-sm-4">
         <blockquote class="twitter-tweet">
           <p lang="en" dir="ltr">
-            A quick recap of our last workshop + a preview of the feedback
-            we&#39;re incorporating in the v0.9 release coming in mid-August
-            <a href="https://t.co/1QQA3xm9b9">https://t.co/1QQA3xm9b9</a>. Not
-            too late for feature requests :)
-            <a href="https://t.co/0HKUdzIwyK">https://t.co/0HKUdzIwyK</a>
-            <a href="https://twitter.com/hashtag/snorkelML?src=hash&amp;ref_src=twsrc%5Etfw">#snorkelML</a>
-            <a href="https://twitter.com/henryehrenberg?ref_src=twsrc%5Etfw">@henryehrenberg</a>
+            This post by the Snorkel team gives a great overview of ingredients that make up a state-of-the-art approach
+            on GLUE:
+            1) Traditional supervision
+            2) Transfer learning
+            3) Multi-task learning
+            4) Dataset slicing (motivated by error analysis)
+            5) Ensembling
+            https://dawn.cs.stanford.edu/2019/03/22/glue/
           </p>
           &mdash; Alex Ratner (@ajratner)
-          <a href="https://twitter.com/ajratner/status/1155922345111896064?ref_src=twsrc%5Etfw">July 29, 2019</a>
+          <a href="https://twitter.com/seb_ruder/status/1116376108813803520">April 11, 2019</a>
         </blockquote>
         <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
       </div>
       <div class="col-sm-4">
         <blockquote class="twitter-tweet">
           <p lang="en" dir="ltr">
-            Our work on weak supervision for structured scene graph prediction
-            was accepted to ICCV! Code release coming soon!
-            <a
-              href="https://twitter.com/hashtag/snorkelML?src=hash&amp;ref_src=twsrc%5Etfw">#snorkelML</a><br /><br />with
-            <a href="https://twitter.com/paroma_varma?ref_src=twsrc%5Etfw">@paroma_varma</a>
-            <a href="https://twitter.com/RanjayKrishna?ref_src=twsrc%5Etfw">@RanjayKrishna</a>
-            <a href="https://twitter.com/msbernst?ref_src=twsrc%5Etfw">@msbernst</a>
-            <a href="https://twitter.com/HazyResearch?ref_src=twsrc%5Etfw">@HazyResearch</a>
-            <a href="https://twitter.com/drfeifei?ref_src=twsrc%5Etfw">@drfeifei</a>
-            <a href="https://t.co/ZDvmFTQchn">https://t.co/ZDvmFTQchn</a>
+            Hand-labeling training data for machine learning problems is effective, but very labor and time intensive.
+            This work explores how to use algorithmic labeling systems relying on other sources of knowledge that can
+            provide many more labels but which are noisy.
           </p>
-          &mdash; vincent sunn chen (@vincentsunnchen)
-          <a href="https://twitter.com/vincentsunnchen/status/1153473941530279936?ref_src=twsrc%5Etfw">July 23, 2019</a>
+          &mdash; Jeff Dean (@JeffDean)
+          <a href="https://twitter.com/JeffDean/status/1106325994913189888">March 14, 2019</a>
         </blockquote>
         <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
       </div>
@@ -151,10 +145,10 @@ layout: homepage
     </div>
   </div>
   <div class="container">
-    <div class="row mobile-padding">
-      <div class="col-sm-5 col-sm-offset-4">
-        <h3>USERS & SPONSORS</h3>
-      </div>
+    <div class="row mobile-padding flex-row-center">
+      <!-- <div class="col-sm-2 col-sm-offset-5"> -->
+      <h3>USERS & SPONSORS</h3>
+      <!-- </div> -->
     </div>
     <div class="row row-spacing mobile-padding">
       <div align="center">
@@ -163,22 +157,22 @@ layout: homepage
     </div>
   </div>
 </div>
-  <div class="container-fluid">
-    <div class="row dark-row">
-      {% for post in site.posts limit:4 %}
-      <a class="card" href="{{ post.url }}">
-        <p class="purple-numbers">{{ forloop.index | prepend: '00' | slice: -2, 2 }}</p>
-        <h4>{{ post.title }}</h4>
-        <p class="blog-excerpt">{{ post.excerpt }}</p>
-        <span class="dark-card-cta">
-          READ MORE <i class="icon icon--arrow-right"></i>
-        </span>
-      </a>
-      {% endfor %}
-    </div>
+<div class="container-fluid">
+  <div class="row dark-row">
+    {% for post in site.posts limit:4 %}
+    <a class="card" href="{{ post.url }}">
+      <p class="purple-numbers">{{ forloop.index | prepend: '00' | slice: -2, 2 }}</p>
+      <h4>{{ post.title }}</h4>
+      <p class="blog-excerpt">{{ post.excerpt }}</p>
+      <span class="dark-card-cta">
+        READ MORE <i class="icon icon--arrow-right"></i>
+      </span>
+    </a>
+    {% endfor %}
   </div>
-  <div class="container-fluid">
-    <div class="row cta-dark-row">
-      <a class="dark-card-cta" href="/use-cases/">SEE ALL BLOGS<i class="icon icon--arrow-right"></i></a>
-    </div>
+</div>
+<div class="container-fluid">
+  <div class="row cta-dark-row">
+    <a class="dark-card-cta" href="/use-cases/">SEE ALL BLOGS<i class="icon icon--arrow-right"></i></a>
   </div>
+</div>

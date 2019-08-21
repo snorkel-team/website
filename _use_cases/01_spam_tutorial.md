@@ -13,7 +13,7 @@ github_link: https://github.com/snorkel-team/snorkel-tutorials/blob/master/spam/
 In this tutorial, we will walk through the process of using Snorkel to build a training set for classifying YouTube comments as spam or not spam.
 The goal of this tutorial is to illustrate the basic components and concepts of Snorkel in a simple way, but also to dive into the actual process of iteratively developing real applications in Snorkel.
 
-* For an overview of Snorkel, visit [snorkel.org](http://snorkel.org)
+* For an overview of Snorkel, visit [snorkel.org](https://snorkel.org)
 * You can also check out the [Snorkel API documentation](https://snorkel.readthedocs.io/)
 
 Our goal is to train a classifier over the comment data that can predict whether a comment is spam or not spam.
@@ -482,13 +482,13 @@ We can easily calculate the coverage of these LFs (i.e., the percentage of the d
 
 
 ```python
-coverage_check, coverage_check_out = (L_train != ABSTAIN).mean(axis=0)
-print(f"check coverage: {coverage_check * 100:.1f}%")
+coverage_check_out, coverage_check = (L_train != ABSTAIN).mean(axis=0)
 print(f"check_out coverage: {coverage_check_out * 100:.1f}%")
+print(f"check coverage: {coverage_check * 100:.1f}%")
 ```
 
-    check coverage: 21.4%
-    check_out coverage: 25.8%
+    check_out coverage: 21.4%
+    check coverage: 25.8%
 
 
 Lots of statistics about labeling functions &mdash; like coverage &mdash; are useful when building any Snorkel application.
@@ -2084,12 +2084,12 @@ In this tutorial, we accomplished the following:
 
 ### Next Steps
 
-If you enjoyed this tutorial and you've already checked out the Snorkel 101 Guide, check out the [`snorkel-tutorials` table of contents](https://github.com/snorkel-team/snorkel-tutorials#snorkel-tutorials) for other tutorials that you may find interesting, including demonstrations of how to use Snorkel
+If you enjoyed this tutorial and you've already checked out the [Getting Started](https://snorkel.org/get-started/) tutorial, check out the [Tutorials](https://snorkel.org/use-cases/) page for other tutorials that you may find interesting, including demonstrations of how to use Snorkel
 
-* As part of a [hybrid crowdsourcing pipeline](https://github.com/snorkel-team/snorkel-tutorials/tree/master/crowdsourcing)
-* For [scene-graph detection over images](https://github.com/snorkel-team/snorkel-tutorials/tree/master/visual_relation)
-* For [information extraction over text](https://github.com/snorkel-team/snorkel-tutorials/tree/master/spouse)
-* For [data augmentation](https://github.com/snorkel-team/snorkel-tutorials/tree/master/spam)
+* As part of a [hybrid crowdsourcing pipeline](https://snorkel.org/use-cases/crowdsourcing-tutorial)
+* For [visual relationship detection over images](https://snorkel.org/use-cases/visual-relation-tutorial)
+* For [information extraction over text](https://snorkel.org/use-cases/spouse-demo)
+* For [data augmentation](https://snorkel.org/use-cases/02-spam-data-augmentation-tutorial)
 
-and many more!
-You can also visit the [Snorkel homepage](http://snorkel.org) or [Snorkel API documentation](https://snorkel.readthedocs.io) for more info!
+and more!
+You can also visit the [Snorkel website](https://snorkel.org) or [Snorkel API documentation](https://snorkel.readthedocs.io) for more info!

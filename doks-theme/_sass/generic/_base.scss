@@ -504,3 +504,12 @@ button {
   display: flex;
   justify-content: center;
 }
+
+.timeline {
+  display: flex;
+  overflow-x: scroll;
+
+  iframe {
+    margin-right: 30px;
+  }
+}

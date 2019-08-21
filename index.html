@@ -1,5 +1,11 @@
 ---
 layout: homepage
+tweets:
+- https%3A%2F%2Ftwitter.com%2Fajratner%2Fstatus%2F1162137304946708481
+- https%3A%2F%2Ftwitter.com%2Fbigdata%2Fstatus%2F1163090672859123712
+- https%3A%2F%2Ftwitter.com%2FJim_Salmons%2Fstatus%2F1162035959224868864
+- https%3A%2F%2Ftwitter.com%2FMobilizeCenter%2Fstatus%2F1155871869733605376
+- https%3A%2F%2Ftwitter.com%2FYashAgrawal_%2Fstatus%2F1140306183795830784
 ---
 
 <div
@@ -91,52 +97,11 @@ layout: homepage
   </div>
   <div class="container hidden-xs">
     <div class="row row-spacing tweets">
-      <!-- <div class="col-sm-8 col-sm-offset-2">
-        <a class="twitter-timeline"
-          href="https://twitter.com/ajratner/timelines/1143031904544813056?ref_src=twsrc%5Etfw">Recent Snorkel News -
-          Curated tweets by ajratner</a>
-        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-      </div> -->
       <h3>RECENT <a href="https://twitter.com/search?q=%23snorkelML&src=typed_query">#SNORKELML</a> NEWS</h3>
-      <div class="col-sm-4">
-        <blockquote class="twitter-tweet">
-          <p lang="en" dir="ltr">
-            .@HazyResearch on the importance on building tools for weak supervision, and the creation of training data
-            #TheAIconf NYC
-          </p>
-          &mdash; Ben Lorica (@bigdata)
-          <a href="https://twitter.com/bigdata/status/1118878259129782273?s=20">April 18, 2019</a>
-        </blockquote>
-        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-      </div>
-      <div class="col-sm-4">
-        <blockquote class="twitter-tweet">
-          <p lang="en" dir="ltr">
-            This post by the Snorkel team gives a great overview of ingredients that make up a state-of-the-art approach
-            on GLUE:
-            1) Traditional supervision
-            2) Transfer learning
-            3) Multi-task learning
-            4) Dataset slicing (motivated by error analysis)
-            5) Ensembling
-            https://dawn.cs.stanford.edu/2019/03/22/glue/
-          </p>
-          &mdash; Alex Ratner (@ajratner)
-          <a href="https://twitter.com/seb_ruder/status/1116376108813803520">April 11, 2019</a>
-        </blockquote>
-        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-      </div>
-      <div class="col-sm-4">
-        <blockquote class="twitter-tweet">
-          <p lang="en" dir="ltr">
-            Hand-labeling training data for machine learning problems is effective, but very labor and time intensive.
-            This work explores how to use algorithmic labeling systems relying on other sources of knowledge that can
-            provide many more labels but which are noisy.
-          </p>
-          &mdash; Jeff Dean (@JeffDean)
-          <a href="https://twitter.com/JeffDean/status/1106325994913189888">March 14, 2019</a>
-        </blockquote>
-        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+      <div class="timeline">
+        {% for tweet in page.tweets %}
+        <iframe border=0 frameborder=0 height=550 src="https://twitframe.com/show?url={{tweet}}"></iframe>
+        {% endfor %}
       </div>
       <div class="col-sm-12 all-tweets">
         <a href="https://twitter.com/ajratner/timelines/1143031904544813056">SEE ALL TWEETS <i
@@ -146,9 +111,7 @@ layout: homepage
   </div>
   <div class="container">
     <div class="row mobile-padding flex-row-center">
-      <!-- <div class="col-sm-2 col-sm-offset-5"> -->
       <h3>USERS & SPONSORS</h3>
-      <!-- </div> -->
     </div>
     <div class="row row-spacing mobile-padding">
       <div align="center">

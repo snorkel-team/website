@@ -147,7 +147,7 @@
   cursor: pointer;
   position: fixed;
   right: 10px;
-  top: 10px;
+  top: 28px;
   @include translate3d(0, 0, 0);
   z-index: $z-index-offcanvas-toggle;
   background-color: rgba($color-white, 0.6);
@@ -202,4 +202,8 @@
   i {
     font-size: 20px;
   }
+}
+
+.mobile-star {
+  margin: 30px 60px 0 0;
 }

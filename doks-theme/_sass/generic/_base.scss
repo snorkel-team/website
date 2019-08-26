@@ -481,6 +481,7 @@ button {
 }
 
 .tweets {
+  position: relative;
   @media (max-width: 768px) {
     display: flex;
     flex-direction: column;
@@ -506,10 +507,27 @@ button {
 }
 
 .timeline {
+  width: 100%;
   display: flex;
-  overflow-x: scroll;
+  overflow: scroll;
 
   iframe {
     margin-right: 30px;
+  }
+}
+
+.block {
+  width: 100%;
+  height: 13px;
+  background-color: #ffffff;
+  position: absolute;
+  @media (max-width: 768px) {
+    top: 57px;
+  }
+  @media (max-width: 767px) {
+    top: 49px;
+  }
+  @media (max-width: 400px) {
+    top: 39px;
   }
 }

@@ -136,9 +136,10 @@ tweets:
       <a class="card-cta" href="/use-cases/">SEE ALL TUTORIALS <i class="icon icon--arrow-right"></i></a>
     </div>
   </div>
-  <div class="container hidden-xs">
+  <div class="container">
     <div class="row row-spacing tweets">
       <h3>RECENT <a href="https://twitter.com/search?q=%23snorkelML&src=typed_query">#SNORKELML</a> NEWS</h3>
+      <div class="block"></div>
       <div class="timeline">
         {% for tweet in page.tweets %}
         <iframe border=0 frameborder=0 height=550 src="https://twitframe.com/show?url={{tweet}}"

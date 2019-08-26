@@ -1861,7 +1861,7 @@ for inference over unseen comments.
 For more information on the properties of the label model and when to use it, see the [Snorkel guides]().
 
 We can also run error analysis after the label model has been trained.
-For example, let's take a look at 5 random false positives from the `dev` set, which might inspire some more LFs that vote `SPAM`.
+For example, let's take a look at 5 random false negatives from the `dev` set, which might inspire some more LFs that vote `SPAM`.
 
 
 ```python

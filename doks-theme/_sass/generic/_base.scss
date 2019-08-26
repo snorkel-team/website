@@ -514,10 +514,6 @@ button {
   display: flex;
   overflow: scroll;
 
-  @media (max-width: 768px) {
-    padding-left: 30px;
-  }
-
   iframe {
     margin-right: 30px;
   }

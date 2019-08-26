@@ -499,6 +499,9 @@ button {
   color: $color-nav-hover;
   text-align: right;
   margin-top: 40px;
+  @media (max-width: 768px) {
+    margin-top: 20px;
+  }
 }
 
 .flex-row-center {
@@ -510,6 +513,10 @@ button {
   width: 100%;
   display: flex;
   overflow: scroll;
+
+  @media (max-width: 768px) {
+    padding-left: 50px;
+  }
 
   iframe {
     margin-right: 30px;

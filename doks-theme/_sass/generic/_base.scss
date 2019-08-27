@@ -512,6 +512,7 @@ button {
   width: 100%;
   display: flex;
   overflow: scroll;
+  -webkit-overflow-scrolling: touch;
 
   iframe {
     margin-right: 30px;

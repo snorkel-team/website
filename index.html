@@ -188,21 +188,3 @@ tweets:
     <a class="dark-card-cta" href="/use-cases/">SEE ALL BLOGS<i class="icon icon--arrow-right"></i></a>
   </div>
 </div>
-
-<script>
-  $(document).ready(function () {
-    var aKeys = ["MSIE", "Firefox", "Safari", "Chrome", "Opera"],
-      sUsrAg = navigator.userAgent,
-      nIdx = aKeys.length - 1;
-
-    for (nIdx; nIdx > -1 && sUsrAg.indexOf(aKeys[nIdx]) === -1; nIdx--);
-
-    if (nIdx === 3) {
-      $("#chrome").show();
-      $("#notChrome").remove();
-    } else {
-      $("#chrome").remove();
-      $("#notChrome").show();
-    }
-  });
-</script>

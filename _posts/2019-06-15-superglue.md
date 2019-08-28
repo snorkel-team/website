@@ -1,5 +1,6 @@
 ---
 layout: default
+category: blog post
 title: SuperGLUE with Snorkel
 author: Sen Wu, Vincent S. Chen, Braden Hancock, Alex Ratner, Chris Ré
 description: Snorkel achieves state-of-the-art result on the SuperGLUE NLP benchmark.

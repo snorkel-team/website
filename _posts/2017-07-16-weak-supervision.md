@@ -1,5 +1,6 @@
 ---
 layout: default
+category: blog post
 title: An Overview of Weak Supervision
 author: Alex Ratner, Stephen Bach, Paroma Varma, Chris Ré
 description: Overcoming the training data bottleneck.

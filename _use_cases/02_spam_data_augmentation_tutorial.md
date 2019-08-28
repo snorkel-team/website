@@ -1,5 +1,6 @@
 ---
 layout: default
+category: tutorial
 title: Intro to Transformation Functions
 description: Data augmentation for spam classification
 excerpt: Data augmentation for spam classification

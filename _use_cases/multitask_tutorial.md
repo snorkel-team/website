@@ -1,5 +1,6 @@
 ---
 layout: default
+category: tutorial
 title: Intro to Snorkel's Multitask Learning System
 description: State-of-the-art framework for pretraining & parameter sharing
 excerpt: State-of-the-art framework for pretraining & parameter sharing

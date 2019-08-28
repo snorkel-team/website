@@ -1,5 +1,6 @@
 ---
 layout: default
+category: blog post
 title: Introducing the New Snorkel
 author: The Snorkel Team
 description: Introducing our biggest update to Snorkel yet, version 0.9.

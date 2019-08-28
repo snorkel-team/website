@@ -1,5 +1,6 @@
 ---
 layout: default
+category: tutorial
 title: Intro to Slicing Functions
 description: Monitoring critical data subsets for spam classification
 excerpt: Monitoring critical data subsets for spam classification

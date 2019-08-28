@@ -515,6 +515,15 @@ button {
   -webkit-overflow-scrolling: touch;
 
   iframe {
+    margin-right: 30px;
+    @media (max-width: 768px) {
+      margin-right: 10px;
+    }
+  }
+}
+
+#notChrome {
+  iframe {
     width: 1px;
     min-width: 75%;
     *width: 100%;
@@ -524,6 +533,7 @@ button {
     }
   }
 }
+
 
 .block {
   width: 100%;

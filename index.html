@@ -148,10 +148,8 @@ tweets:
       </div>
       <div class="timeline" id="notChrome">
         {% for tweet in page.tweets limit:5 %}
-        <!-- <div style="margin-right: 20px; width: 1px; min-width: 100%;"> -->
         <iframe border=0 height="550" scrolling="no" frameborder=0 src="https://twitframe.com/show?url={{tweet}}"
           loading="lazy"></iframe>
-        <!-- </div> -->
         {% endfor %}
       </div>
       <div class="col-sm-12 all-tweets">

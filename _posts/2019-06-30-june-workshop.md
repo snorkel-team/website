@@ -1,5 +1,6 @@
 ---
 layout: default
+category: blog post
 title: June 2019 Workshop
 description: Recap of June 2019 Snorkel workshop.
 excerpt: Recap of June 2019 Snorkel workshop.

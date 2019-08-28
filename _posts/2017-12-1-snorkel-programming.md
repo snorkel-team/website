@@ -1,5 +1,6 @@
 ---
 layout: default
+category: blog post
 title: Programming Training Data
 author: Alex Ratner, Stephen Bach, Chris Ré
 description: The new interface for ML.

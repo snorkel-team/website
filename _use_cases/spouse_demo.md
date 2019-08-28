@@ -1,5 +1,6 @@
 ---
 layout: default
+category: tutorial
 title: Information Extraction in Snorkel
 description: Labeling spouse mentions in documents
 excerpt: Labeling spouse mentions in documents

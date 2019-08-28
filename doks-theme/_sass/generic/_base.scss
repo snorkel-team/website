@@ -307,7 +307,7 @@ button {
   padding: 80px 0 0 0;
 
   @media (max-width: 1350px) {
-    padding: 80px 20px 0 40px;
+    padding: 80px 20px 0;
   }
 }
 
@@ -397,6 +397,10 @@ button {
 
 .row-spacing {
   margin-bottom: 100px;
+}
+
+.quarter-row-spacing {
+  margin-bottom: 25px;
 }
 
 .half-row-spacing {
@@ -550,4 +554,9 @@ button {
   @media (max-width: 400px) {
     top: 39px;
   }
+}
+
+.publications-list {
+  list-style-type: disc;
+  margin-left: 18px;
 }

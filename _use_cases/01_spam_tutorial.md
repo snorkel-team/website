@@ -1,6 +1,5 @@
 ---
 layout: default
-category: tutorial
 title: Intro to Labeling Functions
 description: Labeling data for spam classification
 excerpt: Labeling data for spam classification

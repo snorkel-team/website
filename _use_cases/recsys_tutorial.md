@@ -1,6 +1,5 @@
 ---
 layout: default
-category: tutorial
 title: Building Recommender Systems in Snorkel
 description: Labeling text reviews for book recommendations
 excerpt: Labeling text reviews for book recommendations

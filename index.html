@@ -142,13 +142,13 @@ tweets:
       <div class="block"></div>
       <div class="timeline" id="chrome">
         {% for tweet in page.tweets %}
-        <iframe border=0 frameborder=0 height=600 src="https://twitframe.com/show?url={{tweet}}"
+        <iframe border=0 frameborder=0 height=625 src="https://twitframe.com/show?url={{tweet}}"
           loading="lazy"></iframe>
         {% endfor %}
       </div>
       <div class="timeline" id="notChrome">
         {% for tweet in page.tweets %}
-        <iframe class="lazy" border=0 height="600" scrolling="no" frameborder=0
+        <iframe class="lazy" border=0 height="625" scrolling="no" frameborder=0
           data-src="https://twitframe.com/show?url={{tweet}}"></iframe>
         {% endfor %}
       </div>

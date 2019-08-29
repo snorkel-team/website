@@ -74,9 +74,8 @@ or site.doks.footer.content.copyright or site.doks.footer.social_list %}
 <script src="{% if jekyll.environment == 'production' %}{{
     site.doks.baseurl
   }}{% endif %}/doks-theme/assets/js/vendor/jquery.min.js"></script>
-<script
-  type="text/javascript"
-  src="{% if jekyll.environment == 'production' %}{{
+<script src="doks-theme/assets/js/recliner.min.js"></script>
+<script type="text/javascript" src="{% if jekyll.environment == 'production' %}{{
     site.doks.baseurl
   }}{% endif %}/doks-theme/assets/js/vendor/bootstrap/affix.min.js"
 ></script>
@@ -96,7 +95,43 @@ or site.doks.footer.content.copyright or site.doks.footer.social_list %}
   type="text/javascript"
   src="{% if jekyll.environment == 'production' %}{{
     site.doks.baseurl
-  }}{% endif %}/doks-theme/assets/js/scripts.min.js"
-></script>
+  }}{% endif %}/doks-theme/assets/js/scripts.min.js"></script>
+<script>
+  $(function () {
+    var aKeys = ["MSIE", "Firefox", "Safari", "Chrome", "Opera"],
+      sUsrAg = navigator.userAgent,
+      nIdx = aKeys.length - 1;
+
+    for (nIdx; nIdx > -1 && sUsrAg.indexOf(aKeys[nIdx]) === -1; nIdx--);
+
+    if (nIdx === 3) {
+      $("#chrome").show();
+      $("#notChrome").remove();
+    } else {
+      $("#chrome").remove();
+      $("#notChrome").show();
+    }
+
+    if (nIdx === 1) {
+      $(".site-header__nav").css({ 'margin-top': '0' });
+      $(".site-header").css({ 'margin-top': '15px' });
+      $(".mobile-star").css({ 'margin': '-20px 60px 0 0' });
+      $(window).resize(function () {
+        if ($(window).width() < 768) {
+          $(".mobile-star").css({ 'margin': '-20px 60px 0 0' });
+        } else {
+          $(".mobile-star").css({ 'margin': '-30px 60px 0 0' });
+        }
+      })
+    }
+
+    $(".lazy").recliner({
+      attrib: "data-src",
+      throttle: 300,
+      threshold: 100,
+      live: true
+    });
+  });
+</script>
 
 {% include google-analytics.html %}

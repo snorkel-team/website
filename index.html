@@ -109,34 +109,11 @@ layout: homepage
         </blockquote>
         <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
       </div>
-      <div class="col-sm-4">
-        <blockquote class="twitter-tweet">
-          <p lang="en" dir="ltr">
-            This post by the Snorkel team gives a great overview of ingredients that make up a state-of-the-art approach
-            on GLUE:
-            1) Traditional supervision
-            2) Transfer learning
-            3) Multi-task learning
-            4) Dataset slicing (motivated by error analysis)
-            5) Ensembling
-            https://dawn.cs.stanford.edu/2019/03/22/glue/
-          </p>
-          &mdash; Alex Ratner (@ajratner)
-          <a href="https://twitter.com/seb_ruder/status/1116376108813803520">April 11, 2019</a>
-        </blockquote>
-        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-      </div>
-      <div class="col-sm-4">
-        <blockquote class="twitter-tweet">
-          <p lang="en" dir="ltr">
-            Hand-labeling training data for machine learning problems is effective, but very labor and time intensive.
-            This work explores how to use algorithmic labeling systems relying on other sources of knowledge that can
-            provide many more labels but which are noisy.
-          </p>
-          &mdash; Jeff Dean (@JeffDean)
-          <a href="https://twitter.com/JeffDean/status/1106325994913189888">March 14, 2019</a>
-        </blockquote>
-        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+      <div class="timeline" id="notChrome">
+        {% for tweet in page.tweets %}
+        <iframe class="lazy" border=0 height="600" scrolling="no" frameborder=0
+          data-src="https://twitframe.com/show?url={{tweet}}"></iframe>
+        {% endfor %}
       </div>
       <div class="col-sm-12 all-tweets">
         <a href="https://twitter.com/ajratner/timelines/1143031904544813056">SEE ALL TWEETS <i

@@ -5,26 +5,17 @@ or site.doks.footer.content.copyright or site.doks.footer.social_list %}
     <div class="row">
       <div class="col-sm-3">
         {% if site.doks.footer.content.logo.text %}
-        <a
-          href="{% if jekyll.environment == 'production' %}{{
+        <a href="{% if jekyll.environment == 'production' %}{{
             site.doks.baseurl
-          }}{% endif %}/"
-          class="site-footer__logo"
-          >{{ site.doks.footer.content.logo.text }}</a
-        >
+          }}{% endif %}/" class="site-footer__logo">{{ site.doks.footer.content.logo.text }}</a>
         {% elsif site.doks.footer.content.logo.image %}
         <div class="footer-logo">
-          <a
-            href="{% if jekyll.environment == 'production' %}{{
+          <a href="{% if jekyll.environment == 'production' %}{{
               site.doks.baseurl
-            }}{% endif %}/"
-            class="site-footer__logo"
-          >
-            <img
-              src="{% if jekyll.environment == 'production' %}{{
+            }}{% endif %}/" class="site-footer__logo">
+            <img src="{% if jekyll.environment == 'production' %}{{
                 site.doks.baseurl
-              }}{% endif %}/doks-theme/assets/images/layout/logo-footer.png"
-            />
+              }}{% endif %}/doks-theme/assets/images/layout/logo-footer.png" />
           </a>
           {% if site.doks.footer.content.copyright %}
           <p class="site-footer__copyright">
@@ -41,18 +32,13 @@ or site.doks.footer.content.copyright or site.doks.footer.social_list %}
         <ul class="site-footer__nav hidden-xs hidden-sm">
           {% for item in site.doks.footer.nav %}
           <li>
-            <a
-              href="{% if jekyll.environment == 'production' %}{{
+            <a href="{% if jekyll.environment == 'production' %}{{
                 site.doks.baseurl
-              }}{% endif %}{{ item.item_url }}"
-              >{{ item.item_name }}</a
-            >
+              }}{% endif %}{{ item.item_url }}">{{ item.item_name }}</a>
           </li>
           {% endfor %}
           <li class="github">
-            <a href="https://github.com/snorkel-team/snorkel"
-              ><i class="icon icon--github"></i
-            ></a>
+            <a href="https://github.com/snorkel-team/snorkel"><i class="icon icon--github"></i></a>
           </li>
         </ul>
       </div>
@@ -60,8 +46,7 @@ or site.doks.footer.content.copyright or site.doks.footer.social_list %}
       <button class="offcanvas-toggle visible-xs">
         <span></span>
         <span></span>
-        <span></span></button
-      ><!-- /.offcanvas-toggle -->
+        <span></span></button><!-- /.offcanvas-toggle -->
       {% endif %}
     </div>
     <!-- /.row -->
@@ -74,30 +59,24 @@ or site.doks.footer.content.copyright or site.doks.footer.social_list %}
 <script src="{% if jekyll.environment == 'production' %}{{
     site.doks.baseurl
   }}{% endif %}/doks-theme/assets/js/vendor/jquery.min.js"></script>
-<script src="doks-theme/assets/js/recliner.min.js"></script>
+<<<<<<< HEAD <script src="doks-theme/assets/js/recliner.min.js">
+</script>
+=======
+>>>>>>> twitter-preview
 <script type="text/javascript" src="{% if jekyll.environment == 'production' %}{{
     site.doks.baseurl
-  }}{% endif %}/doks-theme/assets/js/vendor/bootstrap/affix.min.js"
-></script>
-<script
-  type="text/javascript"
-  src="{% if jekyll.environment == 'production' %}{{
+  }}{% endif %}/doks-theme/assets/js/vendor/bootstrap/affix.min.js"></script>
+<script type="text/javascript" src="{% if jekyll.environment == 'production' %}{{
     site.doks.baseurl
-  }}{% endif %}/doks-theme/assets/js/vendor/bootstrap/scrollspy.min.js"
-></script>
-<script
-  type="text/javascript"
-  src="{% if jekyll.environment == 'production' %}{{
+  }}{% endif %}/doks-theme/assets/js/vendor/bootstrap/scrollspy.min.js"></script>
+<script type="text/javascript" src="{% if jekyll.environment == 'production' %}{{
     site.doks.baseurl
-  }}{% endif %}/doks-theme/assets/js/vendor/matchHeight.min.js"
-></script>
-<script
-  type="text/javascript"
-  src="{% if jekyll.environment == 'production' %}{{
+  }}{% endif %}/doks-theme/assets/js/vendor/matchHeight.min.js"></script>
+<script type="text/javascript" src="{% if jekyll.environment == 'production' %}{{
     site.doks.baseurl
   }}{% endif %}/doks-theme/assets/js/scripts.min.js"></script>
 <script>
-  $(function () {
+  $(document).ready(function () {
     var aKeys = ["MSIE", "Firefox", "Safari", "Chrome", "Opera"],
       sUsrAg = navigator.userAgent,
       nIdx = aKeys.length - 1;

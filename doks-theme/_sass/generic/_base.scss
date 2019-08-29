@@ -286,7 +286,7 @@ button {
 
 .dark-row {
   background-color: $color-dark-blue;
-  padding: 65px 20px;
+  padding: 80px 20px 0;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -559,6 +559,11 @@ button {
 .publications-list {
   list-style-type: disc;
   margin-left: 18px;
+
+  li {
+    margin-bottom: 1rem;
+    line-height: 20px;
+  }
 }
 
 .lazy {

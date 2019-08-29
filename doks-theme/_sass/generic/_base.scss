@@ -286,7 +286,7 @@ button {
 
 .dark-row {
   background-color: $color-dark-blue;
-  padding: 65px 20px 65px 40px;
+  padding: 80px 20px 0;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -510,5 +510,33 @@ button {
 
   iframe {
     margin-right: 30px;
+  }
+}
+
+
+.block {
+  width: 100%;
+  height: 15px;
+  background-color: $color-white;
+  z-index: 100;
+  position: absolute;
+  @media (max-width: 768px) {
+    top: 57px;
+  }
+  @media (max-width: 767px) {
+    top: 49px;
+  }
+  @media (max-width: 400px) {
+    top: 39px;
+  }
+}
+
+.publications-list {
+  list-style-type: disc;
+  margin-left: 18px;
+
+  li {
+    margin-bottom: 1rem;
+    line-height: 20px;
   }
 }

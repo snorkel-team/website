@@ -1,5 +1,52 @@
 ---
 layout: homepage
+tweets:
+- https://twitter.com/seb_ruder/status/1116376108813803520
+- https://twitter.com/JeffDean/status/1106325994913189888
+- https://twitter.com/volkuleshov/status/1157510462944116737
+- https://twitter.com/MobilizeCenter/status/1155871869733605376
+- https://twitter.com/ajratner/status/1155922345111896064
+- https://twitter.com/bigdata/status/1118878259129782273
+- https://twitter.com/vincentsunnchen/status/1153473941530279936
+- https://twitter.com/NathanBenaich/status/1151881870029787136
+- https://twitter.com/YashAgrawal_/status/1140306183795830784
+- https://twitter.com/ajratner/status/1149442147407413248
+- https://twitter.com/ajratner/status/1146052743678877702
+- https://twitter.com/stevebach/status/1145816945708666881
+- https://twitter.com/ajratner/status/1145279183024730112
+- https://twitter.com/ajratner/status/1144622795718037505
+- https://twitter.com/oscarwijsman/status/1144563377148178432
+- https://twitter.com/vincentsunnchen/status/1139934821692559360
+- https://twitter.com/bradenjhancock/status/1141063956884123648
+- https://twitter.com/GoogleAI/status/1106272915580805120
+- https://twitter.com/stanfordnlp/status/1106416255211233280
+- https://twitter.com/JeffDean/status/1106325994913189888
+- https://twitter.com/ajratner/status/1106284512474882048
+- https://twitter.com/ajratner/status/1107316980141486081
+- https://twitter.com/ZDNet/status/1106993616373862400
+- https://twitter.com/bigdata/status/1118878259129782273
+- https://twitter.com/HiromuHota/status/1140664678441353216
+- https://twitter.com/ajratner/status/1139934718336491526
+- https://twitter.com/twimlai/status/1134489799711236101
+- https://twitter.com/HiromuHota/status/1126156659112333312
+- https://twitter.com/ajratner/status/1120816718748606464
+- https://twitter.com/ajratner/status/1120809752403963905
+- https://twitter.com/gijn/status/1113880928160550912
+- https://twitter.com/matei_zaharia/status/1110413849625190402
+- https://twitter.com/stevebach/status/1110273247184969728
+- https://twitter.com/bradenjhancock/status/1108591362528542720
+- https://twitter.com/MarinaWalkerG/status/1108112841616187392
+- https://twitter.com/bigdata/status/1107092589189033984
+- https://twitter.com/StanfordHAI/status/1106604784142954506
+- https://twitter.com/ajratner/status/1096463113749024768
+- https://twitter.com/MarinaWalkerG/status/1093954037400010754
+- https://twitter.com/ajratner/status/1092930572391837696
+- https://twitter.com/bradenjhancock/status/1092857555368402949
+- https://twitter.com/ajratner/status/1092857577753309184
+- https://twitter.com/ajratner/status/1091115553706496000
+- https://twitter.com/ajratner/status/1090705554702389248
+- https://twitter.com/ajratner/status/1089672241728565248
+- https://twitter.com/jamescham/status/1070052006574735360
 ---
 
 <div
@@ -89,54 +136,21 @@ layout: homepage
       <a class="card-cta" href="/use-cases/">SEE ALL TUTORIALS <i class="icon icon--arrow-right"></i></a>
     </div>
   </div>
-  <div class="container hidden-xs">
+  <div class="container">
     <div class="row row-spacing tweets">
-      <!-- <div class="col-sm-8 col-sm-offset-2">
-        <a class="twitter-timeline"
-          href="https://twitter.com/ajratner/timelines/1143031904544813056?ref_src=twsrc%5Etfw">Recent Snorkel News -
-          Curated tweets by ajratner</a>
-        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-      </div> -->
       <h3>RECENT <a href="https://twitter.com/search?q=%23snorkelML&src=typed_query">#SNORKELML</a> NEWS</h3>
-      <div class="col-sm-4">
-        <blockquote class="twitter-tweet">
-          <p lang="en" dir="ltr">
-            .@HazyResearch on the importance on building tools for weak supervision, and the creation of training data
-            #TheAIconf NYC
-          </p>
-          &mdash; Ben Lorica (@bigdata)
-          <a href="https://twitter.com/bigdata/status/1118878259129782273?s=20">April 18, 2019</a>
-        </blockquote>
-        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+      <div class="block"></div>
+      <div class="timeline" id="chrome">
+        {% for tweet in page.tweets %}
+        <iframe border=0 frameborder=0 height=600 src="https://twitframe.com/show?url={{tweet}}"
+          loading="lazy"></iframe>
+        {% endfor %}
       </div>
-      <div class="col-sm-4">
-        <blockquote class="twitter-tweet">
-          <p lang="en" dir="ltr">
-            This post by the Snorkel team gives a great overview of ingredients that make up a state-of-the-art approach
-            on GLUE:
-            1) Traditional supervision
-            2) Transfer learning
-            3) Multi-task learning
-            4) Dataset slicing (motivated by error analysis)
-            5) Ensembling
-            https://dawn.cs.stanford.edu/2019/03/22/glue/
-          </p>
-          &mdash; Alex Ratner (@ajratner)
-          <a href="https://twitter.com/seb_ruder/status/1116376108813803520">April 11, 2019</a>
-        </blockquote>
-        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-      </div>
-      <div class="col-sm-4">
-        <blockquote class="twitter-tweet">
-          <p lang="en" dir="ltr">
-            Hand-labeling training data for machine learning problems is effective, but very labor and time intensive.
-            This work explores how to use algorithmic labeling systems relying on other sources of knowledge that can
-            provide many more labels but which are noisy.
-          </p>
-          &mdash; Jeff Dean (@JeffDean)
-          <a href="https://twitter.com/JeffDean/status/1106325994913189888">March 14, 2019</a>
-        </blockquote>
-        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+      <div class="timeline" id="notChrome">
+        {% for tweet in page.tweets limit:5 %}
+        <iframe border=0 height="550" scrolling="no" frameborder=0 src="https://twitframe.com/show?url={{tweet}}"
+          loading="lazy"></iframe>
+        {% endfor %}
       </div>
       <div class="col-sm-12 all-tweets">
         <a href="https://twitter.com/ajratner/timelines/1143031904544813056">SEE ALL TWEETS <i
@@ -146,9 +160,7 @@ layout: homepage
   </div>
   <div class="container">
     <div class="row mobile-padding flex-row-center">
-      <!-- <div class="col-sm-2 col-sm-offset-5"> -->
       <h3>USERS & SPONSORS</h3>
-      <!-- </div> -->
     </div>
     <div class="row row-spacing mobile-padding">
       <div align="center">
@@ -173,6 +185,6 @@ layout: homepage
 </div>
 <div class="container-fluid">
   <div class="row cta-dark-row">
-    <a class="dark-card-cta" href="/use-cases/">SEE ALL BLOGS<i class="icon icon--arrow-right"></i></a>
+    <a class="dark-card-cta" href="/blog/">SEE ALL BLOGS<i class="icon icon--arrow-right"></i></a>
   </div>
 </div>

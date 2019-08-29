@@ -205,5 +205,8 @@
 }
 
 .mobile-star {
-  margin: 30px 60px 0 0;
+  margin: 20px 60px 0 0;
+  @media (max-width: 768px) {
+    margin: 28px 60px 0 0;
+  }
 }

@@ -5,7 +5,7 @@ title: Features and Capabilities
 
 <div class="features-subheader">
   <div class="container">
-    <div class="row half-row-spacing mobile-padding">
+    <div class="row quarter-row-spacing mobile-padding">
       <div class="col-sm-12">
         <h1>{{ page.title }}</h1>
       </div>
@@ -15,14 +15,20 @@ title: Features and Capabilities
         <h3>Programmatically Build and Manage Your Training Data</h3>
         <p>
           Snorkel is a system for programmatically building and managing training datasets.
-          In Snorkel, users can <i>develop</i> training datasets in hours or days rather than hand-labeling them over weeks or months.
+          In Snorkel, users can <i>develop</i> training datasets in hours or days rather than hand-labeling them over
+          weeks or months.
         </p>
         <p>
-          Snorkel currently exposes three key programmatic operations: <i>labeling</i> data, for example using heuristic rules or distant supervision techniques; <i>transforming</i> data, for example rotating or stretching images to perform data augmentation; and <i>slicing data</i> into different critical subsets.
-          Snorkel then automatically models, cleans, and integrates the resulting training data using <a href="#">novel, theoretically-grounded techniques</a>.
+          Snorkel currently exposes three key programmatic operations: <i>labeling</i> data, for example using heuristic
+          rules or distant supervision techniques; <i>transforming</i> data, for example rotating or stretching images
+          to perform data augmentation; and <i>slicing data</i> into different critical subsets.
+          Snorkel then automatically models, cleans, and integrates the resulting training data using <a href="#">novel,
+            theoretically-grounded techniques</a>.
         </p>
         <p>
-          Snorkel has been deployed in industry, medicine, science, and government</a> to build new ML applications in a fraction of the time; for more, see <a href="/use-cases/">tutorials and other <a href="/resources/"> resources</a>.
+          Snorkel has been deployed in industry, medicine, science, and government</a> to build new ML applications in a
+          fraction of the time; for more, see <a href="/use-cases/">tutorials and other <a href="/resources/">
+              resources</a>.
         </p>
       </div>
       <div class="col-sm-6">
@@ -47,7 +53,8 @@ title: Features and Capabilities
           <p class="subheadline">Flexibility</p>
           <h3>Easily Adapt to Changing Settings</h3>
           <p>
-            Adapt training sets to changing conditions or problem specifications by modifying code, rather that expensive re-labeling.
+            Adapt training sets to changing conditions or problem specifications by modifying code, rather that
+            expensive re-labeling.
           </p>
         </div>
         <div class="border-card">
@@ -70,12 +77,14 @@ title: Features and Capabilities
         <h4>Labeling</h4>
         <p>
           Write <i>labeling functions (LFs)</i> to heuristically or noisily label some subset of the training examples.
-          Snorkel then models the quality and correlations of these LFs using novel, theoretically-grounded statistical modeling techniques.
+          Snorkel then models the quality and correlations of these LFs using novel, theoretically-grounded statistical
+          modeling techniques.
         </p>
         <a href="/snorkel-programming/" class="btn btn--rounded btn--dark" target="_blank">Blog</a>
         <a href="/use-cases/01-spam-tutorial" class="btn btn--rounded btn--dark" target="_blank">Tutorial</a>
         <a href="https://arxiv.org/abs/1711.10160" class="btn btn--rounded btn--dark" target="_blank">VLDB'18 Paper</a>
-        <a href="https://arxiv.org/abs/1605.07723" class="btn btn--rounded btn--dark" target="_blank">NeurIPS'16 Paper</a>
+        <a href="https://arxiv.org/abs/1605.07723" class="btn btn--rounded btn--dark" target="_blank">NeurIPS'16
+          Paper</a>
         <a href="https://arxiv.org/abs/1810.02840" class="btn btn--rounded btn--dark" target="_blank">AAAI'19 Paper</a>
         <a href="https://arxiv.org/abs/1810.02840" class="btn btn--rounded btn--dark" target="_blank">ICML'19 Paper</a>
       </div>
@@ -91,12 +100,16 @@ title: Features and Capabilities
         <p class="purple-numbers">02</p>
         <h4>Transforming</h4>
         <p>
-          Write <i>transformation functions (TFs)</i> to heuristically generate new, modified training examples by transforming existing ones, a strategy often referred to as <i>data augmentation</i>.
-          Rather than requiring users to tune these data augmentation strategies by hand, Snorkel uses data augmentation policies that can be learned automatically. 
+          Write <i>transformation functions (TFs)</i> to heuristically generate new, modified training examples by
+          transforming existing ones, a strategy often referred to as <i>data augmentation</i>.
+          Rather than requiring users to tune these data augmentation strategies by hand, Snorkel uses data augmentation
+          policies that can be learned automatically.
         </p>
         <a href="/tanda/" class="btn btn--rounded btn--dark" target="_blank">Blog</a>
-        <a href="/use-cases/02-spam-data-augmentation-tutorial" class="btn btn--rounded btn--dark" target="_blank">Tutorial</a>
-        <a href="https://arxiv.org/abs/1709.01643" class="btn btn--rounded btn--dark" target="_blank">NeurIPS'17 Paper</a>
+        <a href="/use-cases/02-spam-data-augmentation-tutorial" class="btn btn--rounded btn--dark"
+          target="_blank">Tutorial</a>
+        <a href="https://arxiv.org/abs/1709.01643" class="btn btn--rounded btn--dark" target="_blank">NeurIPS'17
+          Paper</a>
         <a href="https://arxiv.org/abs/1803.06084" class="btn btn--rounded btn--dark" target="_blank">ICML'19 Paper</a>
       </div>
       <div class="col-sm-12 visible-xs-block">
@@ -108,11 +121,15 @@ title: Features and Capabilities
         <p class="purple-numbers">03</p>
         <h4>Slicing</h4>
         <p>
-          Write <i>slicing functions (SFs)</i> to heuristically identify subsets of the data the model should particularly care about, e.g. have extra representative capacity for, due to their difficulty and/or importance.
-          Snorkel models slices in the style of multi-task learning and an attention-mechanism is then learned over these heads.
+          Write <i>slicing functions (SFs)</i> to heuristically identify subsets of the data the model should
+          particularly care about, e.g. have extra representative capacity for, due to their difficulty and/or
+          importance.
+          Snorkel models slices in the style of multi-task learning and an attention-mechanism is then learned over
+          these heads.
         </p>
         <a href="/superglue/" class="btn btn--rounded btn--dark" target="_blank">Blog</a>
-        <a href="/use-cases/03-spam-data-slicing-tutorial" class="btn btn--rounded btn--dark" target="_blank">Tutorial</a>
+        <a href="/use-cases/03-spam-data-slicing-tutorial" class="btn btn--rounded btn--dark"
+          target="_blank">Tutorial</a>
       </div>
       <div class="col-sm-7">
         <img src="/doks-theme/assets/images/layout/Slicing.png" alt="Slicing" />

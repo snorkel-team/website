@@ -307,7 +307,7 @@ button {
   padding: 80px 0 0 0;
 
   @media (max-width: 1350px) {
-    padding: 80px 20px 0 40px;
+    padding: 80px 20px 0;
   }
 }
 
@@ -399,6 +399,10 @@ button {
   margin-bottom: 100px;
 }
 
+.quarter-row-spacing {
+  margin-bottom: 25px;
+}
+
 .half-row-spacing {
   margin-bottom: 50px;
 }
@@ -480,6 +484,7 @@ button {
 }
 
 .tweets {
+  position: relative;
   @media (max-width: 768px) {
     display: flex;
     flex-direction: column;
@@ -497,6 +502,9 @@ button {
   color: $color-nav-hover;
   text-align: right;
   margin-top: 40px;
+  @media (max-width: 768px) {
+    margin-top: 20px;
+  }
 }
 
 .flex-row-center {
@@ -505,11 +513,28 @@ button {
 }
 
 .timeline {
+  width: 100%;
   display: flex;
-  overflow-x: scroll;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
 
   iframe {
     margin-right: 30px;
+    @media (max-width: 768px) {
+      margin-right: 10px;
+    }
+  }
+}
+
+#notChrome {
+  iframe {
+    margin-right: 30px;
+    @media (max-width: 475px) {
+      width: 1px;
+      min-width: 75%;
+      *width: 100%;
+      margin-right: 10px;
+    }
   }
 }
 

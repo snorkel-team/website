@@ -5,26 +5,17 @@ or site.doks.footer.content.copyright or site.doks.footer.social_list %}
     <div class="row">
       <div class="col-sm-3">
         {% if site.doks.footer.content.logo.text %}
-        <a
-          href="{% if jekyll.environment == 'production' %}{{
+        <a href="{% if jekyll.environment == 'production' %}{{
             site.doks.baseurl
-          }}{% endif %}/"
-          class="site-footer__logo"
-          >{{ site.doks.footer.content.logo.text }}</a
-        >
+          }}{% endif %}/" class="site-footer__logo">{{ site.doks.footer.content.logo.text }}</a>
         {% elsif site.doks.footer.content.logo.image %}
         <div class="footer-logo">
-          <a
-            href="{% if jekyll.environment == 'production' %}{{
+          <a href="{% if jekyll.environment == 'production' %}{{
               site.doks.baseurl
-            }}{% endif %}/"
-            class="site-footer__logo"
-          >
-            <img
-              src="{% if jekyll.environment == 'production' %}{{
+            }}{% endif %}/" class="site-footer__logo">
+            <img src="{% if jekyll.environment == 'production' %}{{
                 site.doks.baseurl
-              }}{% endif %}/doks-theme/assets/images/layout/logo-footer.png"
-            />
+              }}{% endif %}/doks-theme/assets/images/layout/logo-footer.png" />
           </a>
           {% if site.doks.footer.content.copyright %}
           <p class="site-footer__copyright">
@@ -41,18 +32,13 @@ or site.doks.footer.content.copyright or site.doks.footer.social_list %}
         <ul class="site-footer__nav hidden-xs hidden-sm">
           {% for item in site.doks.footer.nav %}
           <li>
-            <a
-              href="{% if jekyll.environment == 'production' %}{{
+            <a href="{% if jekyll.environment == 'production' %}{{
                 site.doks.baseurl
-              }}{% endif %}{{ item.item_url }}"
-              >{{ item.item_name }}</a
-            >
+              }}{% endif %}{{ item.item_url }}">{{ item.item_name }}</a>
           </li>
           {% endfor %}
           <li class="github">
-            <a href="https://github.com/snorkel-team/snorkel"
-              ><i class="icon icon--github"></i
-            ></a>
+            <a href="https://github.com/snorkel-team/snorkel"><i class="icon icon--github"></i></a>
           </li>
         </ul>
       </div>
@@ -60,8 +46,7 @@ or site.doks.footer.content.copyright or site.doks.footer.social_list %}
       <button class="offcanvas-toggle visible-xs">
         <span></span>
         <span></span>
-        <span></span></button
-      ><!-- /.offcanvas-toggle -->
+        <span></span></button><!-- /.offcanvas-toggle -->
       {% endif %}
     </div>
     <!-- /.row -->
@@ -74,29 +59,55 @@ or site.doks.footer.content.copyright or site.doks.footer.social_list %}
 <script src="{% if jekyll.environment == 'production' %}{{
     site.doks.baseurl
   }}{% endif %}/doks-theme/assets/js/vendor/jquery.min.js"></script>
-<script
-  type="text/javascript"
-  src="{% if jekyll.environment == 'production' %}{{
+<script src="doks-theme/assets/js/recliner.min.js"></script>
+<script type="text/javascript" src="{% if jekyll.environment == 'production' %}{{
     site.doks.baseurl
-  }}{% endif %}/doks-theme/assets/js/vendor/bootstrap/affix.min.js"
-></script>
-<script
-  type="text/javascript"
-  src="{% if jekyll.environment == 'production' %}{{
+  }}{% endif %}/doks-theme/assets/js/vendor/bootstrap/affix.min.js"></script>
+<script type="text/javascript" src="{% if jekyll.environment == 'production' %}{{
     site.doks.baseurl
-  }}{% endif %}/doks-theme/assets/js/vendor/bootstrap/scrollspy.min.js"
-></script>
-<script
-  type="text/javascript"
-  src="{% if jekyll.environment == 'production' %}{{
+  }}{% endif %}/doks-theme/assets/js/vendor/bootstrap/scrollspy.min.js"></script>
+<script type="text/javascript" src="{% if jekyll.environment == 'production' %}{{
     site.doks.baseurl
-  }}{% endif %}/doks-theme/assets/js/vendor/matchHeight.min.js"
-></script>
-<script
-  type="text/javascript"
-  src="{% if jekyll.environment == 'production' %}{{
+  }}{% endif %}/doks-theme/assets/js/vendor/matchHeight.min.js"></script>
+<script type="text/javascript" src="{% if jekyll.environment == 'production' %}{{
     site.doks.baseurl
-  }}{% endif %}/doks-theme/assets/js/scripts.min.js"
-></script>
+  }}{% endif %}/doks-theme/assets/js/scripts.min.js"></script>
+<script>
+  $(document).ready(function () {
+    var aKeys = ["MSIE", "Firefox", "Safari", "Chrome", "Opera"],
+      sUsrAg = navigator.userAgent,
+      nIdx = aKeys.length - 1;
+
+    for (nIdx; nIdx > -1 && sUsrAg.indexOf(aKeys[nIdx]) === -1; nIdx--);
+
+    if (nIdx === 3) {
+      $("#chrome").show();
+      $("#notChrome").remove();
+    } else {
+      $("#chrome").remove();
+      $("#notChrome").show();
+    }
+
+    if (nIdx === 1) {
+      $(".site-header__nav").css({ 'margin-top': '0' });
+      $(".site-header").css({ 'margin-top': '15px' });
+      $(".mobile-star").css({ 'margin': '-20px 60px 0 0' });
+      $(window).resize(function () {
+        if ($(window).width() < 768) {
+          $(".mobile-star").css({ 'margin': '-20px 60px 0 0' });
+        } else {
+          $(".mobile-star").css({ 'margin': '-30px 60px 0 0' });
+        }
+      })
+    }
+
+    $(".lazy").recliner({
+      attrib: "data-src",
+      throttle: 300,
+      threshold: 1500,
+      live: true
+    });
+  });
+</script>
 
 {% include google-analytics.html %}

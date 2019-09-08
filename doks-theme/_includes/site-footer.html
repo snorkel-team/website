@@ -107,6 +107,16 @@ or site.doks.footer.content.copyright or site.doks.footer.social_list %}
       threshold: 1500,
       live: true
     });
+
+    $("#blogs").addClass("test-container");
+
+    $(window).resize(function () {
+      if ($(window).width() < 1200) {
+        $("#blogs").removeClass("test-container");
+      } else {
+        $("#blogs").addClass("test-container");
+      }
+    });
   });
 </script>
 

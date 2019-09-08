@@ -30,21 +30,32 @@ title: Get Started
   <br>
   <br>
 
-    <div class="row row-spacing mobile-padding">
-      <h1>Tutorials</h1>
-      <div class="light-blue-card-container">
-        {% assign cases = site.use_cases | sort: 'order' %}
-        {% for tutorial in cases limit:3 %}
-        <a class="light-blue-card" href="{{ tutorial.url }}">
-          <p class="purple-numbers">{{ forloop.index | prepend: '00' | slice: -2, 2 }}</p>
-          <h4>{{ tutorial.title }}</h4>
-          <p>{{ tutorial.excerpt }}</p>
-          <span class="card-cta">
-            READ MORE <i class="icon icon--arrow-right"></i>
-          </span>
-        </a>
-        {% endfor %}
+      <div class="nav-grid-light-blue">
+        <div class="row">
+          {% assign cases = site.use_cases | sort: 'order' %}
+          {% for tutorial in cases limit:3 %}
+            <div class="col-sm-6 col-lg-4">
+              <a href="{% if jekyll.environment == 'production' %}{{
+                  site.doks.baseurl
+                }}{% endif %}{{ tutorial.url }}" class="nav-grid__item_light_blue">
+                <div class="nav-grid__content" data-mh>
+                  <p class="purple-numbers">{{ forloop.index | prepend: '00' | slice: -2, 2 }}</p>
+                  {% if tutorial.category %}
+                  <p class="purple">{{ tutorial.category }}</p>
+                  {% endif %}
+                  <h2 class="nav-grid__title">{{ tutorial.title }}</h2>
+                  <p>{{ tutorial.excerpt }}</p>
+                </div>
+                <p class="nav-grid__btn_light_blue">
+                  {{ tutorial.cta | default: "READ MORE" }}
+                  <i class="icon icon--arrow-right"></i>
+                </p>
+              </a>
+            </div>
+          {% endfor %}
+        </div>
       </div>
+
 
 
       <div class="col-sm-12 all-tweets">

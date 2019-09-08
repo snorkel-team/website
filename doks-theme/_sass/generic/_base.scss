@@ -574,3 +574,32 @@ button {
 .lazy-loaded {
   background-image: none;
 }
+
+.light-blue {
+  background-image: url("../../assets/images/layout/PatternRow.png");
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-color: $color-light-blue;
+  padding-top: 110px;
+  @media (max-width: 768px) {
+    padding-top: 30px;
+  }
+}
+
+.dark-blue {
+  @extend .light-blue;
+  background-color: $color-dark-blue;
+}
+
+.container.test-container {
+  width: 1600px;
+  @media (max-width: 1750px) {
+    width: 1350px;
+  }
+  @media (max-width: 1350px) {
+    width: 1250px;
+  }
+  @media (max-width: 1250px) {
+    width: 1150px;
+  }
+}

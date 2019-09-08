@@ -44,6 +44,17 @@
 	}
 }
 
+.nav-grid__item_light_blue {
+  @extend .nav-grid__item;
+  background-color: $color-light-blue;
+  color: $color-black;
+}
+
+.nav-grid__item_white {
+  @extend .nav-grid__item_light_blue;
+  background-color: $color-white;
+}
+
 /* ----- Content ----- */
 .nav-grid__content {
 	@include clearfix();
@@ -90,4 +101,9 @@
 		bottom: -.125rem;
 		transition: transform .2s;
 	}
+}
+
+.nav-grid__btn_light_blue {
+  @extend .nav-grid__btn;
+  border-top: 2px solid rgba($color-dark-blue, .2);
 }

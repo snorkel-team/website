@@ -122,13 +122,13 @@ or site.doks.footer.content.copyright or site.doks.footer.social_list %}
       live: true
     });
 
-    $("#blogs").addClass("test-container");
+    $("#blogs").addClass("index-blog-container");
 
     $(window).resize(function () {
       if ($(window).width() < 1200) {
-        $("#blogs").removeClass("test-container");
+        $("#blogs").removeClass("index-blog-container");
       } else {
-        $("#blogs").addClass("test-container");
+        $("#blogs").addClass("index-blog-container");
       }
     });
   });

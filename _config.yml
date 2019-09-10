@@ -37,7 +37,7 @@ doks:
       - item_name: Resources
         item_url: /resources/
       - item_name: Docs
-        item_url: /docs/
+        item_url: https://snorkel.readthedocs.io/en/master/
   google_analytics:
     tracking_code: UA-145748645-1
   comments:

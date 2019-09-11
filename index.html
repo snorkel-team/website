@@ -67,21 +67,33 @@ layout: homepage
       </div>
     </div>
   </div>
-  <div class="container-fluid">
-    <div class="row light-row">
-      {% assign cases = site.use_cases | sort: 'order' %}
-      {% for case in cases limit:3 %}
-      <a class="light-card" href="{{ case.url }}">
-        <p class="purple-numbers">
-          {{ forloop.index | prepend: '00' | slice: -2, 2 }}
-        </p>
-        <h4>{{ case.title }}</h4>
-        <p>{{ case.excerpt }}</p>
-        <span class="card-cta">
-          READ MORE <i class="icon icon--arrow-right"></i>
-        </span>
-      </a>
-      {% endfor %}
+  <div class="light-blue">
+    <div class="container">
+      <div class="nav-grid-light-blue">
+        <div class="row">
+          {% assign cases = site.use_cases | sort: 'order' %}
+          {% for tutorial in cases limit:3 %}
+          <div class="col-sm-6 col-lg-4">
+            <a href="{% if jekyll.environment == 'production' %}{{
+                    site.doks.baseurl
+                  }}{% endif %}{{ tutorial.url }}" class="nav-grid__item_white">
+              <div class="nav-grid__content" data-mh>
+                <p class="purple-numbers">{{ forloop.index | prepend: '00' | slice: -2, 2 }}</p>
+                {% if tutorial.category %}
+                <p class="purple">{{ tutorial.category }}</p>
+                {% endif %}
+                <h2 class="nav-grid__title">{{ tutorial.title }}</h2>
+                <p>{{ tutorial.excerpt }}</p>
+              </div>
+              <p class="nav-grid__btn_light_blue">
+                {{ tutorial.cta | default: "READ MORE" }}
+                <i class="icon icon--arrow-right"></i>
+              </p>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
     </div>
   </div>
   <div class="container-fluid">
@@ -122,18 +134,30 @@ layout: homepage
     </div>
   </div>
 </div>
-<div class="container-fluid">
-  <div class="row dark-row">
-    {% for post in site.posts limit:4 %}
-    <a class="card" href="{{ post.url }}">
-      <p class="purple-numbers">{{ forloop.index | prepend: '00' | slice: -2, 2 }}</p>
-      <h4>{{ post.title }}</h4>
-      <p class="blog-excerpt">{{ post.excerpt }}</p>
-      <span class="dark-card-cta">
-        READ MORE <i class="icon icon--arrow-right"></i>
-      </span>
-    </a>
-    {% endfor %}
+<div class="dark-blue">
+  <div class="container" id="blogs">
+    <div class="nav-grid-light-blue">
+      <div class="row">
+        {% assign posts = site.posts | sort: 'order' %}
+        {% for post in posts limit:4 %}
+        <div class="col-sm-6 col-lg-3">
+          <a href="{% if jekyll.environment == 'production' %}{{
+                    site.doks.baseurl
+                  }}{% endif %}{{ post.url }}" class="nav-grid__item">
+            <div class="nav-grid__content" data-mh>
+              <p class="purple-numbers">{{ forloop.index | prepend: '00' | slice: -2, 2 }}</p>
+              <h2 class="nav-grid__title">{{ post.title }}</h2>
+              <p>{{ post.excerpt }}</p>
+            </div>
+            <p class="nav-grid__btn_light_blue">
+              {{ post.cta | default: "READ MORE" }}
+              <i class="icon icon--arrow-right"></i>
+            </p>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
   </div>
 </div>
 <div class="container-fluid">

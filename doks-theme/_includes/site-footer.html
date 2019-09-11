@@ -77,7 +77,7 @@ or site.doks.footer.content.copyright or site.doks.footer.social_list %}
   }}{% endif %}/doks-theme/assets/js/scripts.min.js"></script>
 <script>
   $(document).ready(function () {
-    var aKeys = ["MSIE", "Firefox", "Safari", "Chrome", "Opera"],
+    var aKeys = ["MSIE", "Firefox", "Safari", "Chrome", "Opera", "Edge"],
       sUsrAg = navigator.userAgent,
       nIdx = aKeys.length - 1;
 
@@ -99,7 +99,18 @@ or site.doks.footer.content.copyright or site.doks.footer.social_list %}
         if ($(window).width() < 768) {
           $(".mobile-star").css({ 'margin': '-20px 60px 0 0' });
         } else {
-          $(".mobile-star").css({ 'margin': '-30px 60px 0 0' });
+          $(".mobile-star").css({ 'margin': '-29px 60px 0 0' });
+        }
+      })
+    }
+
+    if (nIdx === 0 || nIdx === 2 || nIdx === 5) {
+      $(".github-list-item").css({ 'margin-top': '-7px' })
+      $(window).resize(function () {
+        if ($(window).width() < 768) {
+          $(".mobile-star").css({ 'margin': '21px 60px 0 0' });
+        } else if ($(window).width() > 768) {
+          $(".mobile-star").css({ 'margin': '11px 60px 0 0' });
         }
       })
     }

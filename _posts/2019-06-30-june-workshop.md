@@ -9,7 +9,6 @@ show_title_author: True
 redirect_from: /june-workshop
 ---
 
-
 # Recap of June 2019 Snorkel Workshop
 
 <figure align="center">

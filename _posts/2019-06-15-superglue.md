@@ -6,6 +6,7 @@ author: Sen Wu, Vincent S. Chen, Braden Hancock, Alex Ratner, Chris Ré
 description: Snorkel achieves state-of-the-art result on the SuperGLUE NLP benchmark.
 excerpt: Snorkel achieves state-of-the-art result on the SuperGLUE NLP benchmark.
 show_title_author: True
+redirect_from: /superglue
 ---
 
 ## SuperGLUE with Snorkel: Achieving SOTA Results!

@@ -60,3 +60,8 @@ collections:
   use_cases:
     output: true
     permalink: /use-cases/:name
+  posts:
+    output: true
+    permalink: /blog/:slug
+plugins:
+  - jekyll-redirect-from

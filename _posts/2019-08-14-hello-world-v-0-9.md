@@ -6,6 +6,7 @@ author: The Snorkel Team
 description: Introducing our biggest update to Snorkel yet, version 0.9.
 excerpt: Introducing our biggest update to Snorkel yet, version 0.9.
 show_title_author: True
+redirect_from: /hello-world-v-0-9
 ---
 
 Snorkel began in 2016 at Stanford as a project that, as suggested by an advisor to his graduate student at the time, "should probably take an afternoon".

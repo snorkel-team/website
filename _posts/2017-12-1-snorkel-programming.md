@@ -6,6 +6,7 @@ author: Alex Ratner, Stephen Bach, Chris Ré
 description: The new interface for ML.
 excerpt: The new interface for ML.
 show_title_author: True
+redirect_from: /snorkel-programming
 ---
 
 Machine learning today is both far more and far less accessible than ever before. On the one hand, without any manual feature engineering or custom algorithm development, a developer can have a deep learning model downloaded and running near state-of-the-art within minutes. However, in other ways, machine learning has never been so opaque and inaccessible. Modern deep learning models admit one primary input type---training data---and other than that, are largely black boxes. Given some knowledge of a new domain or task, how do we inject this into our model? Given some modification to our objectives, how do we quickly modify our model? How does one *program* the modern machine learning stack?

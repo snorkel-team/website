@@ -6,8 +6,8 @@ author: The Snorkel Team
 description: Recap of June 2019 Snorkel workshop.
 excerpt: Recap of June 2019 Snorkel workshop.
 show_title_author: True
+redirect_from: /june-workshop
 ---
-
 
 # Recap of June 2019 Snorkel Workshop
 

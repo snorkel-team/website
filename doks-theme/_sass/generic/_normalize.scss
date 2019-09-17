@@ -63,6 +63,14 @@ main { /* 1 */
   display: block;
 }
 
+
+/**
+ * Add breathing room for blog captions.
+ */
+figcaption {
+  padding-top: 15px;
+}
+
 /**
  * Add the correct margin in IE 8.
  */

@@ -202,11 +202,11 @@ list(known_spouses)[0:5]
 
 
 
-    [('Janet Brown', 'Peter Butterworth'),
-     ('Kaitlin Olson', 'Rob McElhenney'),
-     ('Jacques Coetzer', 'Leán Coetzer'),
-     ('Evelyn Brent', 'Harry Fox'),
-     ('Anastasio Somoza Debayle', 'Hope Portocarrero')]
+    [('Gustave Choquet', 'Yvonne Choquet-Bruhat'),
+     ('Richard Karn', 'Tudi Roche'),
+     ('Kaarin Fairfax', 'Paul Kelly'),
+     ('Ana de Armas', 'Marc Clotet'),
+     ('Mami Tai', 'Yasushi Akimoto')]
 
 
 
@@ -495,8 +495,8 @@ print(
 )
 ```
 
-    Test F1 when trained with soft labels: 0.28634361233480177
-    Test ROC-AUC when trained with soft labels: 0.7258606228777706
+    Test F1 when trained with soft labels: 0.4705882352941177
+    Test ROC-AUC when trained with soft labels: 0.7386078545115963
 
 
 ## Summary

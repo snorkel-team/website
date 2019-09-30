@@ -1,4 +1,6 @@
 
+<a href="https://github.com/snorkel-team/snorkel-tutorials/blob/master/getting_started/getting_started.ipynb" class="btn--dark btn--rounded">View on GitHub</a>
+<br>
 ## Programmatically Building and Managing Training Data with Snorkel
 
 Snorkel is a system for _programmatically_ building and managing training datasets **without manual labeling**.

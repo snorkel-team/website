@@ -612,22 +612,6 @@ button {
   margin-top: 8px;
 }
 
-.site-header__nav .github-link, .github-link {
-  display: inline-block;
-  vertical-align: top;
-  font-size: 2em;
-  margin-right: 5px;
-
-  @media (min-width: 768px) {
-    font-size: 1.8em;
-  }
-}
-
-.site-header__nav .github-link:hover, .github-link:hover {
-  border-color: #8c9090;
-  color: #8c9090;
-}
-
 .features-image {
   @media (max-width: 768px) {
     margin-top: 30px;

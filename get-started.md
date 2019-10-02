@@ -22,7 +22,9 @@ title: Get Started
         <img src="/doks-theme/assets/images/layout/Pattern 1.png" alt="Pattern 1" />
       </div>
     </div>
-
+  <a href="https://github.com/snorkel-team/snorkel-tutorials/blob/master/getting_started/getting_started.ipynb" class="btn--dark btn--rounded">View on GitHub</a>
+  <br/>
+  <br/>
   <div markdown="1">
     {% include_relative _getting_started/getting_started.md %}
   </div>

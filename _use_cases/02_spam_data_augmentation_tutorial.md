@@ -21,7 +21,7 @@ which we'll aim to augment using transformation functions.
 Data augmentation is a popular technique for increasing the size of labeled training sets by applying class-preserving transformations to create copies of labeled data points.
 In the image domain, it is a crucial factor in almost every state-of-the-art result today and is quickly gaining
 popularity in text-based applications.
-Snorkel models the data augmentation process by applying user-define *transformation functions* (TFs) in sequence.
+Snorkel models the data augmentation process by applying user-defined *transformation functions* (TFs) in sequence.
 You can learn more about data augmentation in
 [this blog post about our NeurIPS 2017 work on automatically learned data augmentation](https://snorkel.org/tanda/).
 
@@ -487,7 +487,7 @@ print(f"Test Accuracy (original training data): {100 * acc_original:.1f}%")
 print(f"Test Accuracy (augmented training data): {100 * acc_augmented:.1f}%")
 ```
 
-    Test Accuracy (original training data): 91.2%
+    Test Accuracy (original training data): 92.0%
     Test Accuracy (augmented training data): 92.8%
 
 

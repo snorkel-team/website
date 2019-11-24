@@ -77,7 +77,6 @@ In the `DictDataset`, each label corresponds to a particular `Task` by name.  We
 
 
 ```python
-import torch
 from snorkel.classification import DictDataset, DictDataLoader
 
 dataloaders = []

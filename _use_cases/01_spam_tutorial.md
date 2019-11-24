@@ -1817,7 +1817,7 @@ preds_train
 
 
 
-    array([1, 1, 0, ..., 1, 1, 1])
+    array([ 1,  1, -1, ...,  1,  1,  1])
 
 
 
@@ -1836,7 +1836,7 @@ The `LabelModel` trains much more quickly than typical discriminative models sin
 from snorkel.labeling import LabelModel
 
 label_model = LabelModel(cardinality=2, verbose=True)
-label_model.fit(L_train=L_train, n_epochs=1000, lr=0.001, log_freq=100, seed=123)
+label_model.fit(L_train=L_train, n_epochs=500, lr=0.001, log_freq=100, seed=123)
 ```
 
 
@@ -1848,8 +1848,12 @@ label_model_acc = label_model.score(L=L_valid, Y=Y_valid)["accuracy"]
 print(f"{'Label Model Accuracy:':<25} {label_model_acc * 100:.1f}%")
 ```
 
-    Majority Vote Accuracy:   84.2%
-    Label Model Accuracy:     86.7%
+    WARNING:root:Metrics calculated over data points with non-abstain labels only
+    WARNING:root:Metrics calculated over data points with non-abstain labels only
+
+
+    Majority Vote Accuracy:   91.5%
+    Label Model Accuracy:     92.4%
 
 
 So our `LabelModel` improves over the majority vote baseline!
@@ -1998,7 +2002,7 @@ keras_model.fit(
     y=probs_train_filtered,
     validation_data=(X_valid, preds_to_probs(Y_valid, 2)),
     callbacks=[get_keras_early_stopping()],
-    epochs=20,
+    epochs=50,
     verbose=0,
 )
 ```
@@ -2010,7 +2014,7 @@ test_acc = metric_score(golds=Y_test, preds=preds_test, metric="accuracy")
 print(f"Test Accuracy: {test_acc * 100:.1f}%")
 ```
 
-    Test Accuracy: 94.4%
+    Test Accuracy: 90.0%
 
 
 **We observe an additional boost in accuracy over the `LabelModel` by multiple points!
@@ -2028,7 +2032,7 @@ keras_dev_model.fit(
     y=Y_dev,
     validation_data=(X_valid, Y_valid),
     callbacks=[get_keras_early_stopping()],
-    epochs=20,
+    epochs=50,
     verbose=0,
 )
 ```
@@ -2040,7 +2044,7 @@ test_acc = metric_score(golds=Y_test, preds=preds_test_dev, metric="accuracy")
 print(f"Test Accuracy: {test_acc * 100:.1f}%")
 ```
 
-    Test Accuracy: 92.8%
+    Test Accuracy: 89.6%
 
 
 ### Scikit-Learn with Rounded Labels
@@ -2072,7 +2076,7 @@ sklearn_model.fit(X=X_train, y=preds_train_filtered)
 print(f"Test Accuracy: {sklearn_model.score(X=X_test, y=Y_test) * 100:.1f}%")
 ```
 
-    Test Accuracy: 93.2%
+    Test Accuracy: 92.8%
 
 
 ## Summary

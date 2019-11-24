@@ -150,59 +150,59 @@ LFAnalysis(L_dev, worker_lfs).lf_summary(Y_dev).sample(5)
   </thead>
   <tbody>
     <tr>
-      <th>worker_18914675</th>
-      <td>85</td>
+      <th>worker_17652569</th>
+      <td>70</td>
       <td>[]</td>
       <td>0.00</td>
       <td>0.00</td>
       <td>0.00</td>
       <td>0</td>
       <td>0</td>
-      <td>0.000000</td>
+      <td>0.0</td>
     </tr>
     <tr>
-      <th>worker_6371053</th>
-      <td>9</td>
+      <th>worker_16498372</th>
+      <td>58</td>
       <td>[0, 1]</td>
-      <td>0.10</td>
-      <td>0.10</td>
-      <td>0.10</td>
-      <td>4</td>
-      <td>1</td>
-      <td>0.800000</td>
+      <td>0.06</td>
+      <td>0.06</td>
+      <td>0.04</td>
+      <td>3</td>
+      <td>0</td>
+      <td>1.0</td>
     </tr>
     <tr>
-      <th>worker_6340330</th>
-      <td>2</td>
-      <td>[1]</td>
+      <th>worker_18465660</th>
+      <td>80</td>
+      <td>[0, 1]</td>
+      <td>0.06</td>
+      <td>0.06</td>
+      <td>0.06</td>
+      <td>3</td>
+      <td>0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>worker_12572470</th>
+      <td>38</td>
+      <td>[0, 1]</td>
       <td>0.04</td>
       <td>0.04</td>
       <td>0.04</td>
       <td>2</td>
       <td>0</td>
-      <td>1.000000</td>
+      <td>1.0</td>
     </tr>
     <tr>
-      <th>worker_6332651</th>
-      <td>0</td>
+      <th>worker_18975312</th>
+      <td>88</td>
       <td>[0, 1]</td>
-      <td>0.06</td>
-      <td>0.06</td>
-      <td>0.06</td>
-      <td>1</td>
+      <td>0.04</td>
+      <td>0.04</td>
+      <td>0.02</td>
       <td>2</td>
-      <td>0.333333</td>
-    </tr>
-    <tr>
-      <th>worker_14400603</th>
-      <td>43</td>
-      <td>[0, 1]</td>
-      <td>0.18</td>
-      <td>0.18</td>
-      <td>0.18</td>
-      <td>8</td>
-      <td>1</td>
-      <td>0.888889</td>
+      <td>0</td>
+      <td>1.0</td>
     </tr>
   </tbody>
 </table>
@@ -419,7 +419,7 @@ test set or new incoming data points, we can't use the LabelModel reliably
 at inference time.**
 In order to run inference on new incoming data points, we need to train a
 discriminative model over the tweets themselves.
-Let's generate a set of probabilistic labels for that training set.
+Let's generate a set of labels for that training set.
 
 
 ```python
@@ -452,7 +452,7 @@ X_train = np.array(list(df_train.tweet_text.apply(encode_text).values))
 X_test = np.array(list(df_test.tweet_text.apply(encode_text).values))
 ```
 
-### Model on probabilistic labels
+### Model on labels
 Now, we train a simple logistic regression model on the BERT features, using labels
 obtained from our LabelModel.
 
@@ -479,4 +479,4 @@ We now have a trained model that can be applied to future data points without re
 In this tutorial, we accomplished the following:
 * We demonstrated how to combine crowdsourced labels with other programmatic LFs to improve coverage.
 * We used the `LabelModel` to combine inputs from crowdworkers and other LFs to generate high quality probabilistic labels.
-* We used our probabilistic labels to train a classifier for making predictions on new, unseen data points.
+* We used our labels to train a classifier for making predictions on new, unseen data points.

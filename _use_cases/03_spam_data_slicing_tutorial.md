@@ -489,7 +489,7 @@ In other approaches, one might attempt to increase slice performance with techni
 
 This might work with small number of slices, but with hundreds or thousands or production slices at scale, it could quickly become intractable to tune upsampling weights per slice.
 
-### Set up modeling pipeline with [`SlicingClassifier`](https://snorkel.readthedocs.io/en/master/packages/_autosummary/slicing/snorkel.slicing.SlicingClassifier.html)
+### Set up modeling pipeline with [`SliceAwareClassifier`](https://snorkel.readthedocs.io/en/v0.9.3/packages/_autosummary/slicing/snorkel.slicing.SliceAwareClassifier.html)
 
 Snorkel supports performance monitoring on slices using discriminative models from [`snorkel.slicing`](https://snorkel.readthedocs.io/en/master/packages/slicing.html).
 To demonstrate this functionality, we'll first set up a the datasets + modeling pipeline in the PyTorch-based [`snorkel.classification`](https://snorkel.readthedocs.io/en/master/packages/classification.html) package.
@@ -514,14 +514,14 @@ test_dl = create_dict_dataloader(
 )
 ```
 
-We'll now initialize a [`SlicingClassifier`](https://snorkel.readthedocs.io/en/master/packages/_autosummary/slicing/snorkel.slicing.SlicingClassifier.html):
+We'll now initialize a [`SliceAwareClassifier`](https://snorkel.readthedocs.io/en/v0.9.3/packages/_autosummary/slicing/snorkel.slicing.SliceAwareClassifier.html):
 * `base_architecture`: We define a simple Multi-Layer Perceptron (MLP) in Pytorch to serve as the primary representation architecture. We note that the `BinarySlicingClassifier` is **agnostic to the base architecture** — you might leverage a Transformer model for text, or a ResNet for images.
 * `head_dim`: identifies the final output feature dimension of the `base_architecture`
 * `slice_names`: Specify the slices that we plan to train on with this classifier.
 
 
 ```python
-from snorkel.slicing import SlicingClassifier
+from snorkel.slicing import SliceAwareClassifier
 from utils import get_pytorch_mlp
 
 
@@ -531,7 +531,7 @@ hidden_dim = bow_dim
 mlp = get_pytorch_mlp(hidden_dim=hidden_dim, num_layers=2)
 
 # Init slice model
-slice_model = SlicingClassifier(
+slice_model = SliceAwareClassifier(
     base_architecture=mlp, head_dim=hidden_dim, slice_names=[sf.name for sf in sfs]
 )
 ```
@@ -552,14 +552,14 @@ trainer = Trainer(lr=1e-4, n_epochs=2)
 trainer.fit(slice_model, [train_dl, valid_dl])
 ```
 
-    Epoch 0:: 100%|██████████| 25/25 [00:39<00:00,  1.58s/it, model/all/train/loss=0.472, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.908, task/SnorkelDataset/valid/f1=0.893]
-    Epoch 1:: 100%|██████████| 25/25 [00:39<00:00,  1.60s/it, model/all/train/loss=0.0931, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.933, task/SnorkelDataset/valid/f1=0.926]
+    Epoch 0:: 100%|██████████| 25/25 [01:11<00:00,  2.85s/it, model/all/train/loss=0.469, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.908, task/SnorkelDataset/valid/f1=0.893]
+    Epoch 1:: 100%|██████████| 25/25 [01:12<00:00,  2.90s/it, model/all/train/loss=0.0861, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.933, task/SnorkelDataset/valid/f1=0.926]
 
 
 ### Representation learning with slices
 
 To cope with scale, we will attempt to learn and combine many slice-specific representations with an attention mechanism.
-(For details about this approach, please see our technical report — coming soon!)
+(Please see our [Section 3 of our technical report](https://arxiv.org/abs/1909.06349) for details on this approach).
 
 First, we'll generate the remaining `S` matrixes with the new set of slicing functions.
 
@@ -571,9 +571,9 @@ S_valid = applier.apply(df_valid)
 ```
 
 In order to train using slice information, we'd like to initialize a **slice-aware dataloader**.
-To do this, we can use [`slice_model.make_slice_dataloader`](https://snorkel.readthedocs.io/en/master/packages/_autosummary/slicing/snorkel.slicing.SlicingClassifier.html#snorkel.slicing.SlicingClassifier.predict) to add slice labels to an existing dataloader.
+To do this, we can use [`slice_model.make_slice_dataloader`](https://snorkel.readthedocs.io/en/v0.9.3/packages/_autosummary/slicing/snorkel.slicing.SliceAwareClassifier.html#snorkel.slicing.SliceAwareClassifier.predict) to add slice labels to an existing dataloader.
 
-Under the hood, this method leverages slice metadata to add slice labels to the appropriate fields such that it's compatible with the initialized [`SliceClassifier`](https://snorkel.readthedocs.io/en/master/packages/_autosummary/slicing/snorkel.slicing.SlicingClassifier.html#snorkel-slicing-slicingclassifier).
+Under the hood, this method leverages slice metadata to add slice labels to the appropriate fields such that it's compatible with the initialized [`SliceClassifier`](https://snorkel.readthedocs.io/en/v0.9.3/packages/_autosummary/slicing/snorkel.slicing.SliceAwareClassifier.html#snorkel-slicing-slicingclassifier).
 
 
 ```python
@@ -599,14 +599,14 @@ trainer = Trainer(n_epochs=2, lr=1e-4, progress_bar=True)
 trainer.fit(slice_model, [train_dl_slice, valid_dl_slice])
 ```
 
-    Epoch 0::  96%|█████████▌| 24/25 [00:41<00:01,  1.79s/it, model/all/train/loss=0.376, model/all/train/lr=0.0001]/home/ubuntu/snorkel-tutorials/.tox/spam/lib/python3.6/site-packages/sklearn/metrics/classification.py:1437: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 due to no predicted samples.
+    Epoch 0::  96%|█████████▌| 24/25 [01:15<00:03,  3.39s/it, model/all/train/loss=0.358, model/all/train/lr=0.0001]/Users/vincentschen/code/snorkel-tutorials/.tox/spam/lib/python3.7/site-packages/sklearn/metrics/classification.py:1437: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 due to no predicted samples.
       'precision', 'predicted', average, warn_for)
-    Epoch 0:: 100%|██████████| 25/25 [00:43<00:00,  1.73s/it, model/all/train/loss=0.371, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.933, task/SnorkelDataset/valid/f1=0.926, task_slice:short_link_ind/SnorkelDataset/valid/f1=0, task_slice:short_link_pred/SnorkelDataset/valid/accuracy=0.8, task_slice:short_link_pred/SnorkelDataset/valid/f1=0.889, task_slice:keyword_subscribe_ind/SnorkelDataset/valid/f1=0, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/f1=1, task_slice:keyword_please_ind/SnorkelDataset/valid/f1=0, task_slice:keyword_please_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_please_pred/SnorkelDataset/valid/f1=1, task_slice:regex_check_out_ind/SnorkelDataset/valid/f1=0.471, task_slice:regex_check_out_pred/SnorkelDataset/valid/accuracy=1, task_slice:regex_check_out_pred/SnorkelDataset/valid/f1=1, task_slice:short_comment_ind/SnorkelDataset/valid/f1=0, task_slice:short_comment_pred/SnorkelDataset/valid/accuracy=0.947, task_slice:short_comment_pred/SnorkelDataset/valid/f1=0.5, task_slice:textblob_polarity_ind/SnorkelDataset/valid/f1=0, task_slice:textblob_polarity_pred/SnorkelDataset/valid/accuracy=1, task_slice:textblob_polarity_pred/SnorkelDataset/valid/f1=1, task_slice:base_ind/SnorkelDataset/valid/f1=1, task_slice:base_pred/SnorkelDataset/valid/accuracy=0.933, task_slice:base_pred/SnorkelDataset/valid/f1=0.926]
-    Epoch 1:: 100%|██████████| 25/25 [00:47<00:00,  1.88s/it, model/all/train/loss=0.17, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.925, task/SnorkelDataset/valid/f1=0.914, task_slice:short_link_ind/SnorkelDataset/valid/f1=0, task_slice:short_link_pred/SnorkelDataset/valid/accuracy=0.2, task_slice:short_link_pred/SnorkelDataset/valid/f1=0.333, task_slice:keyword_subscribe_ind/SnorkelDataset/valid/f1=0.333, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/f1=1, task_slice:keyword_please_ind/SnorkelDataset/valid/f1=0.5, task_slice:keyword_please_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_please_pred/SnorkelDataset/valid/f1=1, task_slice:regex_check_out_ind/SnorkelDataset/valid/f1=0.791, task_slice:regex_check_out_pred/SnorkelDataset/valid/accuracy=1, task_slice:regex_check_out_pred/SnorkelDataset/valid/f1=1, task_slice:short_comment_ind/SnorkelDataset/valid/f1=0, task_slice:short_comment_pred/SnorkelDataset/valid/accuracy=0.947, task_slice:short_comment_pred/SnorkelDataset/valid/f1=0.5, task_slice:textblob_polarity_ind/SnorkelDataset/valid/f1=0, task_slice:textblob_polarity_pred/SnorkelDataset/valid/accuracy=1, task_slice:textblob_polarity_pred/SnorkelDataset/valid/f1=1, task_slice:base_ind/SnorkelDataset/valid/f1=1, task_slice:base_pred/SnorkelDataset/valid/accuracy=0.908, task_slice:base_pred/SnorkelDataset/valid/f1=0.893]
+    Epoch 0:: 100%|██████████| 25/25 [01:18<00:00,  3.15s/it, model/all/train/loss=0.353, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.933, task/SnorkelDataset/valid/f1=0.927, task_slice:short_link_ind/SnorkelDataset/valid/f1=0, task_slice:short_link_pred/SnorkelDataset/valid/accuracy=0.8, task_slice:short_link_pred/SnorkelDataset/valid/f1=0.889, task_slice:keyword_subscribe_ind/SnorkelDataset/valid/f1=0, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/f1=1, task_slice:keyword_please_ind/SnorkelDataset/valid/f1=0, task_slice:keyword_please_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_please_pred/SnorkelDataset/valid/f1=1, task_slice:regex_check_out_ind/SnorkelDataset/valid/f1=0.818, task_slice:regex_check_out_pred/SnorkelDataset/valid/accuracy=1, task_slice:regex_check_out_pred/SnorkelDataset/valid/f1=1, task_slice:short_comment_ind/SnorkelDataset/valid/f1=0, task_slice:short_comment_pred/SnorkelDataset/valid/accuracy=0.947, task_slice:short_comment_pred/SnorkelDataset/valid/f1=0.5, task_slice:textblob_polarity_ind/SnorkelDataset/valid/f1=0, task_slice:textblob_polarity_pred/SnorkelDataset/valid/accuracy=1, task_slice:textblob_polarity_pred/SnorkelDataset/valid/f1=1, task_slice:base_ind/SnorkelDataset/valid/f1=1, task_slice:base_pred/SnorkelDataset/valid/accuracy=0.933, task_slice:base_pred/SnorkelDataset/valid/f1=0.927]
+    Epoch 1:: 100%|██████████| 25/25 [01:22<00:00,  3.30s/it, model/all/train/loss=0.166, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.925, task/SnorkelDataset/valid/f1=0.914, task_slice:short_link_ind/SnorkelDataset/valid/f1=0, task_slice:short_link_pred/SnorkelDataset/valid/accuracy=0.2, task_slice:short_link_pred/SnorkelDataset/valid/f1=0.333, task_slice:keyword_subscribe_ind/SnorkelDataset/valid/f1=0, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/f1=1, task_slice:keyword_please_ind/SnorkelDataset/valid/f1=0.4, task_slice:keyword_please_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_please_pred/SnorkelDataset/valid/f1=1, task_slice:regex_check_out_ind/SnorkelDataset/valid/f1=0.917, task_slice:regex_check_out_pred/SnorkelDataset/valid/accuracy=1, task_slice:regex_check_out_pred/SnorkelDataset/valid/f1=1, task_slice:short_comment_ind/SnorkelDataset/valid/f1=0, task_slice:short_comment_pred/SnorkelDataset/valid/accuracy=0.947, task_slice:short_comment_pred/SnorkelDataset/valid/f1=0.5, task_slice:textblob_polarity_ind/SnorkelDataset/valid/f1=0, task_slice:textblob_polarity_pred/SnorkelDataset/valid/accuracy=1, task_slice:textblob_polarity_pred/SnorkelDataset/valid/f1=1, task_slice:base_ind/SnorkelDataset/valid/f1=1, task_slice:base_pred/SnorkelDataset/valid/accuracy=0.908, task_slice:base_pred/SnorkelDataset/valid/f1=0.893]
 
 
 At inference time, the primary task head (`spam_task`) will make all final predictions.
-We'd like to evaluate all the slice heads on the original task head — [`score_slices`](https://snorkel.readthedocs.io/en/master/packages/_autosummary/slicing/snorkel.slicing.SlicingClassifier.html#snorkel.slicing.SlicingClassifier.score_slices) remaps all slice-related labels, denoted `spam_task_slice:{slice_name}_pred`, to be evaluated on the `spam_task`.
+We'd like to evaluate all the slice heads on the original task head — [`score_slices`](https://snorkel.readthedocs.io/en/v0.9.3/packages/_autosummary/slicing/snorkel.slicing.SliceAwareClassifier.html#snorkel.slicing.SliceAwareClassifier.score_slices) remaps all slice-related labels, denoted `spam_task_slice:{slice_name}_pred`, to be evaluated on the `spam_task`.
 
 
 ```python
@@ -776,7 +776,7 @@ slice_model.score_slices([valid_dl_slice, test_dl_slice], as_dataframe=True)
       <td>SnorkelDataset</td>
       <td>test</td>
       <td>accuracy</td>
-      <td>0.932000</td>
+      <td>0.952000</td>
     </tr>
     <tr>
       <th>17</th>
@@ -784,7 +784,7 @@ slice_model.score_slices([valid_dl_slice, test_dl_slice], as_dataframe=True)
       <td>SnorkelDataset</td>
       <td>test</td>
       <td>f1</td>
-      <td>0.922374</td>
+      <td>0.946429</td>
     </tr>
     <tr>
       <th>18</th>
@@ -888,7 +888,7 @@ slice_model.score_slices([valid_dl_slice, test_dl_slice], as_dataframe=True)
       <td>SnorkelDataset</td>
       <td>test</td>
       <td>accuracy</td>
-      <td>0.932000</td>
+      <td>0.952000</td>
     </tr>
     <tr>
       <th>31</th>
@@ -896,7 +896,7 @@ slice_model.score_slices([valid_dl_slice, test_dl_slice], as_dataframe=True)
       <td>SnorkelDataset</td>
       <td>test</td>
       <td>f1</td>
-      <td>0.922374</td>
+      <td>0.946429</td>
     </tr>
   </tbody>
 </table>
@@ -912,4 +912,9 @@ For a demonstration of data slicing deployed in state-of-the-art models, please 
 
 This tutorial walked through the process authoring slices, monitoring model performance on specific slices, and improving model performance using slice information.
 This programming abstraction provides a mechanism to heuristically identify critical data subsets.
-For more technical details about _Slice-based Learning,_ stay tuned — our technical report is coming soon!
+For more technical details about _Slice-based Learning,_ please see our [NeurIPS 2019 paper](https://arxiv.org/abs/1909.06349)!
+
+
+```python
+
+```

@@ -277,7 +277,7 @@ LFAnalysis(L_valid, lfs).lf_summary(Y_valid)
       <td>0.846154</td>
       <td>0.346154</td>
       <td>13</td>
-      <td>6</td>
+      <td>13</td>
       <td>0.500000</td>
     </tr>
     <tr>
@@ -314,6 +314,9 @@ We use [F1](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1
 ```python
 label_model.score(L_valid, Y_valid, metrics=["f1_micro"])
 ```
+
+    WARNING:root:Metrics calculated over data points with non-abstain labels only
+
 
 
 
@@ -390,4 +393,7 @@ model.score([dl_valid])
 
 
 
+## Recap
 We have successfully trained a visual relationship detection model! Using categorical and spatial intuition about how objects in a visual relationship interact with each other, we are able to assign high quality training labels to object pairs in the VRD dataset in a multi-class classification setting.
+
+For more on how Snorkel can be used for visual relationship tasks, please see our [ICCV 2019 paper](https://arxiv.org/abs/1904.11622)!

@@ -33,7 +33,7 @@ The tutorial is divided into four parts:
 
 ## 1. Loading Data
 
-We load the Kaggle dataset and create Pandas DataFrame objects for each of the sets described above.
+We load the Kaggle dataset and create Pandas DataFrame objects for the `train` and `test` sets.
 The two main columns in the DataFrames are:
 * **`text`**: Raw text content of the comment
 * **`label`**: Whether the comment is `SPAM` (1) or `HAM` (0).
@@ -44,10 +44,9 @@ For more details, check out the [labeling tutorial](https://github.com/snorkel-t
 ```python
 from utils import load_spam_dataset
 
-df_train, _, df_valid, df_test = load_spam_dataset(load_train_labels=True)
+df_train, df_test = load_spam_dataset(load_train_labels=True)
 
 # We pull out the label vectors for ease of use later
-Y_valid = df_valid["label"].values
 Y_train = df_train["label"].values
 Y_test = df_test["label"].values
 ```
@@ -446,33 +445,17 @@ Now we'll train our LSTM on both the original and augmented datasets to compare 
 
 
 ```python
-from utils import featurize_df_tokens, get_keras_lstm, get_keras_early_stopping
+from utils import featurize_df_tokens, get_keras_lstm
 
 X_train = featurize_df_tokens(df_train)
 X_train_augmented = featurize_df_tokens(df_train_augmented)
-X_valid = featurize_df_tokens(df_valid)
 X_test = featurize_df_tokens(df_test)
 
 
-def train_and_test(
-    X_train,
-    Y_train,
-    X_valid=X_valid,
-    Y_valid=Y_valid,
-    X_test=X_test,
-    Y_test=Y_test,
-    num_buckets=30000,
-):
+def train_and_test(X_train, Y_train, X_test=X_test, Y_test=Y_test, num_buckets=30000):
     # Define a vanilla LSTM model with Keras
     lstm_model = get_keras_lstm(num_buckets)
-    lstm_model.fit(
-        X_train,
-        Y_train,
-        epochs=25,
-        validation_data=(X_valid, Y_valid),
-        callbacks=[get_keras_early_stopping(5)],
-        verbose=0,
-    )
+    lstm_model.fit(X_train, Y_train, epochs=5, verbose=0)
     preds_test = lstm_model.predict(X_test)[:, 0] > 0.5
     return (preds_test == Y_test).mean()
 
@@ -487,10 +470,10 @@ print(f"Test Accuracy (original training data): {100 * acc_original:.1f}%")
 print(f"Test Accuracy (augmented training data): {100 * acc_augmented:.1f}%")
 ```
 
-    Test Accuracy (original training data): 92.0%
-    Test Accuracy (augmented training data): 92.8%
+    Test Accuracy (original training data): 86.0%
+    Test Accuracy (augmented training data): 91.6%
 
 
 So using the augmented dataset indeed improved our model!
 There is a lot more you can do with data augmentation, so try a few ideas
-our on your own!
+out on your own!

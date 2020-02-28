@@ -13,14 +13,17 @@ github_link: https://github.com/snorkel-team/snorkel-tutorials/blob/master/spam/
 In this tutorial, we will walk through the process of using Snorkel to build a training set for classifying YouTube comments as spam or not spam.
 The goal of this tutorial is to illustrate the basic components and concepts of Snorkel in a simple way, but also to dive into the actual process of iteratively developing real applications in Snorkel.
 
+**Note that this is a toy dataset that helps highlight the different features of Snorkel. For examples of high-performance, real-world uses of Snorkel, see [our publications list](https://www.snorkel.org/resources/).**
+
+Additionally:
 * For an overview of Snorkel, visit [snorkel.org](https://snorkel.org)
 * You can also check out the [Snorkel API documentation](https://snorkel.readthedocs.io/)
 
 Our goal is to train a classifier over the comment data that can predict whether a comment is spam or not spam.
 We have access to a large amount of *unlabeled data* in the form of YouTube comments with some metadata.
-In order to train a classifier, we need to label our data, but doing so by hand for real world applications can be prohibitively slow and expensive, often taking person-weeks or months.
+In order to train a classifier, we need to label our data, but doing so by hand for real world applications can often be prohibitively slow and expensive.
 
-We therefore turn to weak supervision using **_labeling functions (LFs)_**: noisy, programmatic rules and heuristics that assign labels to unlabeled training data.
+In these cases, we can turn to a _weak supervision_ approach, using **_labeling functions (LFs)_** in Snorkel: noisy, programmatic rules and heuristics that assign labels to unlabeled training data.
 We'll dive into the Snorkel API and how we write labeling functions later in this tutorial, but as an example,
 we can write an LF that labels data points with `"http"` in the comment text as spam since many spam
 comments contain links:
@@ -39,7 +42,7 @@ The tutorial is divided into four parts:
 
 2. **Writing Labeling Functions**: We write Python programs that take as input a data point and assign labels (or abstain) using heuristics, pattern matching, and third-party models.
 
-3. **Combining Labeling Function Outputs with the Label Model**: We use the outputs of the labeling functions over the training set as input to the label model, which assigns probabilistic labels to the training set.
+3. **Combining Labeling Function Outputs with the Label Model**: We model the outputs of the labeling functions over the training set using a novel, theoretically-grounded [modeling approach](https://arxiv.org/abs/1605.07723), which estimates the accuracies and correlations of the labeling functions using only their agreements and disagreements, and then uses this to reweight and combine their outputs, which we then use as _probabilistic_ training labels.
 
 4. **Training a Classifier**: We train a classifier that can predict labels for *any* YouTube comment (not just the ones labeled by the labeling functions) using the probabilistic training labels from step 3.
 
@@ -68,21 +71,16 @@ and these are `HAM`:
 
 ### Data Splits in Snorkel
 
-We split our data into 4 sets:
-* **Training Set**: The largest split of the dataset, and the one without ground truth ("gold") labels.
+We split our data into two sets:
+* **Training Set**: The largest split of the dataset, and the one without any ground truth ("gold") labels.
 We will generate labels for these data points with weak supervision.
-* \[Optional\] **Development Set**: A small labeled subset of the training data (e.g. 100 points) to guide LF development. See note below.
-* **Validation Set**: A small labeled set used to tune hyperparameters while training the classifier.
-* **Test Set**: A labeled set for final evaluation of our classifier. This set should only be used for final evaluation, _not_ error analysis.
+* **Test Set**: A small, standard held-out blind hand-labeled set for final evaluation of our classifier. This set should only be used for final evaluation, _not_ error analysis.
 
-
-While it is possible to develop labeling functions on the unlabeled training set only, users often find it more time-efficient to label a small dev set to provide a quick approximate signal on the accuracies and failure modes of their LFs (rather than scrolling through training data points and mentally assessing approximate accuracy).
-Alternatively, users sometimes will have the validation set also serve as the development set.
-Do the latter only with caution: because the labeling functions will be based on data points from the validation set, the validation set will no longer be an unbiased proxy for the test set.
+Note that in more advanced production settings, we will often further split up the available hand-labeled data into a _development split_, for getting ideas to write labeling functions, and a _validation split_ for e.g. checking our performance without looking at test set scores, hyperparameter tuning, etc.  These splits are used in some of the other advanced tutorials, but omitted for simplicity here.
 
 ## 1. Loading Data
 
-We load the YouTube comments dataset and create Pandas DataFrame objects for the train, validation, and test sets.
+We load the YouTube comments dataset and create Pandas DataFrame objects for the train and test sets.
 DataFrames are extremely popular in Python data analysis workloads, and Snorkel provides native support
 for several DataFrame-like data structures, including Pandas, Dask, and PySpark.
 For more information on working with Pandas DataFrames, see the [Pandas DataFrame guide](https://pandas.pydata.org/pandas-docs/stable/getting_started/dsintro.html).
@@ -98,105 +96,19 @@ We start by loading our data.
 The `load_spam_dataset()` method downloads the raw CSV files from the internet, divides them into splits, converts them into DataFrames, and shuffles them.
 As mentioned above, the dataset contains comments from 5 of the most popular YouTube videos during a period between 2014 and 2015.
 * The first four videos' comments are combined to form the `train` set. This set has no gold labels.
-* The `dev` set is a random sample of 200 data points from the `train` set with gold labels added.
-* The fifth video is split 50/50 between a validation set (`valid`) and `test` set.
+* The fifth video is part of the `test` set.
 
 
 ```python
 from utils import load_spam_dataset
 
-df_train, df_dev, df_valid, df_test = load_spam_dataset()
+df_train, df_test = load_spam_dataset()
 
 # We pull out the label vectors for ease of use later
-Y_dev = df_dev.label.values
-Y_valid = df_valid.label.values
 Y_test = df_test.label.values
 ```
 
-Let's view 5 data points from the `dev` set.
-
-
-```python
-df_dev.sample(5, random_state=3)
-```
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>author</th>
-      <th>date</th>
-      <th>text</th>
-      <th>label</th>
-      <th>video</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>128</th>
-      <td>Pepe The Meme King</td>
-      <td>2015-05-19T03:49:29.427000</td>
-      <td>everyday I&amp;#39;m shufflin﻿</td>
-      <td>0</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>151</th>
-      <td>Melissa Erhart</td>
-      <td>NaN</td>
-      <td>Check out this playlist on YouTube:chcfcvzfzfb...</td>
-      <td>1</td>
-      <td>4</td>
-    </tr>
-    <tr>
-      <th>31</th>
-      <td>Angel</td>
-      <td>2014-11-02T17:27:09</td>
-      <td>Hi there~I'm group leader of Angel, a rookie K...</td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>29</th>
-      <td>Sandeep Singh</td>
-      <td>2015-05-23T17:51:58.957000</td>
-      <td>Charlie from LOST﻿</td>
-      <td>0</td>
-      <td>4</td>
-    </tr>
-    <tr>
-      <th>237</th>
-      <td>BigBird Larry</td>
-      <td>2015-05-24T09:48:00.835000</td>
-      <td>Every single one of his songs brings me back t...</td>
-      <td>0</td>
-      <td>4</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
 The class distribution varies slightly between `SPAM` and `HAM`, but they're approximately class-balanced.
-You can verify this by looking at the `dev` set labels.
 
 
 ```python
@@ -204,12 +116,7 @@ You can verify this by looking at the `dev` set labels.
 ABSTAIN = -1
 HAM = 0
 SPAM = 1
-
-print(f"Dev SPAM frequency: {100 * (df_dev.label.values == SPAM).mean():.1f}%")
 ```
-
-    Dev SPAM frequency: 54.0%
-
 
 ## 2. Writing Labeling Functions (LFs)
 
@@ -244,7 +151,7 @@ Using this model, we can make predictions for data points that our LFs don't cov
 
 We'll walk through the development of two LFs using basic analysis tools in Snorkel, then provide a full set of LFs that we developed for this tutorial.
 
-### a) Exploring the development set for initial ideas
+### a) Exploring the training set for initial ideas
 
 We'll start by looking at 20 random data points from the `train` set to generate some ideas for LFs.
 
@@ -406,7 +313,7 @@ df_train[["author", "text", "video"]].sample(20, random_state=2)
 
 
 
-One dominant pattern in the comments that look like spam is the use of the phrase "check out" (e.g. "check out my channel").
+One dominant pattern in the comments that look like spam (which we might know from prior domain experience, or from inspection of a few training data points) is the use of the phrase "check out" (e.g. "check out my channel").
 Let's start with that.
 
 ### b) Writing an LF to identify spammy comments that use the phrase "check out"
@@ -445,7 +352,7 @@ Snorkel has several other appliers for different data point collection types whi
 
 The output of the `apply(...)` method is a ***label matrix***, a fundamental concept in Snorkel.
 It's a NumPy array `L` with one column for each LF and one row for each data point, where `L[i, j]` is the label that the `j`th labeling function output for the `i`th data point.
-We'll create one label matrix for the `train` set and one for the `dev` set.
+We'll create a label matrix for the `train` set.
 
 
 ```python
@@ -455,7 +362,6 @@ lfs = [check_out, check]
 
 applier = PandasLFApplier(lfs=lfs)
 L_train = applier.apply(df=df_train)
-L_dev = applier.apply(df=df_dev)
 ```
 
 
@@ -476,7 +382,7 @@ L_train
 
 
 
-### c) Evaluate performance on training and development sets
+### c) Evaluate performance on training set
 
 We can easily calculate the coverage of these LFs (i.e., the percentage of the dataset that they label) as follows:
 
@@ -506,7 +412,7 @@ We report the following summary statistics for multiple LFs at once:
 
 For *Correct*, *Incorrect*, and *Empirical Accuracy*, we don't want to penalize the LF for data points where it abstained.
 We calculate these statistics only over those data points where the LF output a label.
-Since we have labels for the `dev` set but not the `train` set, we'll compute these statistics for the `dev` set only by supplying `Y_dev`.
+**Note that in our current setup, we can't compute these statistics because we don't have any ground-truth labels (other than in the test set, which we cannot look at). Not to worry—Snorkel's `LabelModel` will estimate them without needing any ground-truth labels in the next step!**
 
 
 ```python
@@ -566,132 +472,7 @@ LFAnalysis(L=L_train, lfs=lfs).lf_summary()
 
 
 
-
-```python
-LFAnalysis(L=L_dev, lfs=lfs).lf_summary(Y=Y_dev)
-```
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>j</th>
-      <th>Polarity</th>
-      <th>Coverage</th>
-      <th>Overlaps</th>
-      <th>Conflicts</th>
-      <th>Correct</th>
-      <th>Incorrect</th>
-      <th>Emp. Acc.</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>check_out</th>
-      <td>0</td>
-      <td>[1]</td>
-      <td>0.22</td>
-      <td>0.22</td>
-      <td>0.0</td>
-      <td>22</td>
-      <td>0</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>check</th>
-      <td>1</td>
-      <td>[1]</td>
-      <td>0.30</td>
-      <td>0.22</td>
-      <td>0.0</td>
-      <td>29</td>
-      <td>1</td>
-      <td>0.966667</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
-So even these very simple rules do quite well!
-We might want to pick the `check` rule, since both have high precision and `check` has higher coverage.
-But let's look at our data to be sure.
-
-The helper method `get_label_buckets(...)` groups data points by their predicted label and true label.
-For example, we can find the indices of data points that the LF labeled `SPAM` that actually belong to class `HAM`.
-This may give ideas for where the LF could be made more specific.
-
-
-```python
-from snorkel.analysis import get_label_buckets
-
-buckets = get_label_buckets(Y_dev, L_dev[:, 1])
-df_dev.iloc[buckets[(HAM, SPAM)]]
-```
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>author</th>
-      <th>date</th>
-      <th>text</th>
-      <th>label</th>
-      <th>video</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>260</th>
-      <td>Eanna Cusack</td>
-      <td>2014-01-20T22:20:59</td>
-      <td>Im just to check how much views it has﻿</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
-There's only one row here because `check` produced only one false positive on the `dev` set.
-Now let's take a look at 10 random `train` set data points where `check` labeled `SPAM` to see if it matches our intuition or if we can identify some false positives.
+We might want to pick the `check` rule, since `check` has higher coverage. Let's take a look at 10 random `train` set data points where `check` labeled `SPAM` to see if it matches our intuition or if we can identify some false positives.
 
 
 ```python
@@ -814,10 +595,13 @@ df_train.iloc[L_train[:, 1] == SPAM].sample(10, random_state=1)
 
 
 No clear false positives here, but many look like they could be labeled by `check_out` as well.
-Let's see 10 data points where `check_out` abstained, but `check` labeled.
+
+Let's see 10 data points where `check_out` abstained, but `check` labeled. We can use the`get_label_buckets(...)` to group data points by their predicted label and/or true labels.
 
 
 ```python
+from snorkel.analysis import get_label_buckets
+
 buckets = get_label_buckets(L_train[:, 0], L_train[:, 1])
 df_train.iloc[buckets[(ABSTAIN, SPAM)]].sample(10, random_state=1)
 ```
@@ -962,7 +746,6 @@ lfs = [check_out, check, regex_check_out]
 
 applier = PandasLFApplier(lfs=lfs)
 L_train = applier.apply(df=df_train)
-L_dev = applier.apply(df=df_dev)
 ```
 
 
@@ -1029,134 +812,8 @@ LFAnalysis(L=L_train, lfs=lfs).lf_summary()
 
 
 
-
-```python
-LFAnalysis(L_dev, lfs).lf_summary(Y=Y_dev)
-```
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>j</th>
-      <th>Polarity</th>
-      <th>Coverage</th>
-      <th>Overlaps</th>
-      <th>Conflicts</th>
-      <th>Correct</th>
-      <th>Incorrect</th>
-      <th>Emp. Acc.</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>check_out</th>
-      <td>0</td>
-      <td>[1]</td>
-      <td>0.22</td>
-      <td>0.22</td>
-      <td>0.0</td>
-      <td>22</td>
-      <td>0</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>check</th>
-      <td>1</td>
-      <td>[1]</td>
-      <td>0.30</td>
-      <td>0.29</td>
-      <td>0.0</td>
-      <td>29</td>
-      <td>1</td>
-      <td>0.966667</td>
-    </tr>
-    <tr>
-      <th>regex_check_out</th>
-      <td>2</td>
-      <td>[1]</td>
-      <td>0.29</td>
-      <td>0.29</td>
-      <td>0.0</td>
-      <td>29</td>
-      <td>0</td>
-      <td>1.000000</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
-We've split the difference in `train` set coverage, and increased our accuracy on the `dev` set to 100%!
-This looks promising.
+We've split the difference in `train` set coverage—this looks promising!
 Let's verify that we corrected our false positive from before.
-
-
-```python
-buckets = get_label_buckets(L_dev[:, 1], L_dev[:, 2])
-df_dev.iloc[buckets[(SPAM, ABSTAIN)]]
-```
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>author</th>
-      <th>date</th>
-      <th>text</th>
-      <th>label</th>
-      <th>video</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>260</th>
-      <td>Eanna Cusack</td>
-      <td>2014-01-20T22:20:59</td>
-      <td>Im just to check how much views it has﻿</td>
-      <td>0</td>
-      <td>1</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
 
 To understand the coverage difference between `check` and `regex_check_out`, let's take a look at 10 data points from the `train` set.
 Remember: coverage isn't always good.
@@ -1291,7 +948,7 @@ Most of these are SPAM, but a good number are false positives.
 The LF interface is extremely flexible, and can wrap existing models.
 A common technique is to use a commodity model trained for other tasks that are related to, but not the same as, the one we care about.
 
-For example, the [TextBlob](https://textblob.readthedocs.io/en/dev/index.html) tool provides a pretrained sentiment analyzer. Our spam classification task is not the same as sentiment classification, but it turns out that `SPAM` and `HAM` comments have different distributions of sentiment scores.
+For example, the [TextBlob](https://textblob.readthedocs.io/en/dev/index.html) tool provides a pretrained sentiment analyzer. Our spam classification task is not the same as sentiment classification, but we may believe that `SPAM` and `HAM` comments have different distributions of sentiment scores.
 We'll focus on writing LFs for `HAM`, since we identified `SPAM` comments above.
 
 **A brief intro to `Preprocessor`s**
@@ -1320,8 +977,7 @@ def textblob_sentiment(x):
     return x
 ```
 
-We'll have to tune the output of our LFs based on the TextBlob scores.
-Tuning input parameters or thresholds from model outputs is a common practice in developing LFs.
+We can now pick a reasonable threshold and write a corresponding labeling function (note that it doesn't have to be perfect as the `LabelModel` will soon help us estimate each labeling function's accuracy and reweight their outputs accordingly):
 
 
 ```python
@@ -1330,8 +986,8 @@ def textblob_polarity(x):
     return HAM if x.polarity > 0.9 else ABSTAIN
 ```
 
-It looks like subjectivity scores above 0.5 will work pretty well for identifying `HAM` comments, though not perfectly.
-We'll rely on our label model to learn that this is a lower accuracy rule.
+Let's do the same for the subjectivity scores.
+This will run faster than the last cell, since we memoized the `Preprocessor` outputs.
 
 
 ```python
@@ -1348,7 +1004,6 @@ lfs = [textblob_polarity, textblob_subjectivity]
 
 applier = PandasLFApplier(lfs)
 L_train = applier.apply(df_train)
-L_dev = applier.apply(df_dev)
 ```
 
 
@@ -1407,79 +1062,14 @@ LFAnalysis(L_train, lfs).lf_summary()
 
 
 
-
-```python
-LFAnalysis(L_dev, lfs).lf_summary(Y=Y_dev)
-```
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>j</th>
-      <th>Polarity</th>
-      <th>Coverage</th>
-      <th>Overlaps</th>
-      <th>Conflicts</th>
-      <th>Correct</th>
-      <th>Incorrect</th>
-      <th>Emp. Acc.</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>textblob_polarity</th>
-      <td>0</td>
-      <td>[0]</td>
-      <td>0.05</td>
-      <td>0.02</td>
-      <td>0.0</td>
-      <td>4</td>
-      <td>1</td>
-      <td>0.800000</td>
-    </tr>
-    <tr>
-      <th>textblob_subjectivity</th>
-      <td>1</td>
-      <td>[0]</td>
-      <td>0.41</td>
-      <td>0.02</td>
-      <td>0.0</td>
-      <td>24</td>
-      <td>17</td>
-      <td>0.585366</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
-Again, these LFs aren't perfect, so we'll rely on our label model to denoise and resolve their outputs.
+**Again, these LFs aren't perfect—note that the `textblob_subjectivity` LF has fairly high coverage and could have a high rate of false positives. We'll rely on Snorkel's `LabelModel` to estimate the labeling function accuracies and reweight and combine their outputs accordingly.**
 
 ## 3. Writing More Labeling Functions
 
 If a single LF had high enough coverage to label our entire test dataset accurately, then we wouldn't need a classifier at all.
 We could just use that single simple heuristic to complete the task.
 But most problems are not that simple.
-Instead, we usually need to **combine multiple LFs** to label our dataset, both to increase the size of the generated training set (since we can't generate training labels for data points that all LFs abstained on) and to improve the overall accuracy of the training labels we generate by factoring in multiple different signals.
+Instead, we usually need to **combine multiple LFs** to label our dataset, both to increase the size of the generated training set (since we can't generate training labels for data points that no LF voted on) and to improve the overall accuracy of the training labels we generate by factoring in multiple different signals.
 
 In the following sections, we'll show just a few of the many types of LFs that you could write to generate a training dataset for this problem.
 
@@ -1607,8 +1197,8 @@ The TextBlob-based LFs we created above are great examples of this!
 ## 4. Combining Labeling Function Outputs with the Label Model
 
 This tutorial demonstrates just a handful of the types of LFs that one might write for this task.
-Many of these are no doubt suboptimal.
-The strength of this approach, however, is that the LF abstraction provides a flexible interface for conveying a huge variety of supervision signals, and the `LabelModel` is able to denoise these signals, reducing the need for painstaking manual fine-tuning.
+One of the key goals of Snorkel is _not_ to replace the effort, creativity, and subject matter expertise required to come up with these labeling functions, but rather to make it faster to write them, since **in Snorkel the labeling functions are assumed to be noisy, i.e. innaccurate, overlapping, etc.**
+Said another way: the LF abstraction provides a flexible interface for conveying a huge variety of supervision signals, and the `LabelModel` is able to denoise these signals, reducing the need for painstaking manual fine-tuning.
 
 
 ```python
@@ -1626,11 +1216,8 @@ lfs = [
 ]
 ```
 
-With our full set of LFs, we can now apply these once again with `LFApplier` to get our the label matrices for the `train` and `dev` splits.
-We'll use the `train` split's label matrix to generate training labels with the Label Model.
-The `dev` split's label model is primarily helpful for looking at summary statistics.
-
-The Pandas format provides an easy interface that many practioners are familiar with, but it is also less optimized for scale.
+With our full set of LFs, we can now apply these once again with `LFApplier` to get the label matrices.
+The Pandas format provides an easy interface that many practitioners are familiar with, but it is also less optimized for scale.
 For larger datasets, more compute-intensive LFs, or larger LF sets, you may decide to use one of the other data formats
 that Snorkel supports natively, such as Dask DataFrames or PySpark DataFrames, and their corresponding applier objects.
 For more info, check out the [Snorkel API documentation](https://snorkel.readthedocs.io/en/master/packages/labeling.html).
@@ -1639,13 +1226,12 @@ For more info, check out the [Snorkel API documentation](https://snorkel.readthe
 ```python
 applier = PandasLFApplier(lfs=lfs)
 L_train = applier.apply(df=df_train)
-L_dev = applier.apply(df=df_dev)
-L_valid = applier.apply(df=df_valid)
+L_test = applier.apply(df=df_test)
 ```
 
 
 ```python
-LFAnalysis(L=L_dev, lfs=lfs).lf_summary(Y=Y_dev)
+LFAnalysis(L=L_train, lfs=lfs).lf_summary()
 ```
 
 
@@ -1674,9 +1260,6 @@ LFAnalysis(L=L_dev, lfs=lfs).lf_summary(Y=Y_dev)
       <th>Coverage</th>
       <th>Overlaps</th>
       <th>Conflicts</th>
-      <th>Correct</th>
-      <th>Incorrect</th>
-      <th>Emp. Acc.</th>
     </tr>
   </thead>
   <tbody>
@@ -1684,111 +1267,81 @@ LFAnalysis(L=L_dev, lfs=lfs).lf_summary(Y=Y_dev)
       <th>keyword_my</th>
       <td>0</td>
       <td>[1]</td>
-      <td>0.22</td>
-      <td>0.22</td>
-      <td>0.14</td>
-      <td>19</td>
-      <td>3</td>
-      <td>0.863636</td>
+      <td>0.198613</td>
+      <td>0.185372</td>
+      <td>0.109710</td>
     </tr>
     <tr>
       <th>keyword_subscribe</th>
       <td>1</td>
       <td>[1]</td>
-      <td>0.14</td>
-      <td>0.12</td>
-      <td>0.06</td>
-      <td>14</td>
-      <td>0</td>
-      <td>1.000000</td>
+      <td>0.127364</td>
+      <td>0.108449</td>
+      <td>0.068726</td>
     </tr>
     <tr>
       <th>keyword_http</th>
       <td>2</td>
       <td>[1]</td>
-      <td>0.10</td>
-      <td>0.08</td>
-      <td>0.07</td>
-      <td>10</td>
-      <td>0</td>
-      <td>1.000000</td>
+      <td>0.119168</td>
+      <td>0.100252</td>
+      <td>0.080706</td>
     </tr>
     <tr>
       <th>keyword_please</th>
       <td>3</td>
       <td>[1]</td>
-      <td>0.10</td>
-      <td>0.10</td>
-      <td>0.06</td>
-      <td>10</td>
-      <td>0</td>
-      <td>1.000000</td>
+      <td>0.112232</td>
+      <td>0.109710</td>
+      <td>0.056747</td>
     </tr>
     <tr>
       <th>keyword_song</th>
       <td>4</td>
       <td>[0]</td>
-      <td>0.16</td>
-      <td>0.12</td>
-      <td>0.06</td>
-      <td>11</td>
-      <td>5</td>
-      <td>0.687500</td>
+      <td>0.141866</td>
+      <td>0.109710</td>
+      <td>0.043506</td>
     </tr>
     <tr>
       <th>regex_check_out</th>
       <td>5</td>
       <td>[1]</td>
-      <td>0.29</td>
-      <td>0.22</td>
-      <td>0.17</td>
-      <td>29</td>
-      <td>0</td>
-      <td>1.000000</td>
+      <td>0.233922</td>
+      <td>0.133039</td>
+      <td>0.087011</td>
     </tr>
     <tr>
       <th>short_comment</th>
       <td>6</td>
       <td>[0]</td>
-      <td>0.28</td>
-      <td>0.20</td>
-      <td>0.07</td>
-      <td>19</td>
-      <td>9</td>
-      <td>0.678571</td>
+      <td>0.225725</td>
+      <td>0.145019</td>
+      <td>0.074401</td>
     </tr>
     <tr>
       <th>has_person_nlp</th>
       <td>7</td>
       <td>[0]</td>
-      <td>0.15</td>
-      <td>0.13</td>
-      <td>0.04</td>
-      <td>10</td>
-      <td>5</td>
-      <td>0.666667</td>
+      <td>0.071879</td>
+      <td>0.056747</td>
+      <td>0.030895</td>
     </tr>
     <tr>
       <th>textblob_polarity</th>
       <td>8</td>
       <td>[0]</td>
-      <td>0.05</td>
-      <td>0.05</td>
-      <td>0.01</td>
-      <td>4</td>
-      <td>1</td>
-      <td>0.800000</td>
+      <td>0.035309</td>
+      <td>0.032156</td>
+      <td>0.005044</td>
     </tr>
     <tr>
       <th>textblob_subjectivity</th>
       <td>9</td>
       <td>[0]</td>
-      <td>0.41</td>
-      <td>0.34</td>
-      <td>0.20</td>
-      <td>24</td>
-      <td>17</td>
-      <td>0.585366</td>
+      <td>0.357503</td>
+      <td>0.252837</td>
+      <td>0.160151</td>
     </tr>
   </tbody>
 </table>
@@ -1821,7 +1374,7 @@ preds_train
 
 
 
-However, as we can clearly see by looking the summary statistics of our LFs in the previous section, they are not all equally accurate, and should not be treated identically. In addition to having varied accuracies and coverages, LFs may be correlated, resulting in certain signals being overrepresented in a majority-vote-based model. To handle these issues appropriately, we will instead use a more sophisticated Snorkel `LabelModel` to combine the outputs of the LFs.
+However, as we can see from the summary statistics of our LFs in the previous section, they have varying properties and should not be treated identically. In addition to having varied accuracies and coverages, LFs may be correlated, resulting in certain signals being overrepresented in a majority-vote-based model. To handle these issues appropriately, we will instead use a more sophisticated Snorkel `LabelModel` to combine the outputs of the LFs.
 
 This model will ultimately produce a single set of noise-aware training labels, which are probabilistic or confidence-weighted labels. We will then use these labels to train a classifier for our task. For more technical details of this overall approach, see our [NeurIPS 2016](https://arxiv.org/abs/1605.07723) and [AAAI 2019](https://arxiv.org/abs/1810.02840) papers. For more info on the API, see the [`LabelModel` documentation](https://snorkel.readthedocs.io/en/master/packages/_autosummary/labeling/snorkel.labeling.LabelModel.html#snorkel.labeling.LabelModel).
 
@@ -1829,118 +1382,30 @@ Note that no gold labels are used during the training process.
 The only information we need is the label matrix, which contains the output of the LFs on our training set.
 The `LabelModel` is able to learn weights for the labeling functions using only the label matrix as input.
 We also specify the `cardinality`, or number of classes.
-The `LabelModel` trains much more quickly than typical discriminative models since we only need the label matrix as input.
 
 
 ```python
 from snorkel.labeling import LabelModel
 
 label_model = LabelModel(cardinality=2, verbose=True)
-label_model.fit(L_train=L_train, n_epochs=500, lr=0.001, log_freq=100, seed=123)
-```
+label_model.fit(L_train=L_train, n_epochs=500, log_freq=100, seed=123)
 
-
-```python
-majority_acc = majority_model.score(L=L_valid, Y=Y_valid, tie_break_policy="random")[
+majority_acc = majority_model.score(L=L_test, Y=Y_test, tie_break_policy="random")[
     "accuracy"
 ]
 print(f"{'Majority Vote Accuracy:':<25} {majority_acc * 100:.1f}%")
 
-label_model_acc = label_model.score(L=L_valid, Y=Y_valid, tie_break_policy="random")[
+label_model_acc = label_model.score(L=L_test, Y=Y_test, tie_break_policy="random")[
     "accuracy"
 ]
 print(f"{'Label Model Accuracy:':<25} {label_model_acc * 100:.1f}%")
 ```
 
-    Majority Vote Accuracy:   84.2%
-    Label Model Accuracy:     88.3%
-
-
-So our `LabelModel` improves over the majority vote baseline!
-However, it is typically **not suitable as an inference-time model** to make predictions for unseen data points, due to (among other things) some data points having all abstain labels.
-In the next section, we will use the output of the label model as  training labels to train a
-discriminative classifier to see if we can improve performance further.
-This classifier will only need the text of the comment to make predictions, making it much more suitable
-for inference over unseen comments.
-For more information on the properties of the label model and when to use it, see the [Snorkel guides]().
-
-We can also run error analysis after the label model has been trained.
-For example, let's take a look at 5 random false negatives from the `dev` set, which might inspire some more LFs that vote `SPAM`.
-
-
-```python
-probs_dev = majority_model.predict_proba(L=L_dev)
-preds_dev = probs_dev >= 0.5
-buckets = get_label_buckets(Y_dev, preds_dev[:, 1])
-
-df_fn_dev = df_dev[["text", "label"]].iloc[buckets[(SPAM, HAM)]]
-df_fn_dev["probability"] = probs_dev[buckets[(SPAM, HAM)], 1]
-
-df_fn_dev.sample(5, random_state=3)
-```
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>text</th>
-      <th>label</th>
-      <th>probability</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>195</th>
-      <td>Check Out The New Hot Video By Dante B Called ...</td>
-      <td>1</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>334</th>
-      <td>Check out Em&amp;#39;s dope new song monster here:...</td>
-      <td>1</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>431</th>
-      <td>CHECK OUT Eminem - Rap God LYRIC VIDEO</td>
-      <td>1</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>313</th>
-      <td>Aslamu Lykum... From Pakistan﻿</td>
-      <td>1</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>189</th>
-      <td>/watch?v=aImbWbfQbzg watch and subscrible</td>
-      <td>1</td>
-      <td>0.0</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
+The majority vote model or more sophisticated `LabelModel` could in principle be used directly as a classifier if the outputs of our labeling functions were made available at test time.
+However, these models (i.e. these re-weighted combinations of our labeling function's votes) will abstain on the data points that our labeling functions don't cover (and additionally, may require slow or unavailable features to execute at test time).
+In the next section, we will instead use the outputs of the `LabelModel` as training labels to train a discriminative classifier **which can generalize beyond the labeling function outputs** to see if we can improve performance further.
+This classifier will also only need the text of the comment to make predictions, making it much more suitable for inference over unseen comments.
+For more information on the properties of the label model, see the [Snorkel documentation](https://snorkel.readthedocs.io/en/master/packages/_autosummary/labeling/snorkel.labeling.LabelModel.html#snorkel.labeling.LabelModel).
 
 ### Filtering out unlabeled data points
 
@@ -1959,9 +1424,10 @@ df_train_filtered, probs_train_filtered = filter_unlabeled_dataframe(
 
 ## 5. Training a Classifier
 
-In this final section of the tutorial, we'll use the noisy training labels we generated in the last section to train a classifier for our task.
+In this final section of the tutorial, we'll use the probabilistic training labels we generated in the last section to train a classifier for our task.
 **The output of the Snorkel `LabelModel` is just a set of labels which can be used with most popular libraries for performing supervised learning, such as TensorFlow, Keras, PyTorch, Scikit-Learn, Ludwig, and XGBoost.**
-In this tutorial, we demonstrate using classifiers from [Keras](https://keras.io) and [Scikit-Learn](https://scikit-learn.org).
+In this tutorial, we use the well-known library [Scikit-Learn](https://scikit-learn.org).
+**Note that typically, Snorkel is used (and really shines!) with much more complex, training data-hungry models, but we will use Logistic Regression here for simplicity of exposition.**
 
 ### Featurization
 
@@ -1971,88 +1437,20 @@ For simplicity and speed, we use a simple "bag of n-grams" feature representatio
 ```python
 from sklearn.feature_extraction.text import CountVectorizer
 
-vectorizer = CountVectorizer(ngram_range=(1, 2))
+vectorizer = CountVectorizer(ngram_range=(1, 5))
 X_train = vectorizer.fit_transform(df_train_filtered.text.tolist())
-
-X_dev = vectorizer.transform(df_dev.text.tolist())
-X_valid = vectorizer.transform(df_valid.text.tolist())
 X_test = vectorizer.transform(df_test.text.tolist())
 ```
 
-### Keras Classifier with Probabilistic Labels
+### Scikit-Learn Classifier
 
-We'll use Keras, a popular high-level API for building models in TensorFlow, to build a simple logistic regression classifier.
-We compile it with a `categorical_crossentropy` loss so that it can handle probabilistic labels instead of integer labels.
-Using a _noise-aware loss_ &mdash; one that uses probabilistic labels &mdash; for our discriminative model lets
-us take full advantage of the label model's learning procedure (see our [NeurIPS 2016 paper](https://arxiv.org/abs/1605.07723)).
-We use the common settings of an `Adam` optimizer and early stopping (evaluating the model on the validation set after each epoch and reloading the weights from when it achieved the best score).
-For more information on Keras, see the [Keras documentation](https://keras.io/).
+As we saw in Section 4, the `LabelModel` outputs probabilistic (float) labels.
+If the classifier we are training accepts target labels as floats, we can train on these labels directly (see describe the properties of this type of "noise-aware" loss in our [NeurIPS 2016 paper](https://arxiv.org/abs/1605.07723)).
 
-
-```python
-from snorkel.analysis import metric_score
-from snorkel.utils import preds_to_probs
-from utils import get_keras_logreg, get_keras_early_stopping
-
-# Define a vanilla logistic regression model with Keras
-keras_model = get_keras_logreg(input_dim=X_train.shape[1])
-
-keras_model.fit(
-    x=X_train,
-    y=probs_train_filtered,
-    validation_data=(X_valid, preds_to_probs(Y_valid, 2)),
-    callbacks=[get_keras_early_stopping()],
-    epochs=50,
-    verbose=0,
-)
-```
-
-
-```python
-preds_test = keras_model.predict(x=X_test).argmax(axis=1)
-test_acc = metric_score(golds=Y_test, preds=preds_test, metric="accuracy")
-print(f"Test Accuracy: {test_acc * 100:.1f}%")
-```
-
-    Test Accuracy: 90.0%
-
-
-**We observe an additional boost in accuracy over the `LabelModel` by multiple points! This is in part because the discriminative model makes good predictions on all data points, not just the ones covered by labeling functions.
-By using the label model to transfer the domain knowledge encoded in our LFs to the discriminative model,
-we were able to generalize beyond the noisy labeling heuristics**.
-
-We can compare this to the score we could have gotten if we had used our small labeled `dev` set directly as training data instead of using it to guide the creation of LFs.
-
-
-```python
-keras_dev_model = get_keras_logreg(input_dim=X_train.shape[1], output_dim=1)
-
-keras_dev_model.fit(
-    x=X_dev,
-    y=Y_dev,
-    validation_data=(X_valid, Y_valid),
-    callbacks=[get_keras_early_stopping()],
-    epochs=50,
-    verbose=0,
-)
-```
-
-
-```python
-preds_test_dev = np.round(keras_dev_model.predict(x=X_test))
-test_acc = metric_score(golds=Y_test, preds=preds_test_dev, metric="accuracy")
-print(f"Test Accuracy: {test_acc * 100:.1f}%")
-```
-
-    Test Accuracy: 89.6%
-
-
-### Scikit-Learn with Rounded Labels
-
-If we want to use a library or model that doesn't accept probabilistic labels, we can replace each label distribution with the label of the class that has the maximum probability.
+If we want to use a library or model that doesn't accept probabilistic labels (such as Scikit-Learn), we can instead replace each label distribution with the label of the class that has the maximum probability.
 This can easily be done using the
 [`probs_to_preds` helper method](https://snorkel.readthedocs.io/en/master/packages/_autosummary/utils/snorkel.utils.probs_to_preds.html#snorkel.utils.probs_to_preds).
-It's important to note that this transformation is lossy, as we no longer have values for our confidence in each label.
+We do note, however, that this transformation is lossy, as we no longer have values for our confidence in each label.
 
 
 ```python
@@ -2061,13 +1459,13 @@ from snorkel.utils import probs_to_preds
 preds_train_filtered = probs_to_preds(probs=probs_train_filtered)
 ```
 
-For example, this allows us to use standard models from Scikit-Learn.
+We then use these labels to train a classifier as usual.
 
 
 ```python
 from sklearn.linear_model import LogisticRegression
 
-sklearn_model = LogisticRegression(C=0.001, solver="liblinear")
+sklearn_model = LogisticRegression(C=1e3, solver="liblinear")
 sklearn_model.fit(X=X_train, y=preds_train_filtered)
 ```
 
@@ -2076,8 +1474,12 @@ sklearn_model.fit(X=X_train, y=preds_train_filtered)
 print(f"Test Accuracy: {sklearn_model.score(X=X_test, y=Y_test) * 100:.1f}%")
 ```
 
-    Test Accuracy: 92.8%
+    Test Accuracy: 94.4%
 
+
+**We observe an additional boost in accuracy over the `LabelModel` by multiple points! This is in part because the discriminative model generalizes beyond the labeling function's labels and makes good predictions on all data points, not just the ones covered by labeling functions.
+By using the label model to transfer the domain knowledge encoded in our LFs to the discriminative model,
+we were able to generalize beyond the noisy labeling heuristics**.
 
 ## Summary
 

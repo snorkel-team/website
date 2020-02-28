@@ -27,7 +27,7 @@ SFs are intended to be used *after the training set has already been labeled* by
 ```python
 from utils import load_spam_dataset
 
-df_train, df_valid, df_test = load_spam_dataset(load_train_labels=True, split_dev=False)
+df_train, df_test = load_spam_dataset(load_train_labels=True)
 ```
 
 ## 1. Write slicing functions
@@ -35,11 +35,9 @@ df_train, df_valid, df_test = load_spam_dataset(load_train_labels=True, split_de
 We leverage *slicing functions* (SFs), which output binary _masks_ indicating whether an data point is in the slice or not.
 Each slice represents some noisily-defined subset of the data (corresponding to an SF) that we'd like to programmatically monitor.
 
-In the following cells, we use the [`@slicing_function()`](https://snorkel.readthedocs.io/en/master/packages/_autosummary/slicing/snorkel.slicing.slicing_function.html#snorkel.slicing.slicing_function) decorator to initialize an SF that identifies shortened links the spam dataset.
-These links could redirect us to potentially dangerous websites, and we don't want our users to click them!
-To select the subset of shortened links in our dataset, we write a regex that checks for the commonly-used `.ly` extension.
+In the following cells, we use the [`@slicing_function()`](https://snorkel.readthedocs.io/en/master/packages/_autosummary/slicing/snorkel.slicing.slicing_function.html#snorkel.slicing.slicing_function) decorator to initialize an SF that identifies short comments
 
-You'll notice that the `short_link` SF is a heuristic, like the other programmatic ops we've defined, and may not fully cover the slice of interest.
+You'll notice that the `short_comment` SF is a heuristic, like the other programmatic ops we've defined, and may not fully cover the slice of interest.
 That's okay — in last section, we'll show how a model can handle this in Snorkel.
 
 
@@ -49,12 +47,12 @@ from snorkel.slicing import slicing_function
 
 
 @slicing_function()
-def short_link(x):
-    """Returns whether text matches common pattern for shortened ".ly" links."""
-    return bool(re.search(r"\w+\.ly", x.text))
+def short_comment(x):
+    """Ham comments are often short, such as 'cool video!'"""
+    return len(x.text.split()) < 5
 
 
-sfs = [short_link]
+sfs = [short_comment]
 ```
 
 ### Visualize slices
@@ -65,12 +63,12 @@ With a utility function, [`slice_dataframe`](https://snorkel.readthedocs.io/en/m
 ```python
 from snorkel.slicing import slice_dataframe
 
-short_link_df = slice_dataframe(df_valid, short_link)
+short_comment_df = slice_dataframe(df_test, short_comment)
 ```
 
 
 ```python
-short_link_df[["text", "label"]]
+short_comment_df[["text", "label"]].head()
 ```
 
 
@@ -100,29 +98,29 @@ short_link_df[["text", "label"]]
   </thead>
   <tbody>
     <tr>
-      <th>280</th>
-      <td>Being paid to respond to fast paid surveys fro...</td>
+      <th>194</th>
+      <td>super music﻿</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>I like shakira..﻿</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>110</th>
+      <td>subscribe to my feed</td>
       <td>1</td>
     </tr>
     <tr>
-      <th>192</th>
-      <td>Meet The Richest Online Marketer  NOW CLICK : ...</td>
-      <td>1</td>
+      <th>263</th>
+      <td>Awesome ﻿</td>
+      <td>0</td>
     </tr>
     <tr>
-      <th>301</th>
-      <td>coby this USL and past :&lt;br /&gt;&lt;a href="http://...</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>350</th>
-      <td>adf.ly / KlD3Y</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>Earn money for being online with 0 efforts!   ...</td>
-      <td>1</td>
+      <th>77</th>
+      <td>Nice</td>
+      <td>0</td>
     </tr>
   </tbody>
 </table>
@@ -132,7 +130,7 @@ short_link_df[["text", "label"]]
 
 ## 2. Monitor slice performance with [`Scorer.score_slices`](https://snorkel.readthedocs.io/en/master/packages/_autosummary/analysis/snorkel.analysis.Scorer.html#snorkel.analysis.Scorer.score_slices)
 
-In this section, we'll demonstrate how we might monitor slice performance on the `short_link` slice — this approach is compatible with _any modeling framework_.
+In this section, we'll demonstrate how we might monitor slice performance on the `short_comment` slice — this approach is compatible with _any modeling framework_.
 
 ### Train a simple classifier
 First, we featurize the data — as you saw in the introductory Spam tutorial, we can extract simple bag-of-words features and store them as numpy arrays.
@@ -144,11 +142,10 @@ from utils import df_to_features
 
 vectorizer = CountVectorizer(ngram_range=(1, 1))
 X_train, Y_train = df_to_features(vectorizer, df_train, "train")
-X_valid, Y_valid = df_to_features(vectorizer, df_valid, "valid")
 X_test, Y_test = df_to_features(vectorizer, df_test, "test")
 ```
 
-We define a `LogisticRegression` model from `sklearn` and show how we might visualize these slice-specific scores.
+We define a `LogisticRegression` model from `sklearn`.
 
 
 ```python
@@ -156,10 +153,17 @@ from sklearn.linear_model import LogisticRegression
 
 sklearn_model = LogisticRegression(C=0.001, solver="liblinear")
 sklearn_model.fit(X=X_train, y=Y_train)
-print(f"Test set accuracy: {100 * sklearn_model.score(X_test, Y_test):.1f}%")
 ```
 
-    Test set accuracy: 92.8%
+
+
+
+    LogisticRegression(C=0.001, class_weight=None, dual=False, fit_intercept=True,
+                       intercept_scaling=1, l1_ratio=None, max_iter=100,
+                       multi_class='auto', n_jobs=None, penalty='l2',
+                       random_state=None, solver='liblinear', tol=0.0001, verbose=0,
+                       warm_start=False)
+
 
 
 
@@ -169,6 +173,16 @@ from snorkel.utils import preds_to_probs
 preds_test = sklearn_model.predict(X_test)
 probs_test = preds_to_probs(preds_test, 2)
 ```
+
+
+```python
+from sklearn.metrics import f1_score
+
+print(f"Test set F1: {100 * f1_score(Y_test, preds_test):.1f}%")
+```
+
+    Test set F1: 92.5%
+
 
 ### Store slice metadata in `S`
 
@@ -190,7 +204,7 @@ Now, we initialize a [`Scorer`](https://snorkel.readthedocs.io/en/master/package
 ```python
 from snorkel.analysis import Scorer
 
-scorer = Scorer(metrics=["accuracy", "f1"])
+scorer = Scorer(metrics=["f1"])
 ```
 
 Using the [`score_slices`](https://snorkel.readthedocs.io/en/master/packages/_autosummary/analysis/snorkel.analysis.Scorer.html#snorkel.analysis.Scorer.score_slices) method, we can see both `overall` and slice-specific performance.
@@ -223,20 +237,17 @@ scorer.score_slices(
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>accuracy</th>
       <th>f1</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>overall</th>
-      <td>0.928000</td>
-      <td>0.925</td>
+      <td>0.925000</td>
     </tr>
     <tr>
-      <th>short_link</th>
-      <td>0.333333</td>
-      <td>0.500</td>
+      <th>short_comment</th>
+      <td>0.666667</td>
     </tr>
   </tbody>
 </table>
@@ -244,7 +255,7 @@ scorer.score_slices(
 
 
 
-Despite high overall performance, the `short_link` slice performs poorly here!
+Despite high overall performance, the `short_comment` slice performs poorly here!
 
 ### Write additional slicing functions (SFs)
 
@@ -272,21 +283,19 @@ def make_keyword_sf(keywords):
     )
 
 
-keyword_subscribe = make_keyword_sf(keywords=["subscribe"])
 keyword_please = make_keyword_sf(keywords=["please", "plz"])
 
 
-# Regex-based SF
+# Regex-based SFs
 @slicing_function()
 def regex_check_out(x):
     return bool(re.search(r"check.*out", x.text, flags=re.I))
 
 
-# Heuristic-based SF
 @slicing_function()
-def short_comment(x):
-    """Ham comments are often short, such as 'cool video!'"""
-    return len(x.text.split()) < 5
+def short_link(x):
+    """Returns whether text matches common pattern for shortened ".ly" links."""
+    return bool(re.search(r"\w+\.ly", x.text))
 
 
 # Leverage preprocessor in SF
@@ -307,12 +316,12 @@ def textblob_polarity(x):
 
 Again, we'd like to visualize data points in a particular slice. This time, we'll inspect the `textblob_polarity` slice.
 
-Most data points with high-polarity sentiments are strong opinions about the video — hence, they are usually relevant to the video, and the corresponding labels are $0$.
+Most data points with high-polarity sentiments are strong opinions about the video — hence, they are usually relevant to the video, and the corresponding labels are $0$ (not spam).
 We might define a slice here for *product and marketing reasons*, it's important to make sure that we don't misclassify very positive comments from good users.
 
 
 ```python
-polarity_df = slice_dataframe(df_valid, textblob_polarity)
+polarity_df = slice_dataframe(df_test, textblob_polarity)
 ```
 
 
@@ -347,28 +356,28 @@ polarity_df[["text", "label"]].head()
   </thead>
   <tbody>
     <tr>
-      <th>16</th>
-      <td>Love this song !!!!!!</td>
+      <th>263</th>
+      <td>Awesome ﻿</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>309</th>
-      <td>One of the best song of all the time﻿</td>
+      <th>240</th>
+      <td>Shakira is the best dancer</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>164</th>
-      <td>She is perfect</td>
+      <th>261</th>
+      <td>OMG LISTEN TO THIS ITS SOO GOOD!! :D﻿</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>310</th>
-      <td>Best world cup offical song﻿</td>
+      <th>14</th>
+      <td>Shakira is very beautiful</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>352</th>
-      <td>I remember this :D</td>
+      <th>114</th>
+      <td>awesome</td>
       <td>0</td>
     </tr>
   </tbody>
@@ -381,19 +390,13 @@ We can evaluate performance on _all SFs_ using the model-agnostic [`Scorer`](htt
 
 
 ```python
-extra_sfs = [
-    keyword_subscribe,
-    keyword_please,
-    regex_check_out,
-    short_comment,
-    textblob_polarity,
-]
+extra_sfs = [keyword_please, regex_check_out, short_link, textblob_polarity]
 
-sfs = [short_link] + extra_sfs
+sfs = [short_comment] + extra_sfs
 slice_names = [sf.name for sf in sfs]
 ```
 
-Let's see how the `sklearn` model we learned before performs on these new slices!
+Let's see how the `sklearn` model we learned before performs on these new slices.
 
 
 ```python
@@ -429,44 +432,32 @@ scorer.score_slices(
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>accuracy</th>
       <th>f1</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>overall</th>
-      <td>0.928000</td>
       <td>0.925000</td>
     </tr>
     <tr>
-      <th>short_link</th>
-      <td>0.333333</td>
-      <td>0.500000</td>
-    </tr>
-    <tr>
-      <th>keyword_subscribe</th>
-      <td>0.944444</td>
-      <td>0.971429</td>
+      <th>short_comment</th>
+      <td>0.666667</td>
     </tr>
     <tr>
       <th>keyword_please</th>
-      <td>1.000000</td>
       <td>1.000000</td>
     </tr>
     <tr>
       <th>regex_check_out</th>
       <td>1.000000</td>
-      <td>1.000000</td>
     </tr>
     <tr>
-      <th>short_comment</th>
-      <td>0.945652</td>
-      <td>0.666667</td>
+      <th>short_link</th>
+      <td>0.500000</td>
     </tr>
     <tr>
       <th>textblob_polarity</th>
-      <td>0.875000</td>
       <td>0.727273</td>
     </tr>
   </tbody>
@@ -476,8 +467,8 @@ scorer.score_slices(
 
 
 Looks like some do extremely well on our small test set, while others do decently.
-At the very least, we may want to monitor these to make sure that as we iterate to improve certain slices like `short_link`, we don't hurt the performance of others.
-Next, we'll introduce a model that helps us to do this balancing act automatically!
+At the very least, we may want to monitor these to make sure that as we iterate to improve certain slices like `short_comment`, we don't hurt the performance of others.
+Next, we'll introduce a model that helps us to do this balancing act automatically.
 
 ## 3. Improve slice performance
 
@@ -489,32 +480,13 @@ In other approaches, one might attempt to increase slice performance with techni
 
 This might work with small number of slices, but with hundreds or thousands or production slices at scale, it could quickly become intractable to tune upsampling weights per slice.
 
-### Set up modeling pipeline with [`SliceAwareClassifier`](https://snorkel.readthedocs.io/en/v0.9.3/packages/_autosummary/slicing/snorkel.slicing.SliceAwareClassifier.html)
-
-Snorkel supports performance monitoring on slices using discriminative models from [`snorkel.slicing`](https://snorkel.readthedocs.io/en/master/packages/slicing.html).
-To demonstrate this functionality, we'll first set up a the datasets + modeling pipeline in the PyTorch-based [`snorkel.classification`](https://snorkel.readthedocs.io/en/master/packages/classification.html) package.
-
-First, we initialize a dataloaders for each split.
+### Constructing a [`SliceAwareClassifier`](https://snorkel.readthedocs.io/en/v0.9.3/packages/_autosummary/slicing/snorkel.slicing.SliceAwareClassifier.html)
 
 
-```python
-from utils import create_dict_dataloader
+To cope with scale, we will attempt to learn and combine many slice-specific representations with an attention mechanism.
+(Please see our [Section 3 of our technical report](https://arxiv.org/abs/1909.06349) for details on this approach).
 
-BATCH_SIZE = 64
-
-
-train_dl = create_dict_dataloader(
-    X_train, Y_train, "train", batch_size=BATCH_SIZE, shuffle=True
-)
-valid_dl = create_dict_dataloader(
-    X_valid, Y_valid, "valid", batch_size=BATCH_SIZE, shuffle=False
-)
-test_dl = create_dict_dataloader(
-    X_test, Y_test, "test", batch_size=BATCH_SIZE, shuffle=True
-)
-```
-
-We'll now initialize a [`SliceAwareClassifier`](https://snorkel.readthedocs.io/en/v0.9.3/packages/_autosummary/slicing/snorkel.slicing.SliceAwareClassifier.html):
+First we'll initialize a [`SliceAwareClassifier`](https://snorkel.readthedocs.io/en/v0.9.3/packages/_autosummary/slicing/snorkel.slicing.SliceAwareClassifier.html):
 * `base_architecture`: We define a simple Multi-Layer Perceptron (MLP) in Pytorch to serve as the primary representation architecture. We note that the `BinarySlicingClassifier` is **agnostic to the base architecture** — you might leverage a Transformer model for text, or a ResNet for images.
 * `head_dim`: identifies the final output feature dimension of the `base_architecture`
 * `slice_names`: Specify the slices that we plan to train on with this classifier.
@@ -524,71 +496,53 @@ We'll now initialize a [`SliceAwareClassifier`](https://snorkel.readthedocs.io/e
 from snorkel.slicing import SliceAwareClassifier
 from utils import get_pytorch_mlp
 
-
 # Define model architecture
 bow_dim = X_train.shape[1]
 hidden_dim = bow_dim
 mlp = get_pytorch_mlp(hidden_dim=hidden_dim, num_layers=2)
 
-# Init slice model
+# Initialize slice model
 slice_model = SliceAwareClassifier(
-    base_architecture=mlp, head_dim=hidden_dim, slice_names=[sf.name for sf in sfs]
+    base_architecture=mlp,
+    head_dim=hidden_dim,
+    slice_names=[sf.name for sf in sfs],
+    scorer=scorer,
 )
 ```
 
-### Monitor slice performance _during training_
-
-Using Snorkel's [`Trainer`](https://snorkel.readthedocs.io/en/master/packages/_autosummary/classification/snorkel.classification.Trainer.html), we fit to `train_dl`, and validate on `valid_dl`.
-
-We note that we can monitor slice-specific performance during training — this is a powerful way to track especially critical subsets of the data.
-If logging in `Tensorboard` (i.e. [`snorkel.classification.TensorboardWritier`](https://snorkel.readthedocs.io/en/master/packages/_autosummary/classification/snorkel.classification.TensorBoardWriter.html)), we would visualize individual loss curves and validation metrics to debug convegence for specific slices.
-
-
-```python
-from snorkel.classification import Trainer
-
-# For demonstration purposes, we set n_epochs=2
-trainer = Trainer(lr=1e-4, n_epochs=2)
-trainer.fit(slice_model, [train_dl, valid_dl])
-```
-
-    Epoch 0:: 100%|██████████| 25/25 [00:29<00:00,  1.17s/it, model/all/train/loss=0.469, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.908, task/SnorkelDataset/valid/f1=0.893]
-    Epoch 1:: 100%|██████████| 25/25 [00:30<00:00,  1.21s/it, model/all/train/loss=0.0861, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.933, task/SnorkelDataset/valid/f1=0.926]
-
-
-### Representation learning with slices
-
-To cope with scale, we will attempt to learn and combine many slice-specific representations with an attention mechanism.
-(Please see our [Section 3 of our technical report](https://arxiv.org/abs/1909.06349) for details on this approach).
-
-First, we'll generate the remaining `S` matrixes with the new set of slicing functions.
+Next, we'll generate the remaining `S` matrixes with the new set of slicing functions.
 
 
 ```python
 applier = PandasSFApplier(sfs)
 S_train = applier.apply(df_train)
-S_valid = applier.apply(df_valid)
+S_test = applier.apply(df_test)
 ```
 
 In order to train using slice information, we'd like to initialize a **slice-aware dataloader**.
 To do this, we can use [`slice_model.make_slice_dataloader`](https://snorkel.readthedocs.io/en/v0.9.3/packages/_autosummary/slicing/snorkel.slicing.SliceAwareClassifier.html#snorkel.slicing.SliceAwareClassifier.predict) to add slice labels to an existing dataloader.
 
-Under the hood, this method leverages slice metadata to add slice labels to the appropriate fields such that it's compatible with the initialized [`SliceClassifier`](https://snorkel.readthedocs.io/en/v0.9.3/packages/_autosummary/slicing/snorkel.slicing.SliceAwareClassifier.html#snorkel-slicing-slicingclassifier).
+Under the hood, this method leverages slice metadata to add slice labels to the appropriate fields such that it will be compatible with our model, a [`SliceAwareClassifier`](https://snorkel.readthedocs.io/en/v0.9.3/packages/_autosummary/slicing/snorkel.slicing.SliceAwareClassifier.html#snorkel-slicing-slicingclassifier).
 
 
 ```python
+from utils import create_dict_dataloader
+
+BATCH_SIZE = 64
+
+train_dl = create_dict_dataloader(X_train, Y_train, "train")
 train_dl_slice = slice_model.make_slice_dataloader(
     train_dl.dataset, S_train, shuffle=True, batch_size=BATCH_SIZE
 )
-valid_dl_slice = slice_model.make_slice_dataloader(
-    valid_dl.dataset, S_valid, shuffle=False, batch_size=BATCH_SIZE
-)
+test_dl = create_dict_dataloader(X_test, Y_test, "train")
 test_dl_slice = slice_model.make_slice_dataloader(
     test_dl.dataset, S_test, shuffle=False, batch_size=BATCH_SIZE
 )
 ```
 
-We train a single model initialized with all slice tasks.
+### Representation learning with slices
+
+Using Snorkel's [`Trainer`](https://snorkel.readthedocs.io/en/master/packages/_autosummary/classification/snorkel.classification.Trainer.html), we fit our classifier with the training set dataloader.
 
 
 ```python
@@ -596,11 +550,11 @@ from snorkel.classification import Trainer
 
 # For demonstration purposes, we set n_epochs=2
 trainer = Trainer(n_epochs=2, lr=1e-4, progress_bar=True)
-trainer.fit(slice_model, [train_dl_slice, valid_dl_slice])
+trainer.fit(slice_model, [train_dl_slice])
 ```
 
-    Epoch 0:: 100%|██████████| 25/25 [00:34<00:00,  1.36s/it, model/all/train/loss=0.353, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.933, task/SnorkelDataset/valid/f1=0.927, task_slice:short_link_ind/SnorkelDataset/valid/f1=0, task_slice:short_link_pred/SnorkelDataset/valid/accuracy=0.8, task_slice:short_link_pred/SnorkelDataset/valid/f1=0.889, task_slice:keyword_subscribe_ind/SnorkelDataset/valid/f1=0, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/f1=1, task_slice:keyword_please_ind/SnorkelDataset/valid/f1=0, task_slice:keyword_please_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_please_pred/SnorkelDataset/valid/f1=1, task_slice:regex_check_out_ind/SnorkelDataset/valid/f1=0.818, task_slice:regex_check_out_pred/SnorkelDataset/valid/accuracy=1, task_slice:regex_check_out_pred/SnorkelDataset/valid/f1=1, task_slice:short_comment_ind/SnorkelDataset/valid/f1=0, task_slice:short_comment_pred/SnorkelDataset/valid/accuracy=0.947, task_slice:short_comment_pred/SnorkelDataset/valid/f1=0.5, task_slice:textblob_polarity_ind/SnorkelDataset/valid/f1=0, task_slice:textblob_polarity_pred/SnorkelDataset/valid/accuracy=1, task_slice:textblob_polarity_pred/SnorkelDataset/valid/f1=1, task_slice:base_ind/SnorkelDataset/valid/f1=1, task_slice:base_pred/SnorkelDataset/valid/accuracy=0.933, task_slice:base_pred/SnorkelDataset/valid/f1=0.927]
-    Epoch 1:: 100%|██████████| 25/25 [00:34<00:00,  1.39s/it, model/all/train/loss=0.166, model/all/train/lr=0.0001, task/SnorkelDataset/valid/accuracy=0.925, task/SnorkelDataset/valid/f1=0.914, task_slice:short_link_ind/SnorkelDataset/valid/f1=0, task_slice:short_link_pred/SnorkelDataset/valid/accuracy=0.2, task_slice:short_link_pred/SnorkelDataset/valid/f1=0.333, task_slice:keyword_subscribe_ind/SnorkelDataset/valid/f1=0, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_subscribe_pred/SnorkelDataset/valid/f1=1, task_slice:keyword_please_ind/SnorkelDataset/valid/f1=0.4, task_slice:keyword_please_pred/SnorkelDataset/valid/accuracy=1, task_slice:keyword_please_pred/SnorkelDataset/valid/f1=1, task_slice:regex_check_out_ind/SnorkelDataset/valid/f1=0.917, task_slice:regex_check_out_pred/SnorkelDataset/valid/accuracy=1, task_slice:regex_check_out_pred/SnorkelDataset/valid/f1=1, task_slice:short_comment_ind/SnorkelDataset/valid/f1=0, task_slice:short_comment_pred/SnorkelDataset/valid/accuracy=0.947, task_slice:short_comment_pred/SnorkelDataset/valid/f1=0.5, task_slice:textblob_polarity_ind/SnorkelDataset/valid/f1=0, task_slice:textblob_polarity_pred/SnorkelDataset/valid/accuracy=1, task_slice:textblob_polarity_pred/SnorkelDataset/valid/f1=1, task_slice:base_ind/SnorkelDataset/valid/f1=1, task_slice:base_pred/SnorkelDataset/valid/accuracy=0.908, task_slice:base_pred/SnorkelDataset/valid/f1=0.893]
+    Epoch 0:: 100%|██████████| 25/25 [01:05<00:00,  2.63s/it, model/all/train/loss=0.501, model/all/train/lr=0.0001]
+    Epoch 1:: 100%|██████████| 25/25 [01:05<00:00,  2.61s/it, model/all/train/loss=0.259, model/all/train/lr=0.0001]
 
 
 At inference time, the primary task head (`spam_task`) will make all final predictions.
@@ -608,7 +562,7 @@ We'd like to evaluate all the slice heads on the original task head — [`score_
 
 
 ```python
-slice_model.score_slices([valid_dl_slice, test_dl_slice], as_dataframe=True)
+slice_model.score_slices([test_dl_slice], as_dataframe=True)
 ```
 
 
@@ -644,257 +598,57 @@ slice_model.score_slices([valid_dl_slice, test_dl_slice], as_dataframe=True)
       <th>0</th>
       <td>task</td>
       <td>SnorkelDataset</td>
-      <td>valid</td>
-      <td>accuracy</td>
-      <td>0.925000</td>
+      <td>train</td>
+      <td>f1</td>
+      <td>0.941704</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>task</td>
-      <td>SnorkelDataset</td>
-      <td>valid</td>
-      <td>f1</td>
-      <td>0.914286</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>task_slice:short_link_pred</td>
-      <td>SnorkelDataset</td>
-      <td>valid</td>
-      <td>accuracy</td>
-      <td>0.400000</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>task_slice:short_link_pred</td>
-      <td>SnorkelDataset</td>
-      <td>valid</td>
-      <td>f1</td>
-      <td>0.571429</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>task_slice:keyword_subscribe_pred</td>
-      <td>SnorkelDataset</td>
-      <td>valid</td>
-      <td>accuracy</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>task_slice:keyword_subscribe_pred</td>
-      <td>SnorkelDataset</td>
-      <td>valid</td>
-      <td>f1</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>task_slice:keyword_please_pred</td>
-      <td>SnorkelDataset</td>
-      <td>valid</td>
-      <td>accuracy</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>task_slice:keyword_please_pred</td>
-      <td>SnorkelDataset</td>
-      <td>valid</td>
-      <td>f1</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>task_slice:regex_check_out_pred</td>
-      <td>SnorkelDataset</td>
-      <td>valid</td>
-      <td>accuracy</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>task_slice:regex_check_out_pred</td>
-      <td>SnorkelDataset</td>
-      <td>valid</td>
-      <td>f1</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>10</th>
       <td>task_slice:short_comment_pred</td>
       <td>SnorkelDataset</td>
-      <td>valid</td>
-      <td>accuracy</td>
-      <td>0.947368</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>task_slice:short_comment_pred</td>
-      <td>SnorkelDataset</td>
-      <td>valid</td>
-      <td>f1</td>
-      <td>0.500000</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>task_slice:textblob_polarity_pred</td>
-      <td>SnorkelDataset</td>
-      <td>valid</td>
-      <td>accuracy</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>task_slice:textblob_polarity_pred</td>
-      <td>SnorkelDataset</td>
-      <td>valid</td>
-      <td>f1</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>task_slice:base_pred</td>
-      <td>SnorkelDataset</td>
-      <td>valid</td>
-      <td>accuracy</td>
-      <td>0.925000</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>task_slice:base_pred</td>
-      <td>SnorkelDataset</td>
-      <td>valid</td>
-      <td>f1</td>
-      <td>0.914286</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>task</td>
-      <td>SnorkelDataset</td>
-      <td>test</td>
-      <td>accuracy</td>
-      <td>0.952000</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>task</td>
-      <td>SnorkelDataset</td>
-      <td>test</td>
-      <td>f1</td>
-      <td>0.946429</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>task_slice:short_link_pred</td>
-      <td>SnorkelDataset</td>
-      <td>test</td>
-      <td>accuracy</td>
-      <td>0.333333</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>task_slice:short_link_pred</td>
-      <td>SnorkelDataset</td>
-      <td>test</td>
-      <td>f1</td>
-      <td>0.500000</td>
-    </tr>
-    <tr>
-      <th>20</th>
-      <td>task_slice:keyword_subscribe_pred</td>
-      <td>SnorkelDataset</td>
-      <td>test</td>
-      <td>accuracy</td>
-      <td>0.861111</td>
-    </tr>
-    <tr>
-      <th>21</th>
-      <td>task_slice:keyword_subscribe_pred</td>
-      <td>SnorkelDataset</td>
-      <td>test</td>
-      <td>f1</td>
-      <td>0.925373</td>
-    </tr>
-    <tr>
-      <th>22</th>
-      <td>task_slice:keyword_please_pred</td>
-      <td>SnorkelDataset</td>
-      <td>test</td>
-      <td>accuracy</td>
-      <td>0.956522</td>
-    </tr>
-    <tr>
-      <th>23</th>
-      <td>task_slice:keyword_please_pred</td>
-      <td>SnorkelDataset</td>
-      <td>test</td>
-      <td>f1</td>
-      <td>0.977778</td>
-    </tr>
-    <tr>
-      <th>24</th>
-      <td>task_slice:regex_check_out_pred</td>
-      <td>SnorkelDataset</td>
-      <td>test</td>
-      <td>accuracy</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>25</th>
-      <td>task_slice:regex_check_out_pred</td>
-      <td>SnorkelDataset</td>
-      <td>test</td>
-      <td>f1</td>
-      <td>1.000000</td>
-    </tr>
-    <tr>
-      <th>26</th>
-      <td>task_slice:short_comment_pred</td>
-      <td>SnorkelDataset</td>
-      <td>test</td>
-      <td>accuracy</td>
-      <td>0.967391</td>
-    </tr>
-    <tr>
-      <th>27</th>
-      <td>task_slice:short_comment_pred</td>
-      <td>SnorkelDataset</td>
-      <td>test</td>
+      <td>train</td>
       <td>f1</td>
       <td>0.769231</td>
     </tr>
     <tr>
-      <th>28</th>
-      <td>task_slice:textblob_polarity_pred</td>
+      <th>2</th>
+      <td>task_slice:keyword_please_pred</td>
       <td>SnorkelDataset</td>
-      <td>test</td>
-      <td>accuracy</td>
-      <td>0.916667</td>
+      <td>train</td>
+      <td>f1</td>
+      <td>0.977778</td>
     </tr>
     <tr>
-      <th>29</th>
+      <th>3</th>
+      <td>task_slice:regex_check_out_pred</td>
+      <td>SnorkelDataset</td>
+      <td>train</td>
+      <td>f1</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>task_slice:short_link_pred</td>
+      <td>SnorkelDataset</td>
+      <td>train</td>
+      <td>f1</td>
+      <td>0.500000</td>
+    </tr>
+    <tr>
+      <th>5</th>
       <td>task_slice:textblob_polarity_pred</td>
       <td>SnorkelDataset</td>
-      <td>test</td>
+      <td>train</td>
       <td>f1</td>
       <td>0.800000</td>
     </tr>
     <tr>
-      <th>30</th>
+      <th>6</th>
       <td>task_slice:base_pred</td>
       <td>SnorkelDataset</td>
-      <td>test</td>
-      <td>accuracy</td>
-      <td>0.952000</td>
-    </tr>
-    <tr>
-      <th>31</th>
-      <td>task_slice:base_pred</td>
-      <td>SnorkelDataset</td>
-      <td>test</td>
+      <td>train</td>
       <td>f1</td>
-      <td>0.946429</td>
+      <td>0.941704</td>
     </tr>
   </tbody>
 </table>
@@ -911,8 +665,3 @@ For a demonstration of data slicing deployed in state-of-the-art models, please 
 This tutorial walked through the process authoring slices, monitoring model performance on specific slices, and improving model performance using slice information.
 This programming abstraction provides a mechanism to heuristically identify critical data subsets.
 For more technical details about _Slice-based Learning,_ please see our [NeurIPS 2019 paper](https://arxiv.org/abs/1909.06349)!
-
-
-```python
-
-```

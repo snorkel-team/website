@@ -1389,7 +1389,10 @@ from snorkel.labeling import LabelModel
 
 label_model = LabelModel(cardinality=2, verbose=True)
 label_model.fit(L_train=L_train, n_epochs=500, log_freq=100, seed=123)
+```
 
+
+```python
 majority_acc = majority_model.score(L=L_test, Y=Y_test, tie_break_policy="random")[
     "accuracy"
 ]
@@ -1400,6 +1403,10 @@ label_model_acc = label_model.score(L=L_test, Y=Y_test, tie_break_policy="random
 ]
 print(f"{'Label Model Accuracy:':<25} {label_model_acc * 100:.1f}%")
 ```
+
+    Majority Vote Accuracy:   84.0%
+    Label Model Accuracy:     86.0%
+
 
 The majority vote model or more sophisticated `LabelModel` could in principle be used directly as a classifier if the outputs of our labeling functions were made available at test time.
 However, these models (i.e. these re-weighted combinations of our labeling function's votes) will abstain on the data points that our labeling functions don't cover (and additionally, may require slow or unavailable features to execute at test time).

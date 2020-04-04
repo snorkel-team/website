@@ -24,7 +24,7 @@ doks:
       logo:
         text:
         image: true
-      copyright: "&copy; 2019 Snorkel"
+      copyright: "&copy; 2020 Snorkel"
     nav:
       - item_name: Get Started
         item_url: /get-started/

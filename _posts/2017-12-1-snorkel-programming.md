@@ -73,4 +73,4 @@ In our [recent VLDB paper on Snorkel](https://arxiv.org/abs/1711.10160), we find
 
 Various efforts in our lab are already underway to extend the weak supervision interaction model envisioned in Snorkel to other modalities such as [richly-formatted data](https://arxiv.org/pdf/1703.05028.pdf), modalities or settings where labeling functions are [difficult to directly write over the raw data](http://dawn.cs.stanford.edu/2017/09/14/coral/), and more! On the technical front, we’re interested in both extending the core data programming model at the heart of Snorkel, making it easier to specify labeling functions with higher-level interfaces such as [natural language](https://www.snorkel.org/blog/babble), as well as combining with other types of weak supervision such as [data augmentation](https://www.snorkel.org/blog/tanda).
 
-Snorkel is an active and ongoing project, so for code, tutorials, blog posts, and more, please check it out on GitHub(https://github.com/snorkel-team/snorkel)!
+Snorkel is an active and ongoing project, so for code, tutorials, blog posts, and more, please check it out at [snorkel.org](https://snorkel.org)!

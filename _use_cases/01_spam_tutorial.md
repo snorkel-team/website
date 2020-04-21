@@ -1352,7 +1352,7 @@ LFAnalysis(L=L_train, lfs=lfs).lf_summary()
 Our goal is now to convert the labels from our LFs into a single _noise-aware_ probabilistic (or confidence-weighted) label per data point.
 A simple baseline for doing this is to take the majority vote on a per-data point basis: if more LFs voted SPAM than HAM, label it SPAM (and vice versa).
 We can test this with the
-[`MajorityLabelVoter` baseline model](https://snorkel.readthedocs.io/en/v0.9.5/packages/_autosummary/labeling/snorkel.labeling.model.baselines.MajorityLabelVoter.html).
+[`MajorityLabelVoter` baseline model](https://snorkel.readthedocs.io/en/master/packages/_autosummary/labeling/snorkel.labeling.model.baselines.MajorityLabelVoter.html).
 
 
 ```python

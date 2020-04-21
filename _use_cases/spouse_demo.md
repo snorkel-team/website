@@ -12,7 +12,7 @@ github_link: https://github.com/snorkel-team/snorkel-tutorials/blob/master/spous
 
 In this tutorial, we will see how Snorkel can be used for Information Extraction. We will walk through an example text classification task for information extraction, where we use labeling functions involving keywords and distant supervision.
 ### Classification Task
-<img src="imgs/sentence.jpg" width="700px;" onerror="this.onerror=null; this.src='/doks-theme/assets/images/sentence.jpg';" align="center" style="display: block; margin-left: auto; margin-right: auto;">
+<img src="" width="700px;" onerror="this.onerror=null; this.src='/doks-theme/assets/images/sentence.jpg';" align="center" style="display: block; margin-left: auto; margin-right: auto;">
 
 We want to classify each __candidate__ or pair of people mentioned in a sentence, as being married at some point or not.
 

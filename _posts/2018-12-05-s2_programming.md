@@ -44,7 +44,7 @@ redirect_from: /s2_programming
   Emerging techniques include:
   <ul>
     <li>
-      <b>Labeling</b> data in higher-level, programmatic, and/or noisier ways (often called <a href="https://hazyresearch.github.io/snorkel/blog/ws_blog_post.html">weak supervision</a>), such as using heuristics, patterns, existing datasets and models, or crowd labelers to label training data;
+      <b>Labeling</b> data in higher-level, programmatic, and/or noisier ways (often called <a href="https://www.snorkel.org/blog/weak-supervision">weak supervision</a>), such as using heuristics, patterns, existing datasets and models, or crowd labelers to label training data;
     </li>
     <li>
       <b>Augmenting</b> datasets by creating transformed copies of labeled data points, thereby expressing data invariances (e.g. rotational or shift symmetries in images) in a simple, model-agnostic fashion;
@@ -103,7 +103,7 @@ redirect_from: /s2_programming
   <ul>
     <li>
       How can we enable users to label training datasets in higher-level, faster, and more flexible ways?
-      Our <a href="snorkel.stanford.edu">Snorkel</a> framework is one initial answer to this: instead of hand-labeling training data, users write labeling functions to programmatically label it, which Snorkel then models and combines.
+      Our <a href="https://github.com/snorkel-team/snorkel">Snorkel</a> framework is one initial answer to this: instead of hand-labeling training data, users write labeling functions to programmatically label it, which Snorkel then models and combines.
     </li>
     <li>
       How can we enable users to reshape, manage, and debug training sets? For example, to emphasize certain “slices” of data that are mission critical and/or sources of model errors.
@@ -115,7 +115,7 @@ redirect_from: /s2_programming
       When can we expect these training data-driven techniques to be most beneficial?  For example, from a theoretical perspective, when should programmatic training data labeling or data augmentation be helpful?
     </li>
  </ul>
- We’re excited to pursue these and other directions, and hear others’ thoughts as well!  For more on our ongoing work, see <a href="snorkel.stanford.edu">snorkel.stanford.edu</a>!
+ We’re excited to pursue these and other directions, and hear others’ thoughts as well!  For more on our ongoing work, see <a href="https://github.com/snorkel-team/snorkel">our repo</a>!
 </p>
 
 <h2 id="research-directions">

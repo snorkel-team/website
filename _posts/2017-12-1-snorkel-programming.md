@@ -16,7 +16,7 @@ One answer, of course, is that today’s ML systems don’t need to be programme
 
 ## Code as Supervision: Training ML by Programming
 
-Our system, Snorkel---which we report on in **a new VLDB 2018 paper posted [here](https://arxiv.org/abs/1711.10160)**---is one attempt to build a system around this new type of interaction with ML. In [Snorkel, we use **no hand-labeled training data**, but instead ask users to write *labeling functions (LFs)*, bits of black-box code which label subsets of unlabeled data. For example, suppose we were trying to train a machine learning model to [extract mentions of adverse drug reactions](https://github.com/snorkel-team/snorkel-extraction/tree/master/tutorials/cdr) from the scientific literature. To encode a heuristic about negation, for example, we could try writing the LF below:
+Our system, Snorkel---which we report on in **a new VLDB 2018 paper posted [here](https://arxiv.org/abs/1711.10160)**---is one attempt to build a system around this new type of interaction with ML. In Snorkel, we use **no hand-labeled training data**, but instead ask users to write *labeling functions (LFs)*, bits of black-box code which label subsets of unlabeled data. For example, suppose we were trying to train a machine learning model to [extract mentions of adverse drug reactions](https://github.com/snorkel-team/snorkel-extraction/tree/master/tutorials/cdr) from the scientific literature. To encode a heuristic about negation, for example, we could try writing the LF below:
 
 <figure>
 	<img src="/doks-theme/assets/images/2017-12-1-snorkel-programming/snorkel_lf.png" style="width: 100%; max-width: 500px;" alt="Example LF in Snorkel"/>

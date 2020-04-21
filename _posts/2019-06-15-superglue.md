@@ -40,7 +40,7 @@ For the remainder of this post, we use a running example from the Words in Conte
 ## 1. Weak labeling with labeling functions
 In many applications, unlabeled data is abundant—it may come from fleets of autonomous vehicles, or large corpuses of unstructured data. Modern architectures are largely unable to take advantage of such potentially rich datasets because labeling them might be intractable, as they are too time or cost ineffective.
 
-With Snorkel, we’ve studied for years the use of _labeling functions (LFs)_ for heuristically labeling training examples. LFs provide domain experts or machine learning practitioners with an intuitive interface for denoising and combining supervision sources from existing datasets, models, or crowd labelers.
+With [Snorkel](https://github.com/snorkel-team/snorkel), we’ve studied for years the use of _labeling functions (LFs)_ for heuristically labeling training examples. LFs provide domain experts or machine learning practitioners with an intuitive interface for denoising and combining supervision sources from existing datasets, models, or crowd labelers.
 
 <figure>
 	<img style="width: 80%; ;" src="/doks-theme/assets/images/2019-06-15-superglue/lf_ex.png"/>

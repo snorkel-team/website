@@ -32,15 +32,15 @@ We previewed these changes at the workshop, and are now sharing the workshop con
 ### New core data set operations: transforming and slicing
 We started building Snorkel in 2016, motivated by the increasing commoditization of ML models and infrastructure, and the increasing primacy of training data. 
 We set out to create a framework where building and managing training data in programmatic, heuristic, or otherwise noisy ways was the primary mode of interaction with machine learning.
-To begin, we focused on one aspect of this broader set of activities: labeling training data, by writing heuristic labeling functions ([NeurIPS 2016](https://arxiv.org/abs/1605.07723), [blog](https://hazyresearch.github.io/snorkel/blog/weak_supervision.html)).
+To begin, we focused on one aspect of this broader set of activities: labeling training data, by writing heuristic labeling functions ([NeurIPS 2016](https://arxiv.org/abs/1605.07723), [blog](https://www.snorkel.org/blog/weak-supervision)).
 
-**Our upcoming release adds two new core operations as first class citizens in addition to programmatic labeling.** The first is transforming data points with transformation functions (TFs), our general [framework for data augmentation](https://hazyresearch.github.io/snorkel/blog/tanda.html). The second is [slicing training data](https://dawn.cs.stanford.edu/2019/06/15/superglue/) with slicing functions (SFs), in order to monitor and focus model attention on subsets of the training dataset where classification is more critical or difficult. 
+**Our upcoming release adds two new core operations as first class citizens in addition to programmatic labeling.** The first is transforming data points with transformation functions (TFs), our general [framework for data augmentation](https://www.snorkel.org/blog/tanda). The second is [slicing training data](https://dawn.cs.stanford.edu/2019/06/15/superglue/) with slicing functions (SFs), in order to monitor and focus model attention on subsets of the training dataset where classification is more critical or difficult. 
 
 <figure align="center">
 	  <img style="width: 80%; ;" src="/doks-theme/assets/images/2019-06-30-workshop/fig_abstractions.png">
 </figure>
 
-We’re excited to bring these concepts to the forefront of programmatic data set creation. Snorkel provides users with a flexible interface for applying state-of-the-art automated data augmentation techniques like [TANDA (NeurIPS 2017)](https://hazyresearch.github.io/snorkel/blog/tanda.html) to their problems. Using this interface, attendees were able to reproduce state-of-the-art data augmentation techniques for text applications — as well as create original ones — in a single work session. 
+We’re excited to bring these concepts to the forefront of programmatic data set creation. Snorkel provides users with a flexible interface for applying state-of-the-art automated data augmentation techniques like [TANDA (NeurIPS 2017)](https://www.snorkel.org/blog/tanda) to their problems. Using this interface, attendees were able to reproduce state-of-the-art data augmentation techniques for text applications — as well as create original ones — in a single work session. 
 
 Slicing is a more recent research advance, but has already powered state-of-the-art results like our SuperGLUE system. Workshop participants were interested in more academic literature on slicing, which we’ll be releasing in the coming months. In the meantime, check out our [blog post on slicing in SuperGLUE](/superglue) and the slicing workshop materials below.
 

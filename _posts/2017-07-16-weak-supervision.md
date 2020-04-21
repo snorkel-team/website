@@ -260,8 +260,7 @@ provide higher-level, more expressive input, and be robust to inevitable lack
 of precision, coverage, or conflict resolution in this input. In other words,
 we can define flexible, efficient, and interpretable paradigms for how to
 interact with, supervise, and essentially “program” machine learning models! On
-the systems side, we’ve started down this path with Snorkel (<a
-href="snorkel.stanford.edu" class="uri">snorkel.stanford.edu</a>), where users
+the systems side, we’ve started down this path with [Snorkel](https://github.com/snorkel-team/snorkel), where users
 encode weak supervision sources as deterministic **labeling functions**; other
 weakly-supervised frameworks include programming via generalized expectation
 criteria <span class="citation">(Druck, Settles, and McCallum 2009)</span>,

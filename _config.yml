@@ -63,5 +63,5 @@ collections:
   posts:
     output: true
     permalink: /blog/:slug
-plugins:
+plugins_dir:
   - jekyll-redirect-from

@@ -553,8 +553,8 @@ trainer = Trainer(n_epochs=2, lr=1e-4, progress_bar=True)
 trainer.fit(slice_model, [train_dl_slice])
 ```
 
-    Epoch 0:: 100%|██████████| 25/25 [01:05<00:00,  2.63s/it, model/all/train/loss=0.501, model/all/train/lr=0.0001]
-    Epoch 1:: 100%|██████████| 25/25 [01:05<00:00,  2.61s/it, model/all/train/loss=0.259, model/all/train/lr=0.0001]
+    Epoch 0:: 100%|██████████| 25/25 [00:24<00:00,  1.01it/s, model/all/train/loss=0.5, model/all/train/lr=0.0001]
+    Epoch 1:: 100%|██████████| 25/25 [00:25<00:00,  1.01s/it, model/all/train/loss=0.257, model/all/train/lr=0.0001]
 
 
 At inference time, the primary task head (`spam_task`) will make all final predictions.

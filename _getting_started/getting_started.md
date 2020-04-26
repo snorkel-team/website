@@ -11,7 +11,7 @@ Snorkel currently exposes three key programmatic operations:
 
 Snorkel then automatically models, cleans, and integrates the resulting training data using novel, theoretically-grounded techniques.
 
-<img src="" onerror="this.onerror=null; this.src='/doks-theme/assets/images/layout/Overview.png';" align="center" style="display: block; margin-left: auto; margin-right: auto;">
+<img src="img/Overview.png" onerror="this.onerror=null; this.src='/doks-theme/assets/images/layout/Overview.png';" align="center" style="display: block; margin-left: auto; margin-right: auto;">
 
 In this quick walkthrough, we'll preview the high-level workflow and interfaces of Snorkel using a canonical machine learning problem: classifying spam.
 We'll use a public [YouTube comments dataset](http://www.dt.fee.unicamp.br/~tiago//youtubespamcollection/), and see how **Snorkel can enable training a machine learning model without _any_ hand-labeled training data!**
@@ -124,7 +124,8 @@ We use the `LabelModel` to automatically estimate their accuracies and correlati
 
 
 ```python
-from snorkel.labeling import LabelModel, PandasLFApplier
+from snorkel.labeling.model import LabelModel
+from snorkel.labeling import PandasLFApplier
 
 # Define the set of labeling functions (LFs)
 lfs = [lf_keyword_my, lf_regex_check_out, lf_short_comment, lf_textblob_polarity]

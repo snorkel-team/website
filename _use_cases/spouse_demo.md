@@ -12,7 +12,7 @@ github_link: https://github.com/snorkel-team/snorkel-tutorials/blob/master/spous
 
 In this tutorial, we will see how Snorkel can be used for Information Extraction. We will walk through an example text classification task for information extraction, where we use labeling functions involving keywords and distant supervision.
 ### Classification Task
-<img src="" width="700px;" onerror="this.onerror=null; this.src='/doks-theme/assets/images/sentence.jpg';" align="center" style="display: block; margin-left: auto; margin-right: auto;">
+<img src="imgs/sentence.jpg" width="700px;" onerror="this.onerror=null; this.src='/doks-theme/assets/images/sentence.jpg';" align="center" style="display: block; margin-left: auto; margin-right: auto;">
 
 We want to classify each __candidate__ or pair of people mentioned in a sentence, as being married at some point or not.
 
@@ -202,11 +202,11 @@ list(known_spouses)[0:5]
 
 
 
-    [('Gustave Choquet', 'Yvonne Choquet-Bruhat'),
-     ('Richard Karn', 'Tudi Roche'),
-     ('Kaarin Fairfax', 'Paul Kelly'),
-     ('Ana de Armas', 'Marc Clotet'),
-     ('Mami Tai', 'Yasushi Akimoto')]
+    [('Evelyn Keyes', 'John Huston'),
+     ('George Osmond', 'Olive Osmond'),
+     ('Moira Shearer', 'Sir Ludovic Kennedy'),
+     ('Ava Moore', 'Matthew McNamara'),
+     ('Claire Baker', 'Richard Baker')]
 
 
 
@@ -424,7 +424,7 @@ Now, we'll train a model of the LFs to estimate their weights and combine their 
 
 
 ```python
-from snorkel.labeling import LabelModel
+from snorkel.labeling.model import LabelModel
 
 label_model = LabelModel(cardinality=2, verbose=True)
 label_model.fit(L_train, Y_dev, n_epochs=5000, log_freq=500, seed=12345)
@@ -448,8 +448,8 @@ print(
 )
 ```
 
-    Label model f1 score: 0.4199134199134199
-    Label model roc-auc: 0.7421454246069199
+    Label model f1 score: 0.42332613390928725
+    Label model roc-auc: 0.7430309845579229
 
 
 ### Part 4: Training our End Extraction Model
@@ -495,8 +495,8 @@ print(
 )
 ```
 
-    Test F1 when trained with soft labels: 0.4705882352941177
-    Test ROC-AUC when trained with soft labels: 0.7386078545115963
+    Test F1 when trained with soft labels: 0.46715328467153283
+    Test ROC-AUC when trained with soft labels: 0.7510465661913859
 
 
 ## Summary

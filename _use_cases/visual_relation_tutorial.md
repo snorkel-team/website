@@ -302,7 +302,7 @@ We now train a multi-class `LabelModel` to assign training labels to the unalabe
 
 
 ```python
-from snorkel.labeling import LabelModel
+from snorkel.labeling.model import LabelModel
 
 label_model = LabelModel(cardinality=3, verbose=True)
 label_model.fit(L_train, seed=123, lr=0.01, log_freq=10, n_epochs=100)
@@ -389,7 +389,7 @@ model.score([dl_valid])
 
 
 
-    {'visual_relation_task/valid_dataset/valid/f1_micro': 0.6153846153846154}
+    {'visual_relation_task/valid_dataset/valid/f1_micro': 0.34615384615384615}
 
 
 

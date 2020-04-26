@@ -90,42 +90,42 @@ df_dev.sample(frac=1, random_state=12).head()
   </thead>
   <tbody>
     <tr>
-      <th>433831</th>
-      <td>16707</td>
-      <td>(25798, 9190, 29502, 12579, 1974, 18319, 30436...</td>
-      <td>21427</td>
+      <th>159765</th>
+      <td>6236</td>
+      <td>(16739, 19021, 18074, 10278, 31179, 9850, 1198...</td>
+      <td>5174</td>
+      <td>0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>593901</th>
+      <td>22944</td>
+      <td>(29404, 19963, 19186, 13863, 29540, 7375, 2370...</td>
+      <td>13470</td>
       <td>1</td>
       <td>NaN</td>
     </tr>
     <tr>
-      <th>414761</th>
-      <td>16002</td>
-      <td>(15854, 26578, 20600, 16042, 11129, 4285, 1924...</td>
-      <td>6299</td>
+      <th>199550</th>
+      <td>7732</td>
+      <td>(1101, 26775, 13761, 5265, 3269, 21272, 7424, ...</td>
+      <td>5912</td>
       <td>1</td>
       <td>NaN</td>
     </tr>
     <tr>
-      <th>201828</th>
-      <td>7825</td>
-      <td>(13489, 29871, 6774, 19911, 7231, 29661, 31145...</td>
-      <td>11033</td>
-      <td>1</td>
+      <th>476454</th>
+      <td>18375</td>
+      <td>(23305, 24591, 221, 24819, 11955, 998, 16323, ...</td>
+      <td>10774</td>
+      <td>0</td>
       <td>NaN</td>
     </tr>
     <tr>
-      <th>36287</th>
-      <td>1400</td>
-      <td>(22746, 19392, 17222, 18816, 893, 11606, 8765,...</td>
-      <td>18283</td>
-      <td>1</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>746922</th>
-      <td>29067</td>
-      <td>(16818, 11435, 22711, 6543, 8699, 5651, 28356,...</td>
-      <td>1688</td>
+      <th>248831</th>
+      <td>9615</td>
+      <td>(27162, 21741, 28317, 30890, 8239, 11392, 2499...</td>
+      <td>11392</td>
       <td>1</td>
       <td>NaN</td>
     </tr>
@@ -312,56 +312,56 @@ LFAnalysis(L_dev, lfs).lf_summary(df_dev.rating.values)
       <th>stars_in_review</th>
       <td>0</td>
       <td>[0, 1]</td>
-      <td>0.020786</td>
-      <td>0.005323</td>
-      <td>0.002408</td>
-      <td>141</td>
-      <td>23</td>
-      <td>0.859756</td>
+      <td>0.019500</td>
+      <td>0.004375</td>
+      <td>0.001375</td>
+      <td>129</td>
+      <td>27</td>
+      <td>0.826923</td>
     </tr>
     <tr>
       <th>shared_first_author</th>
       <td>1</td>
       <td>[1]</td>
-      <td>0.037389</td>
-      <td>0.000380</td>
-      <td>0.000127</td>
-      <td>216</td>
-      <td>79</td>
-      <td>0.732203</td>
+      <td>0.061875</td>
+      <td>0.002625</td>
+      <td>0.000750</td>
+      <td>335</td>
+      <td>160</td>
+      <td>0.676768</td>
     </tr>
     <tr>
       <th>polarity_positive</th>
       <td>2</td>
       <td>[1]</td>
-      <td>0.042079</td>
-      <td>0.012421</td>
-      <td>0.001267</td>
-      <td>281</td>
-      <td>51</td>
-      <td>0.846386</td>
+      <td>0.044000</td>
+      <td>0.014000</td>
+      <td>0.000625</td>
+      <td>297</td>
+      <td>55</td>
+      <td>0.843750</td>
     </tr>
     <tr>
       <th>subjectivity_positive</th>
       <td>3</td>
       <td>[1]</td>
-      <td>0.017364</td>
-      <td>0.012167</td>
-      <td>0.003042</td>
-      <td>108</td>
-      <td>29</td>
-      <td>0.788321</td>
+      <td>0.018000</td>
+      <td>0.014625</td>
+      <td>0.003750</td>
+      <td>110</td>
+      <td>34</td>
+      <td>0.763889</td>
     </tr>
     <tr>
       <th>polarity_negative</th>
       <td>4</td>
       <td>[0]</td>
-      <td>0.017490</td>
-      <td>0.004816</td>
-      <td>0.004056</td>
-      <td>65</td>
-      <td>73</td>
-      <td>0.471014</td>
+      <td>0.019625</td>
+      <td>0.005500</td>
+      <td>0.004375</td>
+      <td>87</td>
+      <td>70</td>
+      <td>0.554140</td>
     </tr>
   </tbody>
 </table>
@@ -375,7 +375,7 @@ We apply the labeling functions to the training set, and then filter out data po
 
 
 ```python
-from snorkel.labeling.model.label_model import LabelModel
+from snorkel.labeling.model import LabelModel
 
 L_train = applier.apply(df_train)
 label_model = LabelModel(cardinality=2, verbose=True)
@@ -529,7 +529,7 @@ X_test, Y_test = get_data_tensors(df_test)
 _ = model.evaluate(X_test, Y_test, steps=30)
 ```
 
-    30/30 [==============================] - 1s 33ms/step - loss: 0.6701 - acc: 0.6452 - f1_batch: 0.4785 - precision_batch: 0.5774 - recall_batch: 0.4300
+    30/30 [==============================] - 1s 33ms/step - loss: 0.6534 - acc: 0.6570 - f1_batch: 0.5226 - precision_batch: 0.5720 - recall_batch: 0.4931
 
 
 Our model has generalized quite well to our test set!

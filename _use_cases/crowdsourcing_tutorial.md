@@ -150,59 +150,59 @@ LFAnalysis(L_dev, worker_lfs).lf_summary(Y_dev).sample(5)
   </thead>
   <tbody>
     <tr>
-      <th>worker_17652569</th>
-      <td>70</td>
-      <td>[]</td>
-      <td>0.00</td>
-      <td>0.00</td>
-      <td>0.00</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>worker_16498372</th>
-      <td>58</td>
-      <td>[0, 1]</td>
-      <td>0.06</td>
-      <td>0.06</td>
-      <td>0.04</td>
-      <td>3</td>
-      <td>0</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <th>worker_18465660</th>
-      <td>80</td>
-      <td>[0, 1]</td>
-      <td>0.06</td>
-      <td>0.06</td>
-      <td>0.06</td>
-      <td>3</td>
-      <td>0</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <th>worker_12572470</th>
-      <td>38</td>
+      <th>worker_18804376</th>
+      <td>83</td>
       <td>[0, 1]</td>
       <td>0.04</td>
       <td>0.04</td>
       <td>0.04</td>
       <td>2</td>
       <td>0</td>
-      <td>1.0</td>
+      <td>1.000000</td>
     </tr>
     <tr>
-      <th>worker_18975312</th>
-      <td>88</td>
+      <th>worker_16526185</th>
+      <td>59</td>
       <td>[0, 1]</td>
-      <td>0.04</td>
-      <td>0.04</td>
-      <td>0.02</td>
-      <td>2</td>
+      <td>0.20</td>
+      <td>0.20</td>
+      <td>0.18</td>
+      <td>10</td>
       <td>0</td>
-      <td>1.0</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>worker_10197897</th>
+      <td>26</td>
+      <td>[0, 1]</td>
+      <td>0.06</td>
+      <td>0.06</td>
+      <td>0.04</td>
+      <td>3</td>
+      <td>0</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>worker_19028457</th>
+      <td>91</td>
+      <td>[0, 1]</td>
+      <td>0.28</td>
+      <td>0.28</td>
+      <td>0.26</td>
+      <td>5</td>
+      <td>9</td>
+      <td>0.357143</td>
+    </tr>
+    <tr>
+      <th>worker_19007283</th>
+      <td>90</td>
+      <td>[0, 1]</td>
+      <td>0.16</td>
+      <td>0.16</td>
+      <td>0.10</td>
+      <td>6</td>
+      <td>2</td>
+      <td>0.750000</td>
     </tr>
   </tbody>
 </table>
@@ -390,7 +390,7 @@ print(f"Dev set coverage: {100 * LFAnalysis(L_dev).label_coverage(): 0.1f}%")
 
 
 ```python
-from snorkel.labeling import LabelModel
+from snorkel.labeling.model import LabelModel
 
 # Train LabelModel.
 label_model = LabelModel(cardinality=2, verbose=True)

@@ -59,7 +59,7 @@ For more on LFs, see the [Getting Started](https://snorkel.org/get-started/) gui
 ### Transformation Functions
 
 Another key training data management technique that has emerged over the last several years as especially crucial to model performance is _data augmentation_, the strategy of creating transformed copies of labeled data points to effectively inject knowledge of invariances into the model.
-Data augmentation is traditionally done in ad hoc or hand-tuned ways, buried in data loader preprocessing scripts...but it is [absolutely critical to model performance](https://www.snorkel.org/tanda/).
+Data augmentation is traditionally done in ad hoc or hand-tuned ways, buried in data loader preprocessing scripts...but it is [absolutely critical to model performance](https://www.snorkel.org/blog/tanda/).
 It's also a perfect fit for the overall philosophy of Snorkel: enable users to _program machine learning models via the training data._
 
 In Snorkel, data augmentation is now supported as a first-class citizen, represented by the _transformation function (TF)_, which takes in a data point and returns a transformed copy of it, building on our [NeurIPS 2017 work](https://arxiv.org/abs/1709.01643) here on automatically learning data augmentation policies.

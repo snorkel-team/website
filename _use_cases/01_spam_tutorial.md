@@ -83,7 +83,7 @@ Note that in more advanced production settings, we will often further split up t
 We load the YouTube comments dataset and create Pandas DataFrame objects for the train and test sets.
 DataFrames are extremely popular in Python data analysis workloads, and Snorkel provides native support
 for several DataFrame-like data structures, including Pandas, Dask, and PySpark.
-For more information on working with Pandas DataFrames, see the [Pandas DataFrame guide](https://pandas.pydata.org/pandas-docs/stable/getting_started/dsintro.html).
+For more information on working with Pandas DataFrames, see the [Pandas DataFrame guide](https://pandas.pydata.org/pandas-docs/stable/user_guide/dsintro.html).
 
 Each DataFrame consists of the following fields:
 * **`author`**: Username of the comment author
